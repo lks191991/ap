@@ -1,0 +1,100 @@
+@extends('backend.layouts.layout-2')
+
+@section('content')
+    <h4 class="font-weight-bold py-3 mb-4">
+        <span class="text-muted font-weight-light">Districts /</span> Edit District
+    </h4>
+	<div class="card mb-4">
+        <h6 class="card-header">
+            Edit District
+        </h6>
+        <div class="card-body">
+			@includeif('backend.message')
+            <form action="{{route('backend.districts.update', $district->id)}}" method = "post" enctype="multipart/form-data">
+			@csrf
+			{{ method_field('PUT') }}
+			<div class="form-group row">
+                        <label class="col-form-label col-sm-2 text-sm-right">State</label>
+                        <div class="col-sm-10">
+                            <select name="state_name" id="state_name" class="custom-select" disabled required>
+                                <option value="" selected="" disabled="" class="d-none">Select State</option>
+								 @foreach($states as $id => $state)
+										<option value="{{$id}}" @if($district->state_id == $id) selected @endif>{{$state}}</option>
+                                @endforeach
+                               
+                            </select>
+                        </div>
+
+            </div>
+			
+			
+			
+			<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Zone</label>
+                    <div class="col-sm-10">
+                        <select name="zone_name" id="zones" class="custom-select" disabled required>
+						<option value="">Select School</option>
+						@foreach($zones as $id => $zone)
+							<option value="{{$id}}" @if($district->zone_id == $id) selected="selected" @endif>{{$zone}}</option>
+						@endforeach
+						</select>
+                    </div>
+            </div>
+			
+			 
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">District Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="name" placeholder="District Name" class="form-control" value="{{$district->name}}" required>
+                    </div>
+                </div>
+				
+				
+				<div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right"></label>
+                <div class="col-sm-10">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" name="status" value="1" class="custom-control-input" @if($district->status) checked @endif>
+                        <span class="custom-control-label">Active</span>
+                    </label>
+                </div>
+            </div>
+                
+                
+                <div class="form-group row">
+                    <div class="col-sm-10 ml-sm-auto">
+                        <a href = "{{route('backend.districts.index')}}" class="btn btn-danger mr-2">Cancel</a> <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function () {
+        $("#state_name").on("change", function () {
+          
+		  var state_id = $(this).val();
+         
+			
+            $.ajax({
+                type: "POST",
+                url: '{{ route("ajax.state.zones") }}',
+                data: {'category': state_id, '_token': '{{ csrf_token() }}'},
+                success: function (data) {
+                    $("#zones").html(data.schools);
+                }
+            });
+			
+        });
+
+        $("#zones").on("change", function () {
+            var zone_id = $(this).val();
+            var state_name = $("#state_name").val();
+			
+        });
+        
+ });
+</script>
+@stop

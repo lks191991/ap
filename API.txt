@@ -1,0 +1,31 @@
+http://localhost/api/login
+post
+email:lokesh@gmail.com
+password:123456
+
+{
+    "statusCode": 200,
+    "message": "",
+    "data": {
+        "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiMDdjMDMzZDllN2QxNDc1NzE5ZGU5NGUyOTkzZTg0YmUzNzQxODQ4ZjZmYjNiYmVjYjQwOGJlMTczNjc4Y2NjOTgxODU2ZmJkOWFiZjE2MTQiLCJpYXQiOjE2NDIxMzkzNTMsIm5iZiI6MTY0MjEzOTM1MywiZXhwIjoxNjczNjc1MzUzLCJzdWIiOiIxMjgiLCJzY29wZXMiOltdfQ.WQCx0_xjANegoHTcC11J_FVXAbnIZDRlfR-ycDnxI7X1XRt5kBvPgndllFKqt1svROjmJNr2di9aJnsb6BBwNwpCXSyqNnKY_MpGgbq0e8xut3NPhZ3lPluq78Yh9uc927nrm3O9u25i8Ez7LBSPqz1DCwYq1ZIxZNIPIiG39TauZwG8lnj-sEzTpqxAMTMrcNNj9Bh8zgeiZfJ-2mXJASGgjjIFN1rTVq2k2jXGD-UpNZA9KS-C1Oo-VnApIv4m9BhTu2WwuCHY8YeMWY2pFi9TGLsctPaLeb1JZwWBuu0fVfQbU7XWMWRAE0wa0W8kyg6_8PbT_fT1MmVsDChqbfob9gH2qRC5phvnJEWzKkj0RmFUIjN7ZzB1qD5lVbRqGIg7uoqtzct6D5q4Aw5HDQ2C-v1yUOdzhzssyfQU2679s6ntDOifUeIRN3Fk_Jc9Yk0ofErWxEteNRWf45WnqrWZtSbCebBVgsUsoBUeJZRyXRuPOUKBcWTxIXpTS2jUqkeGEppbxq23TOAa4X6DtRWN1l1KOgEyi-pe9Qp5ty4ZA_VyqSHNTXrEGo10EVpxkdEwZCBNP6gcqaxn6svDhAOCXfBx-nXiDxIpmnecBc5Z7-2YvIUPJJHVtVZdPPAlpjHin8XhogwS6rn7FW8QCZi_JkvjAIRhr_v2aOHrrYs",
+        "role": "tutor"
+    }
+}
+
+http://localhost/api/register
+POST
+first_name:Rakesh
+last_name:Sharma
+mobile:9785550344
+user_type:1 for Student 2 for Tutor
+email:lokesh1@mailinator.com
+password:Lokesh@1991
+
+
+{
+    "statusCode": 201,
+    "message": "You are successfully registered, check your inbox to verify your email.",
+    "data": {
+        "uuid": "668b902b-a368-4493-8439-cf79e2b35029"
+    }
+}
