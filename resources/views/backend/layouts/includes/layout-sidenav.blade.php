@@ -92,7 +92,7 @@ $routeName = Route::currentRouteName();
        </li>
 		<li class="sidenav-item {{ (strpos($routeName, 'backend.ContactInquiries') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.newsletters') !== false)  ? ' open' : '' }}" style="">
             <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon fa fa-envelope"></i>
-              <div>Enquiry</div>
+              <div>Inquiry</div>
             </a>
           <ul class="sidenav-menu">
         <li class="sidenav-item{{ (strpos($routeName, 'backend.ContactInquiries') !== false)  ? ' active' : '' }}">
