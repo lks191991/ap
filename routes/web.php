@@ -127,7 +127,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'ajax.'], f
  * Namespaces indicate folder structure
  */
 Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['admin', 'preventBackHistory']], function () {
-
+		Route::get('/', 'DashboardController@index');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     //Route::resource('schools', 'SchoolController')->name('schools');
     //schools routes
