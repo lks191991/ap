@@ -52,7 +52,10 @@ Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newslett
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
 	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
 	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}/{tab?}', 'StudentController@mylearningStart')->name('mylearningStart');
-	
+    Route::get('/set-favourites', 'StudentController@setFavourites')->name('setFavourites');
+    Route::get('/student-favourites', 'StudentController@studentFavourites')->name('studentFavourites');
+    Route::post('/fleg-video', 'StudentController@flegVideo')->name('flegVideo');
+    Route::get('/rating-video', 'StudentController@setRatingvideo')->name('ratingvideo');
 	Route::get('/my-payment', 'PaymentController@myPayment')->name('myPayment');
     Route::post('/upload-urofile', 'StudentController@uploadProfile')->name('uploadProfile');
     Route::post('/change-avatar', 'StudentController@changeAvatar')->name('changeAvatar');
@@ -190,10 +193,17 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     //Tutors routes
     Route::resource('tutors', 'TutorController');
 
+    Route::get('/contact-inquiries', 'InquiryController@ContactInquiries')->name('ContactInquiries');
+    Route::delete('/contact-inquiries-delete/{id}', 'InquiryController@destroyContactInquiry')->name('ContactInquiriesDelete');
 
+    Route::get('/newsletters', 'InquiryController@newsletters')->name('newsletters');
+    Route::delete('/newsletters-delete/{id}', 'InquiryController@destroyNewsletters')->name('destroyNewsletters');
     //profile routes
     Route::resource('profile', 'ProfileController');
-
+     //reports routes
+    Route::get('reports/favourited-videos-list', 'ReportsController@favouritedVideosList')->name('reports.favourited.videos.list');
+    Route::get('reports/student-videos-watch', 'ReportsController@studentVideoswatch')->name('reports.student.videos.watch');
+    Route::get('reports/total-videos-watch', 'ReportsController@totalVideoswatch')->name('reports.total.videos.watch');
     //setting routes
     Route::resource('settings', 'SettingController');
 

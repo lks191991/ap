@@ -21,6 +21,11 @@ class StudentFavourites extends Model
         return $this->hasOne(Tutor::Class, 'id', 'tutor_id')->withDefault();
     }
 	
+	public function user()
+    {
+        return $this->hasOne(Student::Class, 'user_id', 'student_id')->withDefault();
+    }
+
 	
 	public function video()
     {

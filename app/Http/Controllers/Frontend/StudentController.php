@@ -8,6 +8,7 @@ use App\Models\StudentFavourites;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\School;
+use App\Models\ReportVideo;
 use App\Models\Video;
 use App\Models\Tutor;
 use App\Models\Subject;
@@ -19,6 +20,8 @@ use App\Models\District;
 use App\Models\Zone;
 use App\Models\State;
 use App\Models\College;
+use App\Models\StudentVideo;
+use App\Models\StudentHistory;
 use App\Models\UserSubscription;
 use App\User;
 use App\Rules\MatchOldPassword;
@@ -31,6 +34,8 @@ use Illuminate\Support\Facades\File;
 use Image;
 use Validator;
 use Auth;
+use App\Models\Rateing;
+
 use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
@@ -503,11 +508,223 @@ class StudentController extends Controller
 		else{
 		$video = Video::where('uuid', '=', $videoUid)->where('status', '=', 1)->where('subject_id', '=', $subject->id)->first();	
 		}
+
+        $averageRating = Rateing::where('video_id', $video->id)->avg('rating');
+        $myRateing = 0;
+        $myRateingGiven  = Rateing::where('video_id', $video->id)->where('user_id', $user->id)->sum('rating');
+        if(isset($myRateingGiven))
+        $myRateing = $myRateingGiven;
+
+       
+        $isFav = 0;
+		$fav = StudentFavourites::where(['video_id' => $video->id, 'student_id' => $user->id])->first();
+        if(isset($fav))
+        $isFav = 1;
 		
-		
-		return view('frontend.my-learning-details',compact('subject','course','video','data','tab'));
+        $this->studentVideo($video->id, $user->id);
+        $video_watch_count = StudentVideo::where('video_id', $video->id)->sum('video_watch_count');
+
+		return view('frontend.my-learning-details',compact('subject','course','video','data','tab','isFav','video_watch_count','averageRating','myRateing'));
 	}
 	
+    public function setRatingvideo(Request $request)
+    {
+        $data = $request->all();
+        $user = Auth::user();
+        $count  = Rateing::where('video_id', $data['postid'])->where('user_id', $user->id)->count();
+       
+        if($count == 0){
+            $insert = new Rateing;
+        }
+        else
+        {
+            $insert  = Rateing::where('video_id', $data['postid'])->where('user_id', $user->id)->first();
+        }
+
+        $insert->user_id = $user->id;
+        $insert->video_id = $data['postid'];
+        $insert->rating = $data['rating'];
+        $insert->save();
+        $averageRating = Rateing::where('video_id', $data['postid'])->avg('rating');
+        $return_arr = array("averageRating"=>$averageRating,"message"=>"Thank you for giving us a rating");
+
+        return json_encode($return_arr);
+    }
+    
+	public function setFavourites(Request $request)
+    {
+
+
+        $student_id = 0;
+        $isLogin = 0;
+        
+
+        if (Auth::check()) {
+            $student_id = Auth::user()->id;
+            $isLogin = 1;
+        }
+
+
+        if ($student_id > 0) {
+
+            $check = StudentFavourites::where(['video_id' => $request->input('video_id'), 'student_id' => $student_id])->first();
+
+            if (!empty($check->id)) {
+
+                $check->delete();
+                return Redirect::back()->with('success', 'Video Successfully removed in your favourite list.');
+            } else {
+                $insert = new StudentFavourites;
+                $insert->student_id = $student_id;
+                $insert->video_id = $request->get('video_id');
+                $insert->save();
+                return Redirect::back()->with('success', 'Video Successfully added in your favourite list.');
+            }
+        } else {
+
+            return Redirect::back()->with('error', 'You are not loged in.');
+        }
+
+
+       
+    }
+
+
+    function studentVideo($video_id,$student_id){
+        
 	
+    if ($student_id > 0) {
+            $StudentVideo = StudentVideo::where([
+                        'video_id' => $video_id,
+                        'student_id' => $student_id
+                    ])
+                    ->first();
+
+            if (!empty($StudentVideo->id)) {
+                $insertUpdate = $StudentVideo;
+                $watchCount = $StudentVideo->video_watch_count + 1;
+            } else {
+                $insertUpdate = new StudentVideo;
+                $watchCount = 1;
+            }
+            
+            $insertUpdate->video_id = $video_id;
+            $insertUpdate->student_id = $student_id;
+            $insertUpdate->video_watch_count = $watchCount;
+            $insertUpdate->save();
+
+            $studentHistory = new StudentHistory;
+            $studentHistory->student_id = $student_id;
+            $studentHistory->video_id = $video_id;
+            $studentHistory->save();
+
+            $status = 1;
+            $messageType = 'Success';
+            $message = 'Successfully played video.';
+        }
+    }
+
+
+    public function studentFavourites(Request $request)
+    {
+        $student_id = 0;
+        $page = $request->input('page', 1);
+        if (\Auth::check()) {
+            $student_id = \Auth::user()->id;
+        }
+
+        $tab = $request->tab;
+        $loadMore = $request->loadMore;
+
+
+        $studentFavourites = StudentFavourites::where([
+                    'student_id' => $student_id
+                ])
+                ->whereHas('video', function($q) use($request) {
+                    if (!empty($request->course_id)) {
+                        $q->where('course_id', $request->course_id);
+                    }
+                    if (!empty($request->school_id)) {
+                        $q->where('school_id', $request->school_id);
+                    }
+                })
+                ->whereNotNull('video_id')
+                ->orderBy('id', 'desc')
+                ->paginate(GLB::paginate());
+
+        return view('frontend.student.student_favourites_list', compact('tab', 'loadMore', 'studentFavourites', 'page'));
+    }
+
+    public function flegVideo(Request $request)
+    {
+        $user_id = 0;
+        $isLogin = 0;
+
+        if (Auth::check()) {
+            $user_id = Auth::user()->id;
+            $isLogin = 1;
+        }
+
+        $validator = Validator::make($request->all(), [
+                    'message' => 'required'
+                        ], [
+                    "message.required" => "Please describe your reason."
+        ]);
+
+        if ($validator->fails()) {
+
+            $errors = $validator->errors()->all();
+            $status = 0;
+            $messageType = 'error';
+            $message = collect($errors)->implode('<br>');
+        } else {
+
+            
+            if ($user_id > 0) {
+
+                $check = ReportVideo::where(['video_id' => $request->input('video_id'), 'user_id' => $user_id])->first();
+
+                if (!empty($check->id)) {
+
+                    $check->delete();
+                    $status = 1;
+                    $messageType = 'success';
+                    $message = 'Successfully removed your reported video.';
+                    $fleg_status = 0;
+                } else {
+
+                    $insert = new ReportVideo;
+                    $insert->user_id  = $user_id;
+                    $insert->video_id = $request->input('video_id');
+                    $insert->message  = $request->input('message');
+                    $insert->save();
+                    $fleg_status = 1;
+
+                    $status = 1;
+                    $messageType = 'success';
+                    $message = 'Successfully reported your video.';
+                }
+            } else {
+
+                $status = 0;
+                $isLogin = 0;
+                $messageType = 'error';
+                $message = 'You are not loged in.';
+            }
+
+        }
+
+        $returnMsg = (object) array(
+                    'status' => 200,
+                    'errStatus' => $status,
+                    'isLogin' => $isLogin,
+                    'messageType' => $messageType,
+                    'fleg_status' => $fleg_status,
+                    'video_id' => $request->input('video_id'),
+                    'message' => $message
+        );
+        $returnData['data'] = $returnMsg;
+        return response()->json($returnMsg, 200);
+    }
     
 }

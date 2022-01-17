@@ -141,7 +141,6 @@ var subject_id = "{{request('subject')}}";
             <thead>
                 <tr>
 				<form action="{{route('backend.videos.index')}}" id="filterForm" method = "get" >
-                    <th class="align-top">S.No</th>
                     <th class="align-top">Date</th>
                     <th class="align-top">
                         School
@@ -180,12 +179,13 @@ var subject_id = "{{request('subject')}}";
                             @endforeach							
                         </select>
                     </th>
-                    <th style="min-width: 4rem" class="align-top">Title
-                    </th>
-                    <th class="align-top">Status
-					<input type="buttion" value="Filter" id="filterBtn" class="btn btn-primary rounded-pill d-block"></th>
-                    <th class="align-top">Action
-					<a href="{{route('backend.videos.index')}}" class="btn btn-primary rounded-pill d-block">Reset Filter</a>
+                    <th class="align-top">Title</th>
+                    <th class="align-top">Status</th>
+                    <th class="align-top" style="width: 161px;">Action
+					<div class="row">
+					<input type="submit" value="Filter" style="margin-left: 6px; margin-right: 7px;" id="filterBtn" class="btn btn-primary btn-sm rounded-pill d-block">
+					<input type="button" value="Reset" id="ResetBtn" class="btn btn-primary rounded-pill btn-sm d-block">
+					</div>
 					</th>
 					</form>
                 </tr>
@@ -193,7 +193,6 @@ var subject_id = "{{request('subject')}}";
                 @php $i=0; @endphp
                 @foreach($videos as $video)
                 <tr>
-                    <td>{{ ++$i }}</td>
                     <td>{{$video->playOn()}}</td>
                     <td>{{$video->school->school_name}}</td>
                     <td>{{$video->course->name}}</td>
