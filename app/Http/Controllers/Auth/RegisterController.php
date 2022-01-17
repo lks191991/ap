@@ -186,11 +186,11 @@ class RegisterController extends Controller
 
         $register_as = $data['register_as'];
         if ($register_as == 'student') {
-            return redirect("/student-register")->with('success', 'You are successfully registered please login.');;
+            return redirect("/register")->with('success', 'You are successfully registered please login.');;
         }
 
         if ($register_as == 'tutor') {
-            return redirect("/tutor-register")->with('success', 'You are successfully registered. Your detail is sent to admin once approved you can log in.');;
+            return redirect("/register")->with('success', 'You are successfully registered. Your detail is sent to admin once approved you can log in.');;
         }
         
         // return $this->registered($request, $user)
