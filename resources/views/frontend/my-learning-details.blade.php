@@ -2,7 +2,7 @@
 @section('styles')
 <link href="{{ asset('css/front/themes/fontawesome-stars.css') }}" rel='stylesheet' type='text/css'>
 
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
 
 <link rel="stylesheet" href="https://cdn.plyr.io/3.6.2/plyr.css" />
 <style>
