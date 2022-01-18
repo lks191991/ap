@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"
 		integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+		<link rel="icon" type="image/x-icon" href="/favicon.png">
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="{{ asset('css/front/owl.carousel.min.css')}}" type="text/css">
 
