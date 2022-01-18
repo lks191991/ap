@@ -8,7 +8,7 @@ $routeName = Route::currentRouteName();
     <!-- Brand demo (see assets/css/demo/demo.css) -->
     <div class="app-brand demo">
         <span class="app-brand-logo demo bg-primary">
-            <img src="{{asset('images/xt_white.png')}}" width="24" />
+            <img src="{{asset('images/xt_white.png')}}" />
         </span>
         <a href="/admin" class="app-brand-text demo sidenav-text font-weight-normal ml-2">{{ config('app.name', 'Saurya')}}</a>
         <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
