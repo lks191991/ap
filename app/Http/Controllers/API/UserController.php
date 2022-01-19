@@ -196,6 +196,7 @@ class UserController extends APIController
 		$data = $request->all();
 		
 		
+		$already_exist_msg = __('messages.email_already_exists');
 		
 		if($data['user_type']=='1')
 		{
@@ -203,7 +204,7 @@ class UserController extends APIController
 			
 			return $this->respondCreated([
 				'statusCode' => $this->existsStatus,
-				'message' => '',
+				'message' => $already_exist_msg,
 				'data' => new \stdClass(),
 			]);
 		}
@@ -213,7 +214,7 @@ class UserController extends APIController
 			if(($data['email'] != '' && User::where('email', $data['email'])->withTrashed()->exists()) || ($data['mobile'] != '' && Tutor::where('mobile', $data['mobile'])->exists())) {
 			return $this->respondCreated([
 				'statusCode' => $this->existsStatus,
-				'message' => '',
+				'message' => $already_exist_msg,
 				'data' => new \stdClass(),
 			]);
 		}
