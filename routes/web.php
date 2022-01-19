@@ -52,6 +52,7 @@ Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newslett
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
 	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
 	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}/{tab?}', 'StudentController@mylearningStart')->name('mylearningStart');
+	Route::delete('/destroy-favourites/{id}', 'StudentController@destroyFavourite')->name('destroyFavourites');
     Route::get('/set-favourites', 'StudentController@setFavourites')->name('setFavourites');
     Route::get('/student-favourites', 'StudentController@studentFavourites')->name('studentFavourites');
     Route::post('/fleg-video', 'StudentController@flegVideo')->name('flegVideo');

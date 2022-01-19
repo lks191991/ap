@@ -589,6 +589,14 @@ class StudentController extends Controller
        
     }
 
+public function destroyFavourite($id)
+    {
+        $check = StudentFavourites::find($id);
+        $check->delete();
+        
+        return Redirect::back()->with('success', 'Video Successfully removed in your favourite list.');
+    }
+
 
     function studentVideo($video_id,$student_id){
         

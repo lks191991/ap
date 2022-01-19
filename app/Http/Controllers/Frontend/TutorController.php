@@ -84,6 +84,12 @@ class TutorController extends Controller
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
         }
 		
+		$tutor = User::where("id",Auth::user()->id)->first();
+		
+		 if ($tutor->userData->upload_access ==0) {
+			 return redirect()->route('frontend.topics')->with('error', 'Admin Disable your topic create and video upload.');
+        }
+		
         $subject_id = $request->subject;
 
         $subject_details = Subject::where('id', $subject_id)->first();
@@ -191,6 +197,12 @@ class TutorController extends Controller
     {
 		if (!Auth::user()->hasRole('tutor')) {
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
+        }
+		
+		$tutor = User::where("id",Auth::user()->id)->first();
+		
+		 if ($tutor->userData->upload_access ==0) {
+			 return redirect()->route('frontend.topics')->with('error', 'Admin Disable your topic create and video upload.');
         }
 		
         $subject_id = $request->subject;
@@ -316,6 +328,13 @@ class TutorController extends Controller
 	 if (!Auth::user()->hasRole('tutor')) {
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
         }
+		
+		$tutor = User::where("id",Auth::user()->id)->first();
+		
+		 if ($tutor->userData->upload_access ==0) {
+			 return redirect()->route('frontend.topics')->with('error', 'Admin Disable your topic create and video upload.');
+        }
+		
 		$tutor_id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
             'school' => 'required',
@@ -471,6 +490,13 @@ class TutorController extends Controller
      */
     public function updateVideo(Request $request, $id)
     {   
+	
+		$tutor = User::where("id",Auth::user()->id)->first();
+		
+		 if ($tutor->userData->upload_access ==0) {
+			 return redirect()->route('frontend.topics')->with('error', 'Admin Disable your topic create and video upload.');
+        }
+		
         $validator = Validator::make($request->all(), [
             //'school' => 'required',
             'course' => 'required',
