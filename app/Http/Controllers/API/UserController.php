@@ -117,7 +117,7 @@ class UserController extends APIController
         }
 		return $this->respondCreated([
 			'statusCode' => $this->forbiddenStatus,
-			'message' => "Your authentication information is incorrect. Please try again.",
+			'message' => $message,
 			'data' => $data,
 		]);
     }
