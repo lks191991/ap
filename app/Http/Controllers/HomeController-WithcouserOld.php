@@ -78,13 +78,14 @@ class HomeController extends Controller
     }
 	
 	
-	
 	public function autoSearch(Request $request)
     {
           $query = $request->get('query');
           $filterResult = Subject::where('subject_name', 'LIKE', '%'. $query. '%')->get();
           return response()->json($filterResult);
     } 
+	
+	
 	
 	
 }

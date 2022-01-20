@@ -73,6 +73,14 @@ class Course extends Model
         return $this->hasMany(Classes::class, 'course_id')
                     ->whereHas('latestVideo');
     }
+	
+	/*
+     * Get all related subjects.
+     */
+    public function subject()
+    {
+        return $this->hasMany(Subject::Class, 'class_id')->orderBy('id', 'desc');
+    }
     
     /*
      * Get all related classes those have videos with key.
