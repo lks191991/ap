@@ -111,40 +111,5 @@ class Tutor extends Model
 		}
 	}
 
-	public function state()
-    {
-        return $this->belongsTo(State::Class, 'state_id')->withDefault();
-    }
-
-    /*
-     * Get referenced record of school.
-     */
-    public function zone()
-    {
-        return $this->belongsTo(Zone::Class, 'zone_id')->withDefault();
-    }
-
-    /*
-     * Get referenced record.
-     */
-    public function district()
-    {
-        return $this->belongsTo(District::Class, 'district_id')->withDefault();
-    }
-    
-     /*
-     * Get referenced record of school.
-     */
-    public function city()
-    {
-        return $this->belongsTo(City::Class, 'city_id')->withDefault();
-    }
-
-	 /*
-     * Get referenced record of school.
-     */
-    public function college()
-    {
-        return $this->belongsTo(College::Class, 'college_id')->withDefault();
-    }
+	
 }

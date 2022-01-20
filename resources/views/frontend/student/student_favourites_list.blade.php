@@ -56,7 +56,7 @@
 											<th scope="row"><a href="{{route('frontend.mylearningStart',['id'=> $data->id,'subjectId'=>$studentFavourite->video->subject_id,'videoUid'=>$studentFavourite->video->uuid])}}" class="link">{{$studentFavourite->video->title}}</a></th>
 											
 											<td>
-												<form method="POST" action="{{route('frontend.topic.destroy', $studentFavourite->id)}}" style="display: inline-block;">
+												<form method="POST" action="{{route('frontend.destroyFavourites', $studentFavourite->id)}}" style="display: inline-block;">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
 

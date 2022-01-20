@@ -204,9 +204,9 @@
 				<div class="col-lg-5">
 					<div class="section-title text-white">
 						<h2 class="section-heading mb-3 text-white">Subscribe to our newsletter</h2>
-						<p class="m-0">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe officiis eos vero
+						<!-- <p class="m-0">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe officiis eos vero
 							error, quos
-							praesentium eaque ipsa delectus.</p>
+							praesentium eaque ipsa delectus.</p> -->
 					</div>
 				</div>
 				<div class="col-lg-7">

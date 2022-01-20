@@ -209,6 +209,7 @@ class LoginController extends Controller
 		
 		$remember_me = $request->has('remember_me') ? true : false; 
 		$user = User::where("email", $request->input('email'))->first();
+		
         if(isset($user))
         {
             if($user->status == 0 && $user->email_verified_at !== NULL) {
@@ -281,4 +282,6 @@ class LoginController extends Controller
         //}
         return redirect('/');
     }
+	
+	
 }

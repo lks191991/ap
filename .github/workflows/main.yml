@@ -16,7 +16,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.2.0
       with:
-        server: 103.24.202.253
-        username: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
-        server-dir: /public_html/bright/
+        server: 192.254.185.182
+        username: Sunsoftservices@hotmail.com
+        password: Sunday123@
+        server-dir: /bhilearning.com/

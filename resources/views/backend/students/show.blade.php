@@ -86,58 +86,19 @@
                       </div>
                     </div>
 						<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Branch:</div>
+                      <div class="col-md-3 text-muted">DOB:</div>
                       <div class="col-md-9">
-                       {{$student->branch}}
+                       {{$student->dob}}
                       </div>
                     </div>
-                 <div class="row mb-2">
-                      <div class="col-md-3 text-muted">State:</div>
+               
+<div class="row mb-2">
+                      <div class="col-md-3 text-muted">Gender:</div>
                       <div class="col-md-9">
-                       @if(isset($student->state) && !empty(($student->state->name))){{$student->state->name}}
-						@else
-						N/A
-					   @endif
+                       {{$student->gender}}
                       </div>
                     </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Zone:</div>
-                      <div class="col-md-9">
-                        @if(isset($student->zone) && !empty(($student->zone->zone_name))){{$student->zone->zone_name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">District:</div>
-                      <div class="col-md-9">
-                       @if(isset($student->district) && !empty(($student->district->name))){{$student->district->name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">City:</div>
-                      <div class="col-md-9">
-                       @if(isset($student->city) && !empty(($student->city->city_name))){{$student->city->city_name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
-
-                  <div class="row mb-2">
-                      <div class="col-md-3 text-muted">College:</div>
-                      <div class="col-md-9">
-                        @if(isset($student->college) && !empty(($student->college->name))){{$student->college->name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
-
+               
 
                 </div></div>
             <!-- / Info -->

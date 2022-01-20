@@ -4,11 +4,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,500;0,600;0,700;1,700&display=swap');
 
 :root {
-	--primaryColor: #cf3439;
-	--secondaryColor: #576ea5;
+	--primaryColor: #094d96;
+	--secondaryColor: #1eb0e9;
 	--textColor: #484848;
-	--primaryColorHover: #b31f24;
-	--secondaryColorHover: #425a92;
+	--primaryColorHover: #003d89;
+	--secondaryColorHover: #0089bf;
 	--colorWhite: #fff;
 	--textLight: #888;
 	--bgLight: #f5f5f5;
@@ -204,7 +204,7 @@ h3 {
 }
 
 .custom-navbar .navbar-brand {
-    max-width: 100px;
+    max-width: 200px;
 }
 
 .custom-navbar .navbar-nav .nav-item {
@@ -217,7 +217,7 @@ h3 {
 
 .custom-navbar .navbar-nav .nav-item .nav-link {
 	color: var(--textColor);
-	padding: 41px 10px;
+	padding: 30px 10px;
     border-bottom: solid 3px transparent;
 }
 
@@ -227,7 +227,7 @@ h3 {
 }
 
 .custom-navbar .navbar-nav .nav-item .btn {
-    margin-top: 31px;
+    margin-top: 20px;
 }
 
 .show-after-login {
@@ -284,7 +284,6 @@ footer {
 
 .footer-logo {
     max-width: 200px;
-    text-align: center;
 }
 
 .footer-block a {
@@ -477,7 +476,7 @@ section > div> .row+.row {
 .theme-owl-style .owl-nav > button {
     width: 50px;
     height: 50px;
-    background: #cf3439 !important;
+    background: #094d96 !important;
     color: #fff !important;
     position: absolute;
     top: 45%;
@@ -507,7 +506,7 @@ section > div> .row+.row {
 }
 
 .login-signup-form-block {
-    border: solid 1px #425a92;
+    border: solid 1px #0089bf;
     padding: 30px;
     border-radius: 4px;
     box-shadow: 0 3px 12px rgb(0 137 191 / 24%);
@@ -548,7 +547,7 @@ section > div> .row+.row {
 }
 
 .user-dashboard-link ul li a.active-tab, .user-dashboard-link ul li a:hover {
-    background: #425a92;
+    background: #0089bf;
     color: #fff;
 }
 
@@ -635,9 +634,9 @@ section > div> .row+.row {
 }
 
 .custom-tabbing .nav-tabs .nav-link.active, .custom-tabbing .nav-tabs .nav-link:hover {
-    border-bottom-color: #cf3439;
+    border-bottom-color: #094d96;
     border-width: 0 0 2px 0;
-    color: #cf3439;
+    color: #094d96;
 }
 
 .custom-tabbing .nav-tabs .nav-link {
@@ -798,7 +797,7 @@ section > div> .row+.row {
 }
 
 .edit-btn {
-    color: #cf3439;
+    color: #094d96;
 }
 
 .delete-btn {

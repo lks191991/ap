@@ -105,30 +105,7 @@ $routeName = Route::currentRouteName();
 		
 		 </ul>
        </li>
-      <li class="sidenav-item {{ (strpos($routeName, 'backend.states') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.zones') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.districts') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.cities') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.colleges') !== false)  ? ' open' : '' }}" style="">
-            <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon fa fa-map-marker"></i>
-              <div>Manage Locations</div>
-            </a>
-
-            <ul class="sidenav-menu">
-			  <li class="sidenav-item{{ (strpos($routeName, 'backend.states') !== false)  ? ' active' : '' }}">
-            <a href="{{ route('backend.states.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>State</div></a>
-        </li>
-             
-               <li class="sidenav-item{{ (strpos($routeName, 'backend.zones') !== false)  ? ' active' : '' }}">
-            <a href="{{ route('backend.zones.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>Zone</div></a>
-        </li>
-        <li class="sidenav-item{{ (strpos($routeName, 'backend.districts') !== false)  ? ' active' : '' }}">
-            <a href="{{ route('backend.districts.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>Distict</div></a>
-        </li>
-        <li class="sidenav-item{{ (strpos($routeName, 'backend.cities') !== false)  ? ' active' : '' }}">
-            <a href="{{ route('backend.cities.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>City</div></a>
-        </li>
-        <li class="sidenav-item{{ (strpos($routeName, 'backend.colleges') !== false)  ? ' active' : '' }}">
-            <a href="{{ route('backend.colleges.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>College</div></a>
-        </li>
-            </ul>
-          </li>
+     
         <li class="sidenav-item {{ (strpos($routeName, 'backend.reports.favourited.videos.list') !== false)  ? ' open' : '' }}  {{ (strpos($routeName, 'backend.reports.student.videos.watch') !== false)  ? ' open' : '' }} {{ (strpos($routeName, 'backend.reports.total.videos.watch') !== false)  ? ' open' : '' }}" style="">
             <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon fas fa-user"></i>
               <div>Reports</div>

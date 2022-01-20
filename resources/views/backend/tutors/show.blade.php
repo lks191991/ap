@@ -88,53 +88,20 @@
                         {{isset($tutor->tutor_subject)?$tutor->tutor_subject:'N/A'}}
                       </div>
                     </div>
-
-                   <div class="row mb-2">
-                      <div class="col-md-3 text-muted">State:</div>
+	<div class="row mb-2">
+                      <div class="col-md-3 text-muted">DOB:</div>
                       <div class="col-md-9">
-                       @if(isset($tutor->state) && !empty(($tutor->state->name))){{$tutor->state->name}}
-						@else
-						N/A
-					   @endif
+                       {{$tutor->dob}}
                       </div>
                     </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Zone:</div>
+               
+<div class="row mb-2">
+                      <div class="col-md-3 text-muted">Gender:</div>
                       <div class="col-md-9">
-                        @if(isset($tutor->zone) && !empty(($tutor->zone->zone_name))){{$tutor->zone->zone_name}}
-						@else
-						N/A
-					   @endif
+                       {{$tutor->gender}}
                       </div>
                     </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">District:</div>
-                      <div class="col-md-9">
-                       @if(isset($tutor->district) && !empty(($tutor->district->name))){{$tutor->district->name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">City:</div>
-                      <div class="col-md-9">
-                       @if(isset($tutor->city) && !empty(($tutor->city->city_name))){{$tutor->city->city_name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
-
-                  <div class="row mb-2">
-                      <div class="col-md-3 text-muted">College:</div>
-                      <div class="col-md-9">
-                        @if(isset($tutor->college) && !empty(($tutor->college->name))){{$tutor->college->name}}
-						@else
-						N/A
-					   @endif
-                      </div>
-                    </div>
+                  
 
                   </div></div>
                 <!-- / Info -->

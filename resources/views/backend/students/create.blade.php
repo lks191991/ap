@@ -58,60 +58,24 @@
                     </div>
                 </div>
 				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Branch</label>
+                    <label class="col-form-label col-sm-2 text-sm-right">Gender</label>
                     <div class="col-sm-10">
-                        <input type="text" name="branch" id="branch" placeholder="Branch Name" value="{{ old('branch') }}" class="form-control" required>
+                       	<select name="gender" id="gender" class="custom-select" >
+											<option value="" >Select</option>
+													<option value="Male" @if('Male' == old('gender') ) selected @endif >Male</option>
+													<option value="Female" @if('Female' == old('gender') ) selected @endif >Female</option>
+													<option value="Other" @if('Other' == old('gender') ) selected @endif >Other</option>
+												</select>
+                    </div>
+                </div>
+				<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">DOB</label>
+                    <div class="col-sm-10">
+					<input type="text" class="form-control" name="dob" id="dob" readonly value="{{ old('dob') }}"  placeholder="DOB" >
                     </div>
                 </div>
 				
-				
-				<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">State</label>
-                        <div class="col-sm-10">
-                            <select name="state_name" id="state_name" class="custom-select" required>
-                                <option value="" selected="" disabled="" class="d-none">Select State</option>
-                                @foreach($states as $id => $state)
-										<option value="{{$id}}" >{{$state}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-					
-                  <div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Zone</label>
-                    <div class="col-sm-10">
-					<select name="zone_name" id="zones" class="custom-select" required>
-						<option value="">Select Zone</option>
-					</select>
-					</div>
-                </div>
-				
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">District</label>
-                    <div class="col-sm-10">
-					<select name="district_name" id="districts" class="custom-select" required>
-						<option value="">Select District</option>
-					</select>
-					</div>
-                </div>
-					
-					<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">City</label>
-                    <div class="col-sm-10">
-					<select name="city_name" id="cities" class="custom-select" required>
-						<option value="">Select City</option>
-					</select>
-					</div>
-                </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">College</label>
-                    <div class="col-sm-10">
-					<select name="college_name" id="colleges" class="custom-select" required>
-						<option value="">Select College</option>
-					</select>
-					</div>
-                </div>
+			
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Profile Photo</label>
                     <div class="col-sm-10">

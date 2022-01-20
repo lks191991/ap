@@ -59,71 +59,28 @@
                         <input type="text" name="father_name" id="father_name" placeholder="Father Name" value="{{ $student->father_name }}" class="form-control" required>
                     </div>
                 </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Branch</label>
+					<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Gender</label>
                     <div class="col-sm-10">
-                        <input type="text" name="branch" id="branch" placeholder="Branch Name" value="{{ $student->branch }}" class="form-control" required>
+                       	<select name="gender" id="gender" class="custom-select" >
+											<option value="" >Select</option>
+												<option value="Male" @if('Male' == $student->gender ) selected @endif >Male</option>
+													<option value="Female" @if('Female' == $student->gender ) selected @endif >Female</option>
+													<option value="Other" @if('Other' == $student->gender ) selected @endif >Other</option>
+												</select>
                     </div>
                 </div>
 				<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">State</label>
-                        <div class="col-sm-10">
-                            <select name="state_name" id="state_name" class="custom-select" required>
-                                <option value="" selected="" disabled="" class="d-none">Select State</option>
-                                @foreach($states as $stateid => $state)
-										<option value="{{$stateid}}" @if($stateid == $student->state_id ) selected @endif >{{$state}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-					
-                  <div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Zone</label>
+                    <label class="col-form-label col-sm-2 text-sm-right">DOB</label>
                     <div class="col-sm-10">
-					<select name="zone_name" id="zones" class="custom-select" required>
-						<option value="">Select Zone</option>
-						  @foreach($zones as $zoneid => $zone)
-										<option value="{{$zoneid}}" @if($zoneid == $student->zone_id ) selected @endif >{{$zone}}</option>
-                                @endforeach
-					</select>
-					</div>
+					<input type="text" class="form-control" name="dob" id="dob" readonly value="{{ $student->dob }}"  placeholder="DOB" >
+                    </div>
                 </div>
 				
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">District</label>
-                    <div class="col-sm-10">
-					<select name="district_name" id="districts" class="custom-select" required>
-						<option value="">Select District</option>
-						  @foreach($districts as $districtid => $district)
-										<option value="{{$districtid}}" @if($districtid == $student->district_id ) selected @endif >{{$district}}</option>
-                                @endforeach
-					</select>
-					</div>
-                </div>
+				
 					
-					<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">City</label>
-                    <div class="col-sm-10">
-					<select name="city_name" id="cities" class="custom-select" required>
-						<option value="">Select City</option>
-						 @foreach($cities as $citiesid => $city)
-										<option value="{{$citiesid}}" @if($citiesid == $student->city_id ) selected @endif >{{$city}}</option>
-                                @endforeach
-					</select>
-					</div>
-                </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">College</label>
-                    <div class="col-sm-10">
-					<select name="college_name" id="colleges" class="custom-select" required>
-						<option value="">Select College</option>
-						 @foreach($colleges as $collegeid => $college)
-										<option value="{{$collegeid}}" @if($collegeid == $student->college_id ) selected @endif >{{$college}}</option>
-                                @endforeach
-					</select>
-					</div>
-                </div>
+                
+				
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Profile Photo</label>
                     <div class="col-sm-10">

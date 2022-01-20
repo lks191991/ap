@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Mail\sendEmailtoSchooltutor;
 use Illuminate\Support\Facades\Mail;
 use Auth;
-use App\Models\City;
-use App\Models\District;
-use App\Models\Zone;
-use App\Models\State;
-use App\Models\College;
+
 use App\Models\Video;
 use App\Models\StudentVideo;
 use App\Models\Question;
@@ -48,8 +44,7 @@ class TutorController extends Controller
      */
     public function create()
     {
-        $states = State::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
-        return view('backend.tutors.create', compact('states'));
+        return view('backend.tutors.create');
     }
 
     /**
@@ -68,11 +63,7 @@ class TutorController extends Controller
                     'pricipal_name' => 'required',
                     'email' => 'email|max:255|unique:users',
                     'mobile' => 'required|numeric',
-                    'state_name' => 'required',
-                    'zone_name' => 'required',
-                    'district_name' => 'required',
-                    'city_name' => 'required',
-                    'college_name' => 'required',
+                 
                         ], [
                     //'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
         ]);
@@ -133,12 +124,9 @@ class TutorController extends Controller
         $tutor->mobile = $data['mobile'];
        
         $tutor->pricipal_name = $data['pricipal_name'];
-        $tutor->state_id = $data['state_name'];
-        $tutor->zone_id = $data['zone_name'];
-        $tutor->district_id = $data['district_name'];
-        $tutor->city_id = $data['city_name'];
-        $tutor->college_id = $data['college_name'];
-        $tutor->status = ($data['status'] !== null) ? $data['status'] : 0;
+		$tutor->gender = $data['gender'];
+        $tutor->dob = date("d-m-Y",strtotime($data['dob']));
+        $tutor->status =  isset($data['status']) ? $data['status'] : 0;
 		$tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
         $tutor->tutor_subject = $data['tutor_subject'];
 
@@ -198,12 +186,8 @@ class TutorController extends Controller
     {
         //Find the tutor
         $tutor = Tutor::find($id);
-        $states = State::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
-        $zones = Zone::where('status', 1)->where('id', $tutor->zone_id)->orderBy('zone_name')->pluck('zone_name','id');
-        $districts = District::where('status', 1)->where('id', $tutor->district_id)->orderBy('name')->pluck('name','id');
-        $cities = City::where('status', 1)->where('id', $tutor->city_id)->orderBy('city_name')->pluck('city_name','id');
-        $colleges = College::where('status', 1)->where('id', $tutor->college_id)->orderBy('name')->pluck('name','id');
-        return view('backend.tutors.edit', compact('tutor','colleges', 'states', 'zones', 'districts', 'cities'));
+       
+        return view('backend.tutors.edit', compact('tutor'));
     }
 
     /**
@@ -236,11 +220,7 @@ class TutorController extends Controller
                                     return $query->where('user_id', '<>', $user_id);
                                 })
                     ],
-                    'state_name' => 'required',
-                    'zone_name' => 'required',
-                    'district_name' => 'required',
-                    'city_name' => 'required',
-                    'college_name' => 'required',
+                 
                     'tutor_subject' => 'required',
                     'pricipal_name' => 'required',
                         ], [
@@ -300,14 +280,11 @@ class TutorController extends Controller
         $tutor->last_name = $data['last_name'];
         $tutor->email = $data['email'];
         $tutor->mobile = $data['mobile'];
-        $tutor->status = ($data['status'] !== null) ? $data['status'] : 0;
+        $tutor->status = isset($data['status']) ? $data['status'] : 0;
         $tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
         $tutor->pricipal_name = $data['pricipal_name'];
-        $tutor->state_id = $data['state_name'];
-        $tutor->zone_id = $data['zone_name'];
-        $tutor->district_id = $data['district_name'];
-        $tutor->city_id = $data['city_name'];
-        $tutor->college_id = $data['college_name'];
+		$tutor->gender = $data['gender'];
+        $tutor->dob = date("d-m-Y",strtotime($data['dob']));
         $tutor->tutor_subject = $data['tutor_subject'];
 
         $tutor->save(); 

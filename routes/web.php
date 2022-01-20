@@ -52,6 +52,7 @@ Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newslett
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
 	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
 	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}/{tab?}', 'StudentController@mylearningStart')->name('mylearningStart');
+    Route::delete('/destroy-favourites/{id}', 'StudentController@destroyFavourite')->name('destroyFavourites');
     Route::get('/set-favourites', 'StudentController@setFavourites')->name('setFavourites');
     Route::get('/student-favourites', 'StudentController@studentFavourites')->name('studentFavourites');
     Route::post('/fleg-video', 'StudentController@flegVideo')->name('flegVideo');
@@ -127,7 +128,7 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'ajax.'], f
  * Namespaces indicate folder structure
  */
 Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.', 'middleware' => ['admin', 'preventBackHistory']], function () {
-
+		Route::get('/', 'DashboardController@index');
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     //Route::resource('schools', 'SchoolController')->name('schools');
     //schools routes
@@ -143,16 +144,6 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     //category routes
     Route::resource('categories', 'CategoryController');
 
-     //state routes
-     Route::resource('states', 'StateController');
-     //zones routes
-     Route::resource('zones', 'ZoneController');
-      //districts routes
-      Route::resource('districts', 'DistrictController');
-    //city routes
-    Route::resource('cities', 'CitiesController');
-      //colleges routes
-      Route::resource('colleges', 'CollegeController');
     //course routes
     Route::get('/courses', 'CourseController@index')->name('courses');
     Route::get('/course/create/{id?}', 'CourseController@create')->name('course.create');

@@ -15,11 +15,6 @@ use App\Models\Subject;
 use App\Models\Classes;
 use App\Models\Avatar;
 use App\Models\Countries;
-use App\Models\City;
-use App\Models\District;
-use App\Models\Zone;
-use App\Models\State;
-use App\Models\College;
 use App\Models\StudentVideo;
 use App\Models\StudentHistory;
 use App\Models\UserSubscription;
@@ -106,11 +101,6 @@ class StudentController extends Controller
         
         $validator = Validator::make($data, [
             'first_name' => 'required|min:2',
-            'state_name' => 'required',
-            'zone_name' => 'required',
-            'district_name' => 'required',
-            'city_name' => 'required',
-            'college_name' => 'required',
             'tutor_subject' => 'required',
             'pricipal_name' => 'required',
                 ]);
@@ -156,13 +146,10 @@ class StudentController extends Controller
         $tutor->last_name = $data['last_name'];
         $tutor->employee_id = $employee_id;
         $tutor->pricipal_name = $data['pricipal_name'];
-        $tutor->state_id = $data['state_name'];
-        $tutor->zone_id = $data['zone_name'];
-        $tutor->district_id = $data['district_name'];
-        $tutor->city_id = $data['city_name'];
-        $tutor->college_id = $data['college_name'];
         $tutor->tutor_subject = $data['tutor_subject'];
-       
+        $tutor->gender = $data['gender'];
+        $tutor->dob = date("d-m-Y",strtotime($data['dob']));
+		
         $tutor->save(); 
 
         $user_more_info = User::find($tutor->user_id);
@@ -182,12 +169,6 @@ class StudentController extends Controller
             'first_name' => 'required|min:2',
             'student_type' => 'required',
             'father_name' => 'required',
-            'branch' => 'required',
-            'state_name' => 'required',
-            'zone_name' => 'required',
-            'district_name' => 'required',
-            'city_name' => 'required',
-            'college_name' => 'required',
                         ], [
                    // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
         ]);
@@ -233,12 +214,9 @@ class StudentController extends Controller
         $student->student_id = $student_id;
         $student->student_type = $data['student_type'];
         $student->father_name = $data['father_name'];
-        $student->branch = $data['branch'];
-        $student->state_id = $data['state_name'];
-        $student->zone_id = $data['zone_name'];
-        $student->district_id = $data['district_name'];
-        $student->city_id = $data['city_name'];
-        $student->college_id = $data['college_name'];
+		$student->gender = $data['gender'];
+        $student->dob = date("d-m-Y",strtotime($data['dob']));
+       
        
         $student->save(); //persist the data
         //save user other information
@@ -249,8 +227,25 @@ class StudentController extends Controller
 
         return redirect()->route('frontend.profile')->with('success', 'Student Information Updated Successfully');
     }
+	 public function tutor()
+    {
+
+        $tutor = User::find(Auth::user()->id);
+       
+        return view('frontend.tutor.profile', compact('tutor'));
+    }
 	
-    public function tutor()
+	
+
+    public function student()
+    {
+
+        $student = User::where("id",Auth::user()->id)->first();
+       
+        return view('frontend.student.profile', compact('student'));
+    }
+	
+   /*  public function tutor()
     {
 
         $tutor = User::find(Auth::user()->id);
@@ -275,7 +270,7 @@ class StudentController extends Controller
         $cities = City::where('status', 1)->where('id', $student->userData->city_id)->orderBy('city_name')->pluck('city_name','id');
         $colleges = College::where('status', 1)->where('id', $student->userData->college_id)->orderBy('name')->pluck('name','id');
         return view('frontend.student.profile', compact('student','colleges', 'states', 'zones', 'districts', 'cities'));
-    }
+    } */
 
     public function changePassword()
     {
@@ -587,6 +582,14 @@ class StudentController extends Controller
 
 
        
+    }
+
+    public function destroyFavourite($id)
+    {
+        $check = StudentFavourites::find($id);
+        $check->delete();
+        
+        return Redirect::back()->with('success', 'Video Successfully removed in your favourite list.');
     }
 
 

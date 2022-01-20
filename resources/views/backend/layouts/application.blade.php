@@ -27,7 +27,7 @@
         <link rel="stylesheet" href="{{ mix('/assets/vendor/css/rtl/uikit.css') }}">
         <link rel="stylesheet" href="{{ mix('/assets/css/demo.css') }}">
         <link rel="stylesheet" href="{{ mix('/assets/vendor/libs/datatables/datatables.css') }}">
-		
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
 		<link href="{{ asset('css/backend.css') }}" rel="stylesheet">
 		<script src="//code.jquery.com/jquery-3.2.1.min.js"></script>
         <!-- Load polyfills -->
@@ -99,6 +99,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
         <!-- Scripts -->
         <script src="{{ mix('/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+		 <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
         <script src="{{ mix('/assets/js/demo.js') }}"></script>
         <script src="{{ mix('/assets/vendor/libs/datatables/datatables.js') }}"></script>
         <script>
@@ -107,6 +108,16 @@
                 lengthMenu: [ [10, 25, 50, 100], [10, 25, 50, 100] ],
                 pageLength: {{SiteHelpers::pageLimit()}}
             } );
+			
+			$( function() {
+    $( "#dob" ).datepicker({ 
+	minDate: -50,
+	maxDate: "0",
+	dateFormat: 'dd-mm-yy',
+	changeMonth: true,
+    changeYear: true
+	});
+  } );
         </script>
         @yield('scripts')
     </body>

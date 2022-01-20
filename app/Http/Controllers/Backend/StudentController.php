@@ -10,11 +10,7 @@ use App\Models\SchoolCategory;
 use App\Models\Course;
 use App\Models\Classes;
 use App\Models\StudentClasses;
-use App\Models\City;
-use App\Models\District;
-use App\Models\Zone;
-use App\Models\State;
-use App\Models\College;
+
 use App\User;
 use Illuminate\Validation\Rule;
 use Validator;
@@ -56,9 +52,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-		$states = State::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
 
-        return view('backend.students.create', compact('states'));
+        return view('backend.students.create');
     }
 
     /**
@@ -77,12 +72,6 @@ class StudentController extends Controller
                     'student_type' => 'required',
                     'father_name' => 'required',
                     'mobile' => 'required|numeric',
-                    'branch' => 'required',
-                    'state_name' => 'required',
-                    'zone_name' => 'required',
-                    'district_name' => 'required',
-                    'city_name' => 'required',
-                    'college_name' => 'required',
                         ], [
                    // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
         ]);
@@ -144,13 +133,9 @@ class StudentController extends Controller
         $student->student_id = $data['student_id'];
         $student->student_type = $data['student_type'];
         $student->father_name = $data['father_name'];
-        $student->branch = $data['branch'];
-        $student->state_id = $data['state_name'];
-        $student->zone_id = $data['zone_name'];
-        $student->district_id = $data['district_name'];
-        $student->city_id = $data['city_name'];
-        $student->college_id = $data['college_name'];
-        $student->status = ($data['status'] !== null) ? $data['status'] : 0;
+		$student->gender = $data['gender'];
+        $student->dob = date("d-m-Y",strtotime($data['dob']));
+        $student->status =  isset($data['status']) ? $data['status'] : 0;
         
 
         $student->save(); //persist the data 
@@ -230,14 +215,10 @@ class StudentController extends Controller
 		//Find the student
         $student = Student::find($id);
        
-        $states = State::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
-        $zones = Zone::where('status', 1)->where('id', $student->zone_id)->orderBy('zone_name')->pluck('zone_name','id');
-        $districts = District::where('status', 1)->where('id', $student->district_id)->orderBy('name')->pluck('name','id');
-        $cities = City::where('status', 1)->where('id', $student->city_id)->orderBy('city_name')->pluck('city_name','id');
-        $colleges = College::where('status', 1)->where('id', $student->college_id)->orderBy('name')->pluck('name','id');
+        
         
 		
-        return view('backend.students.edit', compact('student','colleges', 'states', 'zones', 'districts', 'cities'));
+        return view('backend.students.edit', compact('student'));
     }
 
     /**
@@ -273,12 +254,7 @@ class StudentController extends Controller
                                     return $query->where('user_id', '<>', $user_id);
                                 })
                     ],
-                    'branch' => 'required',
-                    'state_name' => 'required',
-                    'zone_name' => 'required',
-                    'district_name' => 'required',
-                    'city_name' => 'required',
-                    'college_name' => 'required',
+                   
                         ], [
                   // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
         ]);
@@ -339,13 +315,9 @@ class StudentController extends Controller
         $student->mobile = $data['mobile'];
         $student->student_type = $data['student_type'];
         $student->father_name = $data['father_name'];
-        $student->branch = $data['branch'];
-        $student->state_id = $data['state_name'];
-        $student->zone_id = $data['zone_name'];
-        $student->district_id = $data['district_name'];
-        $student->city_id = $data['city_name'];
-        $student->college_id = $data['college_name'];
-        $student->status = ($data['status'] !== null) ? $data['status'] : 0;
+		$student->gender = $data['gender'];
+        $student->dob = date("d-m-Y",strtotime($data['dob']));
+        $student->status =  isset($data['status']) ? $data['status'] : 0;
         $student->save(); //persist the data
        
         return redirect()->route('backend.students.index')->with('success', 'Student Information Updated Successfully');
