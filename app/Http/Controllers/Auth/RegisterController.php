@@ -221,7 +221,7 @@ class RegisterController extends Controller
 				}
 				else
 				{
-					 DB::table('users')->where('token', $token)->update(['email_verified_at' => Carbon::now(),'token' => ''],'status' => 1);
+					 DB::table('users')->where('token', $token)->update(['email_verified_at' => Carbon::now(),'token' => '','status' => 1]);
 				}
                
                 $status = "Your account is verified. You can now login.";
