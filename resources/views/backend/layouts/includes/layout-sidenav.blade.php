@@ -7,7 +7,7 @@ $routeName = Route::currentRouteName();
     @empty($layout_sidenav_horizontal)
     <!-- Brand demo (see assets/css/demo/demo.css) -->
     <div class="app-brand demo">
-        <span class="app-brand-logo demo bg-primary">
+        <span class="app-brand-logo demo" style="background-color:#fff">
             <img src="{{asset('images/xt_white.png')}}" width="24" />
         </span>
         <a href="/admin" class="app-brand-text demo sidenav-text font-weight-normal ml-2">{{ config('app.name', 'Saurya')}}</a>

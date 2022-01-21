@@ -27,60 +27,23 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-   /*  public function indexWithClass()
+    public function index()
     {
 		//session()->forget('newCustomer');
 		$topCourses = Subject::where('status', '=', 1)->limit(4)->get();
 		$allCoursesList = Classes::where('status', '=', 1)->get();
 		$latestCourses = Subject::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
 		
-        return view('frontend.homeWithClass',compact('topCourses','latestCourses','allCoursesList'));
-    } */
-	
-	public function index()
-    {
-		//session()->forget('newCustomer');
-		$topCourses = Course::where('status', '=', 1)->limit(4)->get();
-		$allCoursesList = Course::where('status', '=', 1)->get();
-		$latestCourses = Course::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
-		
         return view('frontend.home',compact('topCourses','latestCourses','allCoursesList'));
     }
 	
-	
 	public function courseList(Request $request,$CourseId)
-    {
-		
-		$allCourses = Subject::where('course_id', '=', $CourseId)->where('status', '=', 1)->orderBy('created_at','DESC')->paginate(20);
-		
-        return view('frontend.list',compact('allCourses'));
-    }
-	
-	/* public function courseListWithClassPage(Request $request,$CourseId)
     {
 		
 		$allCourses = Subject::where('class_id', '=', $CourseId)->where('status', '=', 1)->orderBy('created_at','DESC')->paginate(20);
 		
         return view('frontend.list',compact('allCourses'));
-    } */
-	
-	/* public function courseSearchOldWithCLass(Request $request)
-    {
-		$data = $request->all();
-		
-		$query = Subject::where('status', '=', 1);
-		if(isset($data['search_courses']) and !empty($data['search_courses']))
-		{
-			$query->where('class_id', '=', $data['search_courses']);
-		}
-		if(isset($data['search_text']) and !empty($data['search_text']))
-		{
-			$query->where('subject_name', 'like', '%' . $data['search_text'] . '%');
-		}
-		$allCourses = $query->orderBy('created_at','DESC')->paginate(20);
-		
-        return view('frontend.course_search',compact('allCourses'));
-    } */
+    }
 	
 	public function courseSearch(Request $request)
     {
@@ -89,7 +52,7 @@ class HomeController extends Controller
 		$query = Subject::where('status', '=', 1);
 		if(isset($data['search_courses']) and !empty($data['search_courses']))
 		{
-			$query->where('course_id', '=', $data['search_courses']);
+			$query->where('class_id', '=', $data['search_courses']);
 		}
 		if(isset($data['search_text']) and !empty($data['search_text']))
 		{

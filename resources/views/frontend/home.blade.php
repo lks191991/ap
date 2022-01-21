@@ -10,7 +10,7 @@
 			<div class="row">
 				<div class="col-lg-8 mx-auto text-center">
 					<h1 class="font-heading text-uppercase">Learn what you want to</h1>
-					
+					<p class="mt-md-4 mb-md-5 mt-3 mb-4"></p>
 					<div class="banner-form">
 							<form action="{{ route('course-search') }}" method="get">
 							{{ csrf_field() }}
@@ -20,7 +20,7 @@
 										<option value="">Select Courses</option>
 										 @foreach($allCoursesList as $acl)
 										  <option value="{{$acl->id}}">
-										   {{$acl->name}}
+										   {{$acl->class_name}}
 										  </option>
 										@endforeach
 									</select>
@@ -59,7 +59,7 @@
 							<img src="{{ asset($topCourse->banner_image)}}" alt="product" />
 						</div>
 						<div class="product-content">
-							<h3>{{$topCourse->name}}</h3>
+							<h3>{{$topCourse->subject_name}}</h3>
 							<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 								<li>
 									<i class="fas fa-star"></i>
@@ -82,7 +82,7 @@
 								<span class="regular-price"></span>
 							</div>-->
 							<div class="view-product-detail mt-3 mb-2">
-								<a href="{{route('course-list',['CourseId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
+								<a href="{{route('course-details',['subjectId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
 							</div>
 						</div>
 					</div>
@@ -160,7 +160,7 @@
 								<img src="{{ asset($topCourse->banner_image)}}" alt="product" />
 							</div>
 							<div class="product-content">
-								<h3>{{$topCourse->name}}</h3>
+								<h3>{{$topCourse->subject_name}}</h3>
 								<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 									<li>
 										<i class="fas fa-star"></i>
@@ -183,7 +183,7 @@
 									<span class="regular-price">$999</span>
 								</div>-->
 								<div class="view-product-detail mt-3 mb-2">
-									<a href="{{route('course-list',['CourseId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
+									<a href="{{route('course-details',['subjectId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
 								</div>
 							</div>
 						</div>
@@ -204,7 +204,9 @@
 				<div class="col-lg-5">
 					<div class="section-title text-white">
 						<h2 class="section-heading mb-3 text-white">Subscribe to our newsletter</h2>
-						
+						<!-- <p class="m-0">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Saepe officiis eos vero
+							error, quos
+							praesentium eaque ipsa delectus.</p> -->
 					</div>
 				</div>
 				<div class="col-lg-7">

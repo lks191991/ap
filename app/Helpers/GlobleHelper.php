@@ -194,10 +194,9 @@ class GlobleHelper
 	
 	public static function getAllCourse(){
 		
-		$menus = Course::with('subject')->whereHas('subject', function($q){
+		$menus = Classes::with('subject')->whereHas('subject', function($q){
 		$q->where('status', 1);
 		})->where('status', 1)->get();
-		
 		
 		return $menus;
 			

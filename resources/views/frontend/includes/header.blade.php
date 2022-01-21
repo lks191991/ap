@@ -60,7 +60,7 @@ $menus=GLB::getAllCourse();
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								@foreach($menus as $menu)
                                 <li class="mega-menu-tree">
-                                    <a class="dropdown-item" href="{{route('course-list',['CourseId'=>$menu->id])}}">{{$menu->name}} <i
+                                    <a class="dropdown-item" href="{{route('course-list',['CourseId'=>$menu->id])}}">{{$menu->class_name}} <i
                                             class="fas fa-caret-down d-lg-none"></i></a>
                                     <ul class="mega-menu-tree-list p-0 list-unstyled">
 									@foreach($menu->subject as $sub)
