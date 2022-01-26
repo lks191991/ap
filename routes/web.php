@@ -35,16 +35,21 @@ Route::get('/auto-search', 'HomeController@autoSearch')->name('auto-search');
  */
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
 Route::get('/contact-us', 'PageController@getContact')->name('contactUs');
+Route::get('/about-us', 'PageController@aboutUs')->name('aboutUs');
 Route::post('/contact-us', 'PageController@sendContact')->name('contactUsPost');
 Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newsletterSave');
-
+Route::get('/privacy-policy', 'PageController@privacy')->name('privacyPolicy');
+Route::get('/terms-conditions', 'PageController@terms')->name('termsConditions');
 
 //Route::namespace('Auth')->group(function () {
 	 /* Payment Route */
 	Route::get('/payment', 'PaymentController@index')->name('payment');
-	Route::post('/payment', 'PaymentController@stripePost')->name('paymentpost');
+	Route::post('/payment', 'PaymentController@paymentPost')->name('paymentpost');
 	Route::get('/success', 'PaymentController@paymentSuccess')->name('paymentSuccess');
 	Route::get('/faild', 'PaymentController@paymentFaild')->name('paymentFaild');
+    Route::post('/apply-coupon', 'PaymentController@applyCoupon')->name('applyCoupon');
+    Route::post('/remove-coupon', 'PaymentController@removeCoupon')->name('removeCoupon');
+
     /* Student Profiule Route */
     Route::get('/profile-first', 'StudentController@profileFirst')->name('profile.first');
     Route::get('/profile', 'StudentController@profile')->name('profile');
@@ -195,7 +200,19 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::get('reports/favourited-videos-list', 'ReportsController@favouritedVideosList')->name('reports.favourited.videos.list');
     Route::get('reports/student-videos-watch', 'ReportsController@studentVideoswatch')->name('reports.student.videos.watch');
     Route::get('reports/total-videos-watch', 'ReportsController@totalVideoswatch')->name('reports.total.videos.watch');
-    //setting routes
+      //Coupon routes
+    Route::resource('coupons', 'CouponController');
+
+    Route::get('/pages', 'PagesController@index')->name('pages.index');
+    Route::get('/pages/{id}', 'PagesController@edit')->name('pages.edit');
+    Route::put('pages/edit/{id}', 'PagesController@update')->name('pages.update');
+
+   // Transactions routes
+    Route::get('/payments/success', 'PaymentsController@index')->name('payments.success');
+    Route::get('/payments/failed', 'PaymentsController@failedPayments')->name('payments.failed');
+    Route::get('/payments/show/{id}', 'PaymentsController@show')->name('payments.show');
+
+//setting routes
     Route::resource('settings', 'SettingController');
 
     

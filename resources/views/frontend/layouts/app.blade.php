@@ -33,6 +33,11 @@
   </head>
   
     <body>
+    @php 
+$menus=GLB::getAllCourse();
+$settings= SiteHelpers::contactDetails();
+
+ @endphp
 	@include('frontend.includes.header')
         <div id="app" >
             
@@ -128,8 +133,7 @@
 		});
  $( function() {
     $( "#dob" ).datepicker({ 
-	minDate: -50,
-	maxDate: "0",
+	
 	dateFormat: 'dd-mm-yy',
 	changeMonth: true,
     changeYear: true

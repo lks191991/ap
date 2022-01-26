@@ -1,5 +1,7 @@
 @extends('frontend.layouts.app')
-
+@php 
+$settings= SiteHelpers::contactDetails();
+ @endphp
 @section('content')
 <!-- Breadcrumbs -->
 
@@ -33,9 +35,7 @@
 								<li>
 									<span><i class="fas fa-map-marker-alt"></i></span>
 									<span><strong>Address</strong>
-										Lorem ipsum dolor,<br /> 
-sit amet consectetur,
-adipisicing elit.<br /> 
+									{!! $settings['contact_page_address'] !!}
 										</span>
 								</li>
 								<li>
@@ -44,7 +44,7 @@ adipisicing elit.<br />
 									</span>
 									<span>
 										<strong>Phone</strong>
-										<a href="tel:+91-0866-2974130">+91-1234-123456</a>
+										<a href="tel:+91-0866-2974130">{!! $settings['contact_number'] !!}</a>
 									</span>
 								</li>
 								<li>
@@ -53,7 +53,7 @@ adipisicing elit.<br />
 									</span>
 									<span>
 										<strong>Email</strong>
-										<a href="mailto:test@gmail.com">test@gmail.com</a>
+										<a href="mailto:test@gmail.com">{!! $settings['contact_email'] !!}</a>
 									</span>
 								</li>
 							</ul>

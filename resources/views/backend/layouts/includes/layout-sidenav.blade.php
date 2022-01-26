@@ -7,8 +7,8 @@ $routeName = Route::currentRouteName();
     @empty($layout_sidenav_horizontal)
     <!-- Brand demo (see assets/css/demo/demo.css) -->
     <div class="app-brand demo">
-        <span class="app-brand-logo demo bg-primary">
-            <img src="{{asset('images/xt_white.png')}}" width="24" />
+        <span class="app-brand-logo demo" style="background-color:#fff">
+            <img src="{{asset('images/xt_blue.png')}}" width="24" />
         </span>
         <a href="/admin" class="app-brand-text demo sidenav-text font-weight-normal ml-2">{{ config('app.name', 'Saurya')}}</a>
         <a href="javascript:void(0)" class="layout-sidenav-toggle sidenav-link text-large ml-auto">
@@ -90,6 +90,8 @@ $routeName = Route::currentRouteName();
 		
 		 </ul>
        </li>
+      
+
 		<li class="sidenav-item {{ (strpos($routeName, 'backend.ContactInquiries') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.newsletters') !== false)  ? ' open' : '' }}" style="">
             <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon fa fa-envelope"></i>
               <div>Enquiry</div>
@@ -125,6 +127,30 @@ $routeName = Route::currentRouteName();
 		
 		 </ul>
        </li>
+       <li class="sidenav-item{{ (strpos($routeName, 'backend.coupons') !== false)  ? ' active' : '' }}">
+            <a href="{{ route('backend.coupons.index') }}" class="sidenav-link"><i class="sidenav-icon fa fa-gift"></i><div>Coupons</div></a>
+        </li>
+        <li class="sidenav-item {{ (strpos($routeName, 'backend.payments.success') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.payments.failed') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.payments.show') !== false)  ? ' open' : '' }}" style="">
+            <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon fa fa-envelope"></i>
+              <div>Transactions</div>
+            </a>
+          <ul class="sidenav-menu">
+        <li class="sidenav-item{{ (strpos($routeName, 'backend.payments.success') !== false)  ? ' active' : '' }} {{ (strpos($routeName, 'backend.payments.show') !== false)  ? ' active' : '' }}">
+            <a href="{{ route('backend.payments.success') }}" class="sidenav-link"><i class="sidenav-icon fab fa-cc-stripe"></i><div> Paymets</div></a>
+        </li>
+
+		<li class="sidenav-item{{ (strpos($routeName, 'backend.payments.failed') !== false)  ? ' active' : '' }}">
+            <a href="{{ route('backend.payments.failed') }}" class="sidenav-link"><i class="sidenav-icon fas fa-credit-card"></i><div>Failed Payments</div></a>
+        </li>
+		
+		 </ul>
+       </li>
+
+       
+        <li class="sidenav-item{{ (strpos($routeName, 'backend.pages') !== false)  ? ' active' : '' }}">
+            <a href="{{ route('backend.pages.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-cog"></i><div>Pages</div></a>
+        </li>
+       
 	@role('admin')	
 		<li class="sidenav-item{{ (strpos($routeName, 'backend.settings') !== false)  ? ' active' : '' }}">
             <a href="{{ route('backend.settings.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-cog"></i><div>Settings</div></a>

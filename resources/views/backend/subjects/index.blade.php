@@ -137,7 +137,7 @@
 					<td>{{$subject->school_details($subject->course_details($subject->subject_class->course_id)->school_id)}}</td>
 					<td>{{$subject->course_details($subject->subject_class->course_id)->name}}</td>
 					<td>@if(isset($subject->subject_class->class_name) && !empty(($subject->subject_class->class_name))){{$subject->subject_class->class_name}}@endif</td>
-					<td>{{$subject->subject_price}}</td>
+					<td>{!!Config::get('constants.currency')!!}{{$subject->subject_price}}</td>
                     <td>{{$subject->status ? 'Active':'Disabled'}}</td>
                    <td>
                         <a href ="{{route('backend.subjects.edit', $subject->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>

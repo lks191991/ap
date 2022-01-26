@@ -111,8 +111,14 @@
 			
 			$( function() {
     $( "#dob" ).datepicker({ 
-	minDate: -50,
-	maxDate: "0",
+
+	
+	dateFormat: 'dd-mm-yy',
+	changeMonth: true,
+    changeYear: true
+	});
+
+    $( ".dateinput" ).datepicker({ 
 	dateFormat: 'dd-mm-yy',
 	changeMonth: true,
     changeYear: true

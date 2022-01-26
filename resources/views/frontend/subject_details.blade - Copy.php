@@ -10,15 +10,22 @@
     .plyr--video .plyr__controls{
         padding-top: 15px !important;
     }
-	.share-button{display:none;}
 </style>
 @endsection
 
 @section('scripts')
 
 
-<script src="https://player.vimeo.com/api/player.js"></script>
-
+<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+<script>
+    const player = new Plyr('#video_player_box',{
+        settings: ['captions', 'quality', 'speed', 'loop'],        
+      });
+      
+      player.on('ended', event => {
+        player.restart();
+      });
+</script>
 @endsection
 
 @section('content')
@@ -50,9 +57,9 @@
 				<div class="col-lg-8">
 					<h2 class="section-heading">{{$subject->subject_name}}</h2>
 					<div class="course-product-block mt-4 lesson-video" id="video_player_box">
-					<div style="padding:56.25% 0 0 0;position:relative;">
-					<iframe src="https://player.vimeo.com/video/{{$video->video_id}}?h=40d4b25142&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" id="videoframe"></iframe>
-					</div>
+					<iframe class="bg-dark" src="{{$video->video_url}}?byline=false"  id="videoPlayer" width="100%" height="315"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+					
+						
 					</div>
 					<div class="product-detail-block mt-5">
 						<h2 class="section-heading">Topics</h2>
@@ -113,7 +120,7 @@
 								<span>
 									<img src="{{asset('images/p-icon3.svg')}}" style="height: 35px;" alt="Icon" /> Price : 
 								</span>
-								<span>{!!Config::get('constants.currency')!!}@if($subject->subject_price==0) Free @else {{$subject->subject_price}} @endif</span>
+								<span><i class="fas fa-rupee-sign"></i>@if($subject->subject_price==0) Free @else {{$subject->subject_price}} @endif</span>
 							</li>
 						</ul>
 						@if(isset(Auth::user()->id))

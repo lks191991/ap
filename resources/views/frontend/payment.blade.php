@@ -18,7 +18,12 @@
         }
 	.hide{
 	display:none;}
-	
+	.paymentdiv{
+        background-color: #1eb0e9;
+        box-shadow: rgb(0 0 0 / 37%) 0px 0px 0.625rem 0px;
+        transition: opacity 57ms ease 0s, transform 64ms ease 0s;
+        border-radius: 0.1875rem;
+    }
     </style>
 	@endsection('styles')
 @section('content')
@@ -72,17 +77,44 @@
                                         <td>{{$course->name}}</td>
                                         <td>{{$subject->subject_name}}</td>
                                         <td>{{$subject->subject_class->class_name}}</td>
-                                        <td><b><i class="fas fa-rupee-sign"></i>{{$subject->subject_price}}</b></td>
+                                        <td><b>{!!Config::get('constants.currency')!!}{{$subject->subject_price}}</b></td>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th colspan="3">Apply Coupon Code</th>
+                                        <td >
+                                            @if(session('discount')==0)
+                                            <div id="coupon_input_box" class="row">
+                                                <div class="col-md-7"><input type="text" autocomplete="off" class="form-control"  id="coupon_code" value="" />
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button type="button" class="btn btn-primary btn-sm ms-md-5 ms-3" id="coupon_code_button" value="Pay">Apply</button>
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div id="coupon_apply_box" class="row">
+                                                <div class="col-md-12"  style="color:green"><span id="applied_code">{{session('code')}}</span><button type="button" class="btn btn-danger ms-md-5 ms-3 btn-sm " id="coupon_code_remove_button" >Remove</button></div>
+                                               
+                                            </div>
+                                            @endif
+                                            
+                                            
+                                    </td>
+                                    </tr>
+                                    <tr>
                                         <th colspan="3">Total</th>
-                                        <td><b><i class="fas fa-rupee-sign"></i>{{$subject->subject_price}}</b></td>
+                                        @if(session('discount')==0)
+                                        <td><b>{!!Config::get('constants.currency')!!}<span id="total_price">{{$subject->subject_price}}</span></td>
+                                        @else
+                                        <td><b>{!!Config::get('constants.currency')!!}<span id="total_price">{{session('newPrice')}}</span></td>
+                                        @endif
                                     </tr>
                                 </tfoot>
+                               
                             </table>
                         </div>
+                        <div class="dashboard-detail-outer p-4 paymentdiv" >
 						 <form 
                             role="form" 
                             action="{{ route('frontend.paymentpost') }}" 
@@ -92,56 +124,57 @@
                             data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
                             id="payment-form">
                         @csrf
+                        @if($paymentGt == 1)
+                        <div class="form-group mb-4">
+                       
+									<div class="row">
+										<div class="col-md-6 required">
+											<label class="form-label">Name on Card</label>
+											<input class='form-control'  size='4' value="Test" type='text'>
+										</div>
+										<div class="col-md-6  required">
+											<label class="form-label">Card Number</label>
+											<input autocomplete='off' class='form-control card-number' value="4242424242424242"  size='20'  type='text'>
+										</div>
+									</div>
+								</div>
+                                <div class="form-group mb-4">
+									<div class="row">
+										<div class="col-md-3  required">
+											<label class="form-label">CVC</label>
+											<input autocomplete='off'  class='form-control card-cvc'  value="123" placeholder='ex. 311' size='4'  type='text'>
+										</div>
+										<div class="col-md-4   required">
+											<label class="form-label">Expiration Month</label>
+											<input   class='form-control card-expiry-month' value="12" placeholder='MM' size='2'  type='text'>
+										</div>
+                                        <div class="col-md-5    required">
+											<label class="form-label">Expiration Year</label>
+                                            <input  class='form-control card-expiry-year' value="2024"  placeholder='YYYY' size='4'  type='text'>
+										</div>
+									</div>
+								</div>
+                      
   
-                        <div class='form-row row' style="display:none">
-                            <div class='col-xs-12 form-group required'>
-                                <label class='control-label'>Name on Card</label> <input
-                                    class='form-control'  size='4' value="Test" type='text'>
-                            </div>
-                        </div>
-  
-                        <div class='row' style="display:none">
-                            <div class='col-xs-12 form-group card required'>
-                                <label class='control-label'>Card Number</label> <input
-                                    autocomplete='off' class='form-control card-number' value="4242424242424242"  size='20'
-                                    type='text'>
-                            </div>
-                        </div>
-  
-                        <div class='row' style="display:none">
-                            <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label> <input autocomplete='off'
-                                    class='form-control card-cvc'  value="123" placeholder='ex. 311' size='4'
-                                    type='text'>
-                            </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required' style="display:none">
-                                <label class='control-label'>Expiration Month</label> <input
-                                    class='form-control card-expiry-month' value="12" placeholder='MM' size='2'
-                                    type='text'>
-                            </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required' style="display:none">
-                                <label class='control-label'>Expiration Year</label> <input
-                                    class='form-control card-expiry-year' value="2024"  placeholder='YYYY' size='4'
-                                    type='text'>
-                            </div>
-                        </div>
-						<input type="hidden"  name="sid" value="{{$subject->uuid}}" />
+						
 						<div class='form-row row'>
                             <div class='col-md-12 error form-group hide'>
                                 <div class='alert-danger alert'>Please correct the errors and try
                                     again.</div>
                             </div>
                         </div>
-                       
+                       @endif
   
                         <div class="row">
                              <div class="payment-action-btns d-flex flex-wrap justify-content-center mt-md-5 mt-4">
-                        <button class="btn btn-fade">Cancel</button>
-                        <button type="submit" class="btn btn-primary ms-md-5 ms-3">Confirm</button>
+                        <button class="btn btn-fade" id="CancelBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary ms-md-5 ms-3 buy_now" id="rzp-button1" value="Pay">Confirm</button>
+                      
                     </div>
                         </div>
-                          
+                        <input type="hidden"  id="sid"  name="sid" value="{{$subject->uuid}}" />
                     </form>
+                    </div>
                     </div>
                    
                 </div>
@@ -151,6 +184,7 @@
 	@endsection
 @section('scripts')
     <!-- Order Summary Ends-->
+    @if($paymentGt == 1)
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
   
 <script type="text/javascript">
@@ -206,7 +240,161 @@ $(function() {
             $form.get(0).submit();
         }
     }
-   
+});
+    </script>
+
+    @endif
+    <script>
+        $(function() {
+   $('#CancelBtn').on('click', function () {
+            window.location.href = "{{ route('frontend.paymentFaild') }}";
+
+        });
+
+        $("#coupon_code_button").click(function() { 
+            $("#coupon_code_button").prop('disabled',true);
+            var code =$("#coupon_code").val();		
+            var sid =$("#sid").val();
+		 
+		 $.ajax({
+			 type:'POST',
+			 url:"{{route('frontend.applyCoupon')}}",
+			 data:{  
+			 "code": code,
+             "sid": sid,
+             "_token": "{{ csrf_token() }}",
+		 },
+		 dataType:"json",
+			 success:function(data){
+				 if(data.status==200)
+				 {
+					toastr['success'](data.message)
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": true,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": true,
+                    "showDuration": "200",
+                    "hideDuration": "2000",
+                    "timeOut": "6000",
+                    "extendedTimeOut": "2000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                 }
+                         $('#coupon_apply_box').show();
+                         $('#coupon_input_box').hide();
+						$("#coupon_code_button").prop('disabled',false);
+                        $("#total_price").html(data.data.newPrice);
+                        $("#applied_code").html(data.data.code);
+
+                        location.reload();
+				 }
+				 else
+				 {
+					
+					toastr['error'](data.message)
+                toastr.options = {
+                "closeButton": true,
+                "debug": true,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "showDuration": "200",
+                "hideDuration": "2000",
+                "timeOut": "6000",
+                "extendedTimeOut": "2000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            		} 
+
+					$("#coupon_code_button").prop('disabled',false);
+                    
+				 }
+				 
+				 
+			 }
+		 });
+	
+	
+	 });
+
+$("#coupon_code_remove_button").click(function() { 
+            var code =$("#applied_code").html();		
+            var sid =$("#sid").val();
+		 
+		 $.ajax({
+			 type:'POST',
+			 url:"{{route('frontend.removeCoupon')}}",
+			 data:{  
+			 "code": code,
+             "sid": sid,
+             "_token": "{{ csrf_token() }}",
+		 },
+		 dataType:"json",
+			 success:function(data){
+				 if(data.status==200)
+				 {
+					toastr['success'](data.message)
+                toastr.options = {
+                    "closeButton": true,
+                    "debug": true,
+                    "newestOnTop": true,
+                    "progressBar": true,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": true,
+                    "showDuration": "200",
+                    "hideDuration": "2000",
+                    "timeOut": "6000",
+                    "extendedTimeOut": "2000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                 }
+                         $('#coupon_apply_box').hide();
+                         $('#coupon_input_box').show();
+                        $("#total_price").html(data.data.newPrice);
+                        $("#coupon_code").val('');
+
+                        location.reload();
+				 }
+				 else
+				 {
+					
+					toastr['error'](data.message)
+                toastr.options = {
+                "closeButton": true,
+                "debug": true,
+                "newestOnTop": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": true,
+                "showDuration": "200",
+                "hideDuration": "2000",
+                "timeOut": "6000",
+                "extendedTimeOut": "2000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            		} 
+
+                    
+				 }
+				 
+				 
+			 }
+		 });
+	
+	
+	 });
 });
 </script>
 @endsection

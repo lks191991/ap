@@ -27,15 +27,18 @@
     });
 </script>
 
-<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+<!--<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>-->
+<script src="https://player.vimeo.com/api/player.js"></script>
 <script>
-    const player = new Plyr('#video_player_box',{
+    /* const player = new Plyr('#video_player_box',{
         settings: ['captions', 'quality', 'speed', 'loop'],        
       });
       
       player.on('ended', event => {
         player.restart();
-      });
+      }); */
+
+      
 </script>
 @endsection
 
@@ -124,11 +127,12 @@
             
             <div class="col-sm-6 col-xl-5 text-center">
                 <div class="lesson-video" id="video_player_box">
-                    <iframe class="bg-dark" src="{{$video->video_url}}?byline=false" id="videoPlayer" width="100%" height="250" frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+
+                <div style="padding:56.25% 0 0 0;position:relative;">
+                <iframe src="https://player.vimeo.com/video/{{$video->video_id}}?h=40d4b25142&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HTML tr Tag"></iframe>
                 </div>
-                @if($video->video_type == 'file')
-                <a class="btn btn-primary my-4 align-center" href="{{route('backend.video.upload.files',$video->uuid)}}" ><i class="fas fa-upload"></i> <span>Upload New Video file</span></a>
-                @endif
+</div>
+               
             </div>
         </div>		
     </div>

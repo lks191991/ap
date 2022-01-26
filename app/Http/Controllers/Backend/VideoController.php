@@ -157,20 +157,10 @@ class VideoController extends Controller
             $video_id = '';
             if($request->video_type == 'url') {
                 $video_url = $request->video_url;
-                $video_id = 1;
-                //$video_data = SiteHelpers::getVimeoVideoData($video_url);
-				/* print_r($video_data);
-				exit;
-                if(!isset($video_data->video_id) || empty($video_data->video_id)){
-
-                    $validator->errors()->add('video_url', 'Invalid Video URL');
-
-                    return Redirect::back()
-                            ->withErrors($validator) // send back all errors to the form
-                            ->withInput();
-                } else {
-                    $video_id = $video_data->video_id;
-                } */
+               
+                $video_url = $request->video_url;
+                $video_url_ex = explode("https://vimeo.com/", $video_url);
+                $video_id = $video_url_ex[1];
             }
             
             
@@ -318,12 +308,14 @@ class VideoController extends Controller
             //form data is available in the request object
             $video = Video::find($id);
             
-            $video_id = $video->video_id;
-            /* if($request->video_type == 'url') {
+           // $video_id = $video->video_id;
+             if($request->video_type == 'url') {
                 $video_url = $request->video_url;
+                $video_url_ex = explode("https://vimeo.com/", $video_url);
+                $video_id = $video_url_ex[1];
                 
-                $video_data = SiteHelpers::getVimeoVideoData($video_url);
-
+                /* $video_data = SiteHelpers::getVimeoVideoData($video_url);
+                
                 if(!isset($video_data->video_id) || empty($video_data->video_id)){
 
                     $validator->errors()->add('video_url', 'Invalid Video URL');
@@ -333,8 +325,8 @@ class VideoController extends Controller
                             ->withInput();
                 } else {
                     $video_id = $video_data->video_id;
-                }
-            } */
+                } */
+            } 
             
             
             

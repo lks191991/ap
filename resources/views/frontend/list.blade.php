@@ -53,7 +53,7 @@
 								</li>
 							</ul>
 							<div class="price">
-								<span class="regular-price"><i class="fas fa-rupee-sign"></i>{{$subject->subject_price}}</span>
+								<span class="regular-price">{!!Config::get('constants.currency')!!}{{$subject->subject_price}}</span>
 							</div>
 							<div class="view-product-detail mt-3 mb-2">
 								<a href="{{route('course-details',['subjectId'=>$subject->id])}}" class="btn btn-primary w-100">View</a>

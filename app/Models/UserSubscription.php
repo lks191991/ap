@@ -27,6 +27,7 @@ class UserSubscription extends Model
     {
         return $this->hasOne(User::Class, 'id', 'user_id')->withDefault();
     }
+    
 	public function payment()
     {
         return $this->hasOne(Payment::Class, 'id', 'payment_id')->withDefault();

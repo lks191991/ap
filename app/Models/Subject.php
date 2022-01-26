@@ -39,6 +39,13 @@ class Subject extends Model
 
         return $query;
     }
+
+    public function videos()
+    {
+        $query = $this->hasMany(Video::class, 'subject_id')->orderBy('subject_name', 'asc');
+
+        return $query;
+    }
 	
 	 /*
      * Get referenced record.

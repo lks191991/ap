@@ -9,14 +9,14 @@
 		<div class="container position-relative">
 			<div class="row">
 				<div class="col-lg-8 mx-auto text-center">
-					<h1 class="font-heading text-uppercase">Learn what you want to</h1>
+					
 					
 					<div class="banner-form">
 							<form action="{{ route('course-search') }}" method="get">
 							{{ csrf_field() }}
 							<div class="form-group row">
 								<div class="col-md-3 px-md-0">
-									<select class="w-100" required name="search_courses">
+									<select class="w-100" required name="search_courses" style="border:3px solid #0dcaf0;border-right: 0px;">
 										<option value="">Select Courses</option>
 										 @foreach($allCoursesList as $acl)
 										  <option value="{{$acl->id}}">
@@ -26,7 +26,7 @@
 									</select>
 								</div>
 								<div class="col-md-9 px-md-0 position-relative">
-									<input type="text" class="w-100" id="search" name="search_text" placeholder="What do you want to learn?" />
+									<input type="text" class="w-100" id="search" style="border:3px solid #0dcaf0" name="search_text" placeholder="What do you want to learn?" />
 									<button type="submit"><i class="fas fa-search"></i></button>
 								</div>
 							</div>

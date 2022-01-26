@@ -53,18 +53,17 @@ class StudentController extends Controller
     public function profileFirst()
     {
 
-        $states = State::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
         if (Auth::user()->userRole->role->slug == 'admin') {
             return redirect()->route('backend.dashboard');
         } else if (Auth::user()->userRole->role->slug == 'student') {
 			
             $student = User::where("id",Auth::user()->id)->first();
-            return view('frontend.student.profile-first', compact('student','states'));
+            return view('frontend.student.profile-first', compact('student'));
 
         } else if (Auth::user()->userRole->role->slug == 'tutor') {
 
             $tutor = User::where("id",Auth::user()->id)->first();
-            return view('frontend.tutor.profile-first', compact('tutor','states'));
+            return view('frontend.tutor.profile-first', compact('tutor'));
             return $this->tutor();
         }
     }

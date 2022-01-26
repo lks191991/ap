@@ -34,4 +34,6 @@ return [
             'SERVICE_SID' => env('TWILIO_SERVICE_SID', ''),
             'NUMBER' => env('TWILIO_NUMBER', ''),
         ],
+
+		'currency' => '<i class="fas fa-dollar-sign"></i>',
 ];

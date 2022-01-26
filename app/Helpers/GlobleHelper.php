@@ -194,12 +194,19 @@ class GlobleHelper
 	
 	public static function getAllCourse(){
 		
-		$menus = Course::with('subject')->whereHas('subject', function($q){
+		$menus = Course::with('subject','subject.video')->whereHas('subject', function($q){
 		$q->where('status', 1);
 		})->where('status', 1)->get();
 		
-		
 		return $menus;
+			
+	}
+
+    public static function hasVideo($subject_id){
+		
+		$count = Video::where('subject_id', $subject_id)->where('status', 1)->count();
+		
+		return $count;
 			
 	}
 	

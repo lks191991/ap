@@ -317,7 +317,7 @@ footer {
 }
 
 .hero-banner::before {
-	background: rgba(0, 0, 0, 0.7);
+	
 	content: '';
 	position: absolute;
 	top: 0;

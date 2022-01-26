@@ -65,59 +65,15 @@ var subject_id = "{{request('subject')}}";
             }
         });
 
-        /* var table = $('#video-list').DataTable({
-            "order": [[0, "asc"]],
-            "columns": [
-                null,
-                null,
-                {"orderable": false},
-                {"orderable": false},
-                {"orderable": false},
-                {"orderable": false},
-                {"orderable": false},
-                null,
-                {"orderable": false}
-            ],
-            dom: 'lrtip'
-        });
-        $('#video_title').on('keyup', function () {
-            //alert('gdfgfd');
-            regExSearch = this.value;
-            table.column(7).search(regExSearch, true, false).draw();
-            // table.search(this.value, true, false).draw();   
-        });
-        $('#school').on('change', function () {
-            //alert('gdfgfd');
-            regExSearch = this.value + '\\s*$';
-            table.column(2).search(regExSearch, true, false).draw();
-            //table.search(this.value, true, false).draw();   
-        });
-
-        $('#school_course').on('change', function () {
-            //alert('gdfgfd');
-            regExSearch = this.value + '\\s*$';
-            table.column(3).search(regExSearch, true, false).draw();
-            //table.search(this.value, true, false).draw();   
-        });
-
-        $('#class').on('change', function () {
-            //alert('gdfgfd');
-            regExSearch = this.value + '\\s*$';
-            table.column(4).search(regExSearch, true, false).draw();
-            table.search(this.value, true, false).draw();
-        });
-
-        $('#subject').on('change', function () {
-            //alert('gdfgfd');
-            regExSearch = this.value + '\\s*$';
-            table.column(5).search(regExSearch, true, false).draw();
-            table.search(this.value, true, false).draw();
-        });
-	 */
+       
 	$('#filterBtn').on('click', function () {
             $('#filterForm').submit()
         });
 	
+    	$('#ResetBtn').on('click', function () {
+            window.location.href = "{{route('backend.videos.index')}}";
+        });
+
 	
 		if(school_id){
 		$("#school").val(school_id).trigger('change');
