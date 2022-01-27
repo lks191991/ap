@@ -11,6 +11,13 @@
         padding-top: 15px !important;
     }
 	.share-button{display:none;}
+	.topiclist{
+    max-height: 250px;
+    overflow-y: scroll;
+}
+.mt-rem-10{
+	margin-top:10rem;
+}
 </style>
 @endsection
 
@@ -54,9 +61,9 @@
 					<iframe src="https://player.vimeo.com/video/{{$video->video_id}}?h=40d4b25142&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" id="videoframe"></iframe>
 					</div>
 					</div>
-					<div class="product-detail-block mt-5">
+					<div class="product-detail-block mt-rem-10" >
 						<h2 class="section-heading">Topics</h2>
-						<ul class="mb-0 mt-3">
+						<ul class="mb-0 mt-3 topiclist">
 						@foreach($subject->topics as $topic)
 							<li class="mt-2">
 								<a href="javascript:;" class="link">{{$topic->topic_name}}</a>

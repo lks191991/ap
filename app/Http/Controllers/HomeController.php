@@ -40,9 +40,9 @@ class HomeController extends Controller
 	public function index()
     {
 		//session()->forget('newCustomer');
-		$topCourses = Course::where('status', '=', 1)->limit(4)->get();
+		$topCourses = Subject::where('status', '=', 1)->limit(4)->get();
 		$allCoursesList = Course::where('status', '=', 1)->get();
-		$latestCourses = Course::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
+		$latestCourses = Subject::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
 		
         return view('frontend.home',compact('topCourses','latestCourses','allCoursesList'));
     }
