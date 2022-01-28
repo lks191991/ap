@@ -528,16 +528,29 @@ class VideoController extends Controller
 							$topic = new Topic();
 							$topic->subject_id = $request->subject;
 							$topic->topic_name = $topicName;
-							$topic->status = 0;
+							$topic->status = 1;
 							$topic->save();
 							$toipic_id= $topic->id;
 							}
+
+                            $video_url = $importData[2];
+                            $video_url_ex = explode("https://vimeo.com/", $video_url);
+                          
+                            if(isset($video_url_ex[1]) && !empty($video_url_ex[1]))
+                                {
+                                    $video_id = $video_url_ex[1];
+                                }
+                                else
+                                {
+                                    $video_id = 0;
+                                }
+
 							$video = new Video();
 							$video->school_id = $request->school;
 							$video->course_id = $request->course;
 							$video->class_id = 1;
 							$video->play_on = $request->date;
-							$video->video_id = 1;
+							$video->video_id = $video_id;
 							$video->video_url = trim($importData[2]);
 							$video->video_type = $request->video_type;
 							$video->description = $videoDescription;
