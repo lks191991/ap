@@ -45,10 +45,7 @@
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>Course</strong></div>
                     <div class="col-sm-6 col-xl-9">{{$payment->course->name}}</div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Subject</strong></div>
-                    <div class="col-sm-6 col-xl-9">{{$payment->subject->subject_name}}</div>
-                </div>
+              
                 <div class="row">
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>Actual Price</strong></div>
                     <div class="col-sm-6 col-xl-9">{{$payment->actual_price}}</div>

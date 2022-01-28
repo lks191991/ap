@@ -48,9 +48,6 @@
                     </th>
 
                     <th class="align-top">
-                        Subject
-                    </th>
-                    <th class="align-top">
                     Actual Price
                     </th>
                     <th class="align-top">
@@ -80,7 +77,6 @@
                 <td>{{$payment->user->email}}</td>
                 <td>{{$payment->user->mobile}}</td>
                 <td>{{$payment->course->name}}</td>
-                <td>{{$payment->subject->subject_name}}</td>
                 <td>{{$payment->actual_price}}</td>
                 <td>{{$payment->price}}</td>
                 <td>{{$payment->discount}}</td>
