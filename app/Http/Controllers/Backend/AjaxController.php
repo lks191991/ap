@@ -232,7 +232,7 @@ class AjaxController extends Controller
      */
     public function getCoursesubjects(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Choose Class</option>';
+        $options = '<option value="" disabled selected>Choose</option>';
 
         $course_id = $request->course_id;
 
