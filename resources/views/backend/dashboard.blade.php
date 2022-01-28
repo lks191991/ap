@@ -15,29 +15,15 @@
 
     <!-- Counters -->
     <div class="row">
-        <div class="col-sm-6 col-xl-4">
-
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-list"></i>
-                        <div class="ml-4">
-                            <div class="text-muted small">Institutions</div>
-                            <div class="text-large">{{$institute_count}}</div>
-                        </div>
-                    </div>
-                </div> 
-            </div>
-
-        </div>
-        <div class="col-sm-6 col-xl-4">
+       
+        <div class="col-sm-6 col-xl-6">
 
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-school"></i>
                         <div class="ml-4">
-                            <div class="text-muted small">Schools</div>
+                            <div class="text-muted small">Courses Type</div>
                             <div class="text-large">{{$school_count}}</div>
                         </div>
                     </div>
@@ -45,7 +31,7 @@
 			</div>
         </div>
        
-        <div class="col-sm-6 col-xl-4">
+        <div class="col-sm-6 col-xl-6">
 
             <div class="card mb-4">
                 
@@ -65,23 +51,7 @@
     </div>
 	
 	<div class="row">
-        <div class="col-sm-6 col-xl-4">
-
-            <div class="card mb-4">
-			
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-university"></i>
-                        <div class="ml-4">
-                            <div class="text-muted small">Classes</div>
-                            <div class="text-large">{{$classes_count}}</div>
-                        </div>
-                    </div>
-                </div>
-				
-            </div>
-
-        </div>
+        
       
         <div class="col-sm-6 col-xl-4">
 
@@ -117,9 +87,6 @@
             </div>
 
         </div>
-    </div>
-	
-	<div class="row">
         <div class="col-sm-6 col-xl-4">
 
             <div class="card mb-4">
@@ -137,7 +104,11 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-4">
+    </div>
+	
+	<div class="row">
+        
+        <div class="col-sm-6 col-xl-6">
 
             <div class="card mb-4">
 			
@@ -154,7 +125,7 @@
             </div>
 
         </div>
-        <div class="col-sm-6 col-xl-4">
+        <div class="col-sm-6 col-xl-6">
 
             <div class="card mb-4">
 			
