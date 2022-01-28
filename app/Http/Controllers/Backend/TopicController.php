@@ -22,25 +22,43 @@ class TopicController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
        
-
-        $query = School::where('status', '=', 1);
-
-        if (Auth::user()->hasRole('school')) {
-            $profile = Auth::user()->profile;
-            if (isset($profile->school_id)) {
-                $school_id = $profile->school_id;
-                $query = $query->where('id', '=', $school_id);
-            }
-        }
-
-        $schools = $query->orderBy('school_name')
+        $filter = $request->all();
+        
+        $schools = School::with('subject')->where('status', '=', 1)->orderBy('school_name')
                 ->pluck('school_name', 'id');
 
         //get all topics
-        $topics = Topic::orderBy('id', 'desc')->get();
+        $query = Topic::where('id','<>',0);
+        if(isset($filter['school']) && !empty($filter['school']))
+		{
+			$query->whereHas('subject', function($q) use($filter){
+                $q->where('school_id','=',$filter['school']);
+            });
+
+		}
+		if(isset($filter['school_course']) && !empty($filter['school_course']))
+		{
+            $query->whereHas('subject', function($q) use($filter){
+                $q->where('course_id','=',$filter['school_course']);
+            });
+		}
+		
+		if(isset($filter['subject']) && !empty($filter['subject']))
+		{
+            $query->whereHas('subject', function($q) use($filter){
+                $q->where('id','=',$filter['subject']);
+            });
+		}
+
+        if(isset($filter['topic_name']) && !empty($filter['topic_name']))
+		{
+			$query->where('topic_name','like','%'.trim($filter['topic_name']).'%');
+		}
+
+        $topics = $query->orderBy('id', 'desc')->paginate(20);
 
         return view('backend.topics.index', compact('topics', 'schools'));
     }
@@ -52,10 +70,10 @@ class TopicController extends Controller
      */
     public function create()
     {
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
+        $schools = School::orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
         $subjects = Subject::orderBy('subject_name')->where('status', '=', 1)->pluck('subject_name', 'id');
 
-        return view('backend.topics.create', compact('subjects', 'institutes'));
+        return view('backend.topics.create', compact('subjects', 'schools'));
     }
 
     /**
@@ -67,26 +85,10 @@ class TopicController extends Controller
     public function store(Request $request)
     {
         $subject_id = $request->subject;
-
-        $subject_details = Subject::where('id', $subject_id)->first();
-        $course_id = $subject_details->subject_class->course_id;
-
-        $course_details = Course::where('id', $course_id)->select('school_id')->first();
-      
-
-        if (!empty($request->input('ajax_request'))) {
-            $validator = Validator::make($request->all(), [
-                        'topic_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('topics')->where(function ($query) use($subject_id) {
-                                        return $query->where('subject_id', $subject_id);
-                                    })
-                        ],
-            ]);
-        } else {
             $validator = Validator::make($request->all(), [
                         'subject' => 'required',
+                        'course_type' => 'required',
+                        'course' => 'required',
                         'topic_name' => [
                             'required',
                             'max:180',
@@ -95,7 +97,6 @@ class TopicController extends Controller
                                     })
                         ],
             ]);
-        }
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {
@@ -112,12 +113,7 @@ class TopicController extends Controller
         $topic->status = ($request->input('status') !== null) ? $request->input('status') : 0;
 
         $topic->save();
-
-        if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.subjects.show', $topic->subject_id)->with('success', 'Topic created Successfully');
-        } else {
-            return redirect()->route('backend.topics.index')->with('success', 'Topic created Successfully');
-        }
+      return redirect()->route('backend.topics.index')->with('success', 'Topic created Successfully');
     }
 
     /**
@@ -140,34 +136,20 @@ class TopicController extends Controller
      */
     public function edit($id)
     {
-        if (Auth::user()->hasRole('school')) {
-            return redirect()->route('backend.dashboard');
-        }
+       
         //Find the employee
         $topic = Topic::find($id);
 
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        $subject_details = Subject::where("id", $topic->subject_id)->select('class_id')->first();
-        $topic->class_id = $subject_details->class_id;
-        //echo $subject_details->class_id; exit;
-        $classes_details = Classes::where("id", $subject_details->class_id)->select('course_id')->first();
-        $topic->course_id = $classes_details->course_id;
-        //echo $topic->course_id; exit;
-        $course_details = Course::where("id", $topic->course_id)->select('school_id')->first();
-        $topic->school_id = $course_details->school_id;
+        $subject_details = Subject::where("id", $topic->subject_id)->first();
+        $topic->school_id = $subject_details->school_id;
+        $topic->course_id = $subject_details->course_id;
+        $topic->school_id = $subject_details->school_id;
 
-
-
-        $school_details = School::where("id", $topic->school_id)->select('school_category')->first();
-        $topic->category_id = $school_details->school_category;
-
-        $schools = School::where('school_category', $topic->category_id)->orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
+        $schools = School::orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
         $courses = Course::where('school_id', $topic->school_id)->orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        $classes = Classes::where('course_id', $topic->course_id)->orderBy('class_name')->where('status', '=', 1)->pluck('class_name', 'id');
+        $subjects = Subject::where('course_id', $topic->course_id)->orderBy('subject_name')->where('status', '=', 1)->pluck('subject_name', 'id');
 
-        $subjects = Subject::orderBy('subject_name')->where('class_id', $subject_details->class_id)->where('status', '=', 1)->pluck('subject_name', 'id');
-
-        return view('backend.topics.edit', compact('topic', 'subjects', 'institutes', 'schools', 'courses', 'classes'));
+        return view('backend.topics.edit', compact('topic', 'subjects', 'schools', 'courses'));
     }
 
     /**
@@ -199,23 +181,13 @@ class TopicController extends Controller
 	
         $course_id = $subject_details->subject_class->course_id;
 
-        $course_details = Course::where('id', $course_id)->select('school_id')->first();
-       
         $topic = Topic::find($id);
 
-        if (!empty($request->input('ajax_request'))) {
+     
             $validator = Validator::make($request->all(), [
-                        'topic_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('topics')->where(function ($query) use($subject_id, $id) {
-                                        return $query->where('subject_id', $subject_id)->where('id', '<>', $id);
-                                    })
-                        ],
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                        //'subject' => 'required',
+                         'subject' => 'required',
+                        'course_type' => 'required',
+                        'course' => 'required',
                         'topic_name' => [
                             'required',
                             'max:180',
@@ -225,7 +197,6 @@ class TopicController extends Controller
                         ],
             ]);
 
-        }
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {
@@ -234,7 +205,7 @@ class TopicController extends Controller
                             ->withInput();
         }
 
-
+        $topic->subject_id = $request->subject;
         $topic->topic_name = $request->input('topic_name');
         $topic->status = ($request->input('status') !== null) ? $request->input('status') : 0;
         $topic->save(); //persist the data
@@ -256,11 +227,14 @@ class TopicController extends Controller
     {
         $topic = Topic::find($id);
 
-        $subject_details = Subject::where('id', $topic->subject_id)->first();
-        $course_id = $subject_details->subject_class->course_id;
+        if (isset($topic->id) && !empty($topic->id)) {
+            $videos = Video::where('topic_id', $topic->id)->select('id')->get();
+            foreach ($videos as $video) {
+                if (isset($video->id) && !empty($video->id))
+                    $video->delete();
+            }
+        }
 
-        $course_details = Course::where('id', $course_id)->select('school_id')->first();
-       
         $topic->delete();
 
         if (!empty($request->input('ajax_request'))) {

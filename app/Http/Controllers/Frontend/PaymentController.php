@@ -45,12 +45,12 @@ class PaymentController extends Controller
 		$userId = Auth::user()->id;
 		$user = User::where('id', $userId)->first()->toArray();
 		
-		if(!$data['sid'])
+		if(!$data['cid'])
 		{
-		return redirect()->route('course-details',[$subject->id])->with('error', 'Something went wrong.');
+		return redirect()->route('course-details',[$data['cid']])->with('error', 'Something went wrong.');
 		}
 		
-		$subject = Subject::with('topics','subject_class')->where('uuid', '=', $data['sid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
+		$course = Course::where('uuid', '=', $data['cid'])->where('status', '=', 1)->first();
 		
 
 		$paymentGt = 1;
@@ -61,7 +61,7 @@ class PaymentController extends Controller
 		
 		}
 		else{
-			$price = $subject->subject_price;
+			$price = $course->course_price;
 		}
 		
 			if($price > 0)
@@ -73,18 +73,14 @@ class PaymentController extends Controller
 			}
 
 		
-		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
-		if(!$subject)
-		{
-		return redirect()->route('course-details',[$subject->id])->with('error', 'Something went wrong.');
-		}
 		
-		$userSubscription = UserSubscription::where("user_id",Auth::user()->id)->where("course_id",$subject->course_id)->where("subject_id",$subject->id)->count();
+		
+		$userSubscription = UserSubscription::where("user_id",Auth::user()->id)->where("course_id",$course->id)->count();
 		if($userSubscription > 0)
 		{
 		return redirect()->route('course-details',[$subject->id])->with('error', 'Course already in your learning aacount.');
 		}
-		return view('frontend.payment',compact('subject','course','paymentGt'));
+		return view('frontend.payment',compact('course','paymentGt'));
     }
 	
 	
@@ -93,7 +89,7 @@ class PaymentController extends Controller
 	{
 		$data = $request->all();
 		$user = Auth::user();
-		$subject = Subject::with('topics','subject_class')->where('uuid', '=', $data['sid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
+		$course = Course::where('uuid', '=', $data['cid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
 		$paymentGt = 1;
 		if(Session::has('newPrice'))
 		{
@@ -103,7 +99,7 @@ class PaymentController extends Controller
 			$coupon_id = Session::get('coupon_id');
 		}
 		else{
-			$price = $subject->subject_price;
+			$price = $course->course_price;
 			$discount = 0;
 			$code = '';
 			$coupon_id = '';
@@ -124,7 +120,7 @@ class PaymentController extends Controller
 			$customer = \Stripe\Customer::create(array( 
 				'name' => $user->name,
 				'email' => $user->email,
-				'description' => $subject->subject_name,        
+				'description' => $course->name,        
 				'source'  => $request->stripeToken ,
 				'address' => [
 					'line1' => '510 Townsend St',
@@ -139,7 +135,7 @@ class PaymentController extends Controller
 			'customer' => $customer->id, 
 			'amount'   => $amount, 
 			'currency' => "usd", 
-			'description' => $subject->subject_name, 
+			'description' => $course->name, 
 			'metadata' => array( 
 				'order_id' => $orderID 
 			) 
@@ -164,10 +160,9 @@ class PaymentController extends Controller
 			if($payment->save())
 			{
 					$userSubscription->user_id = Auth::user()->id;
-					$userSubscription->course_id = $subject->course_id;
-					$userSubscription->subject_id = $subject->id;
+					$userSubscription->course_id = $course->id;
 					$userSubscription->payment_id = $payment->id;
-					$userSubscription->actual_price = $subject->subject_price;
+					$userSubscription->actual_price = $course->course_price;
 					$userSubscription->price = $price;
 					$userSubscription->discount = $discount;
 					$userSubscription->code = $code;
@@ -213,7 +208,7 @@ class PaymentController extends Controller
 	public function myPayment(Request $request)
     {
 		$user = Auth::user();
-		$data = UserSubscription::with('course','subject','user','payment')->where("user_id",$user->id)->paginate(20);
+		$data = UserSubscription::with('course','user','payment')->where("user_id",$user->id)->paginate(20);
 		return view('frontend.my-payment',compact('data'));
 	}
 
@@ -226,9 +221,9 @@ class PaymentController extends Controller
 
 			$user = Auth::user();
 			$dateExpired = date('d-m-Y');
-			$subject = Subject::with('topics','subject_class')->where('uuid', '=', $data['sid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
+			$course = Course::where('uuid', '=', $data['cid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
 			
-			$subjectPrice = $subject->subject_price;
+			$coursePrice = $course->course_price;
 			$dateExpired = date('Y-m-d');
         	$coupon = Coupon::where("code",$data['code'])->whereDate('expired_at', '>=', $dateExpired)->first();
         	
@@ -237,21 +232,21 @@ class PaymentController extends Controller
 				if($coupon->type == 'fixed'){
 					$coupon_total =  $coupon->coupon_value;
 				} elseif ($coupon->type == 'percent'){
-					$coupon_total = ($coupon->coupon_value / 100) * $subjectPrice;
+					$coupon_total = ($coupon->coupon_value / 100) * $coursePrice;
 				} else{
 					$coupon_total = 0;
 				}
 
 				
 
-				if($coupon_total >= $subjectPrice)
+				if($coupon_total >= $coursePrice)
 				{
 					$newPrice = 0;
-					session(['newPrice' => 0,'discount' => $subjectPrice,'code' => $data['code'],'coupon_id' => $coupon->id]);
+					session(['newPrice' => 0,'discount' => $coursePrice,'code' => $data['code'],'coupon_id' => $coupon->id]);
 				}
 				else
 				{
-					$newPrice = $subjectPrice-$coupon_total;
+					$newPrice = $coursePrice-$coupon_total;
 					session(['newPrice' => $newPrice,'discount' => $coupon_total,'code' => $data['code'],'coupon_id' => $coupon->id]);
 				}
 
@@ -296,8 +291,8 @@ class PaymentController extends Controller
 
 			$user = Auth::user();
 			$dateExpired = date('d-m-Y');
-			$subject = Subject::with('topics','subject_class')->where('uuid', '=', $data['sid'])->where('status', '=', 1)->orderBy('created_at','DESC')->first();
-			$subjectPrice = $subject->subject_price;
+			$course = Course::where('uuid', '=', $data['cid'])->where('status', '=', 1)->first();
+			$coursePrice = $course->course_price;
 		
 			session()->forget('newPrice');
 			session()->forget('discount');
@@ -306,7 +301,7 @@ class PaymentController extends Controller
 				return response()->json([
 					"status"=>200,
 					"message"=>"Coupon code removed successfully.",
-					'data' => ['newPrice' => $subjectPrice,
+					'data' => ['newPrice' => $coursePrice,
 					'code' => $data['code']
 					]
 				]); 

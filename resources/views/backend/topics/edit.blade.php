@@ -14,53 +14,31 @@
             @csrf
             @method('PUT')
             
-			<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" readonly required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-                                <option value="{{$id}}" @if($id == $topic->category_id ) selected @endif>{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
+            <div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Course Type</label>
+                    <div class="col-sm-10">
+                        <select name="course_type" id="school" class="custom-select"  required>
+						<option value="">Select Course Type</option>
+						@foreach($schools as $id => $type)
+							<option value="{{$id}}" @if($id == $topic->school_id ) selected @endif>{{$type}}</option>
+						@endforeach
+						</select>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
-                        <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" readonly required>
-                                <option value="" disabled selected="">Select School</option>
-								@foreach($schools as $id => $val)
-                                <option value="{{$id}}" @if($id == $topic->school_id ) selected @endif>{{$val}}</option>
-                                @endforeach								
-                            </select>
-                        </div>
-                    </div>
+             </div>
 					
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                         <div class="col-sm-10">
-                            <select name="course" id="school_course" class="custom-select" readonly required>
-                                <option value="" disabled selected="">Select Course</option>
-								@foreach($courses as $id => $val)
+                            <select name="course" id="school_course" class="custom-select" required>
+                            @foreach($courses as $id => $val)
                                 <option value="{{$id}}" @if($id == $topic->course_id ) selected @endif>{{$val}}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
-                        <div class="col-sm-10">
-                            <select name="class" id="class" class="custom-select" readonly required>
-                                <option value="" disabled selected="">Select Class</option>
-								@foreach($classes as $id => $val)
-                                <option value="{{$id}}" @if($id == $topic->class_id ) selected @endif>{{$val}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+
+                    
 			
 			<div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Subject</label>
@@ -104,18 +82,7 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-          
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                }
-            });
-        });
+     
 
         $("#school").on("change", function () {
             var school_id = $(this).val();
@@ -136,29 +103,16 @@
             if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.courseclasses") }}',
+                    url: '{{ route("ajax.course.subjects") }}',
                     data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#class").html(data);
-                    }
-                });
-            }
-        });
-		
-		$("#class").on("change", function () {
-            var class_id = $('#class').val();
-          
-            if(class_id) {                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.classsubjects") }}',
-                    data: {'class_id' : class_id, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
                         $("#subject").html(data);
                     }
                 });
             }
         });
+		
+		
         
         
  });

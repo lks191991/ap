@@ -12,7 +12,7 @@
 							<a href="/">Home</a>
 						</li>
 						<li>
-							<span class="mx-2">></span>{{$course->name}}
+							<span class="mx-2">></span>My Courses
 						</li>
 					</ul>
 				</div>
@@ -31,21 +31,21 @@
 				<div class="col-lg-8">
 					<div class="dashboard-main-content mt-lg-0 mt-5">
 						<div class="section-title">
-							<h1 class="section-heading with-bottom-line text-center">Course Content Part</h1>
+							<h1 class="section-heading with-bottom-line text-center">My Courses</h1>
 						</div>
 						<div class="dashboard-detail-outer my-courses">
 							<div class="row mt-0">
-							@foreach($subjects as $dt)
+							@foreach($data as $dt)
 								<div class="col-lg-6 col-md-6">
 									<div class="product-block">
 										<div class="product-thumbnail">
-											<img src="{{ asset($dt->banner_image)}}" alt="product" />
+											<img src="{{ asset($dt->course->banner_image)}}" alt="product" />
 										</div>
 										<div class="product-content">
-											<h3>{{$dt->subject_name}}</h3>
+											<h3>{{$dt->course->name}}</h3>
 											
 											<div class="view-product-detail mt-3 mb-2">
-												<a href="{{route('frontend.mylearningStart',['id'=> $data->id,'subjectId'=>$dt->id])}}" class="btn btn-primary w-100">Start</a>
+												<a href="{{route('frontend.mylearningList',['cid'=> $dt->course->uuid])}}" class="btn btn-primary w-100">Start</a>
 											</div>
 										</div>
 									</div>
@@ -59,7 +59,7 @@
 			<div class="row">
 				<div class="pagination-block mt-md-5 mt-4">
 					<nav aria-label="...">
-						{{ $subjects->links() }}
+						{{ $data->links() }}
 					</nav>
 				</div> 
 				

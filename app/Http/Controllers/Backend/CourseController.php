@@ -104,8 +104,9 @@ class CourseController extends Controller
 		
 			
 			$validator = Validator::make($request->all(), [
-				'institute_type' => 'required',
-				'school_name' => 'required',
+				'course_type' => 'required',
+                'course_price' => 'required|numeric',
+                'demo_video_url' => 'required',
 				'name' => [
 					'required',
 					'max:180',
@@ -152,7 +153,9 @@ class CourseController extends Controller
        //input method is used to get the value of input with its
         //name specified
 		$course->name = $request->input('name');
-		$course->school_id = $request->input('school_name');
+		$course->school_id = $request->input('course_type');
+        $course->demo_video_url = $request->input('demo_video_url');
+        $course->course_price = $request->input('course_price');
 		$course->description = $request->input('description');
 		$course->status = ($request->input('status') !== null)? $request->input('status'):0;
 		$course->save(); //persist the data
@@ -230,7 +233,7 @@ class CourseController extends Controller
         $course = Course::find($id);
 		//echo "<pre>"; print_r($school); exit;
       //  $course->school_id = $request->input('school_name');
-		$school_id = $course->school_id;
+		$school_id = $course->course_type;
 		
 		$institute_type = $request->input('institute_type');
 		
@@ -238,7 +241,9 @@ class CourseController extends Controller
 			
 			$validator = Validator::make($request->all(), [
 				//'institute_type' => 'required',
-				//'school_name' => 'required',
+				'course_type' => 'required',
+                'demo_video_url' => 'required',
+                'course_price' => 'required|numeric',
 				'name' => [
 					'required',
 					'max:180',
@@ -288,6 +293,9 @@ class CourseController extends Controller
         }
 		
 		$course->name = $request->input('name');
+        $course->course_price = $request->input('course_price');
+        $course->demo_video_url = $request->input('demo_video_url');
+        $course->school_id = $request->input('course_type');
 		$course->description = $request->input('description');
 		$course->status = ($request->input('status') !== null)? $request->input('status'):0;
         $course->save(); //persist the data

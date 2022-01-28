@@ -42,7 +42,18 @@
 @section('scripts')
  <script type="text/javascript" src="{{ asset('js/front/jquery.barrating.min.js') }}"></script>
 
- <script src="https://player.vimeo.com/api/player.js"></script>
+ 
+<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+<script>
+    const player = new Plyr('#video_player_box',{
+        settings: ['captions', 'quality', 'speed', 'loop'],        
+      });
+      
+      player.on('ended', event => {
+        player.restart();
+      });
+</script>
+
 @if($myRateing>0)
  <script type="text/javascript">
   
@@ -131,6 +142,9 @@
 							<a href="/">Home</a>
 						</li>
 						<li>
+						<span class="mx-2">></span><a href="{{route('frontend.mylearningListCourse')}}">{{$course->name}}</a>
+						</li>
+						<li>
 							<span class="mx-2">></span>{{$subject->subject_name}}
 						</li>
 					</ul>
@@ -145,15 +159,23 @@
 		<div class="container">
 			<div class="row gx-lg-5">
 				<div class="col-lg-8">
-				<div class="course-product-block lesson-video" id="video_player_box">
+					@if($video->video_id>0)
+					
+ 					<script src="https://player.vimeo.com/api/player.js"></script>
+				<div class="course-product-block lesson-video" >
 
 					<div style="padding:56.25% 0 0 0;position:relative;">
 					<iframe src="https://player.vimeo.com/video/{{$video->video_id}}?h=40d4b25142&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" title="HTML tr Tag"></iframe>
 					</div>
 
+					</div>
+					@else	
 					
+					<div class="course-product-block mt-4 lesson-video" id="video_player_box">
+					<iframe class="bg-dark" src="{{$video->video_url}}?byline=false"  id="videoPlayer" width="100%" height="315"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
 					
 					</div>
+					@endif
 					<div class="row">
 					
 					
@@ -226,7 +248,7 @@
 						<h2 class="section-heading">Course content</h2>
 						<div class="accordion mt-4" id="accordionExample">
 						@foreach($subject->topics as $key1 => $topic)
-							
+							@if(count($topic['videos']) > 0)
 							<div class="accordion-item">
 								<h2 class="accordion-header" id="heading{{$key1}}">
 									<button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -249,7 +271,7 @@
 									</div>
 								</div>
 							</div>
-						
+							@endif
 						@endforeach	
 						</div>
 					</div>

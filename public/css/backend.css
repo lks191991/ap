@@ -14,3 +14,7 @@ table.dataTable thead .sorting::after {
     top: 0.625rem;
     margin-top: 0;
 }
+
+.hide{
+    display:none!important;
+}

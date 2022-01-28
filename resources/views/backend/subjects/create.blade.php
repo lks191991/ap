@@ -13,11 +13,10 @@
         <form action="{{route('backend.subjects.store')}}" method = "post" enctype="multipart/form-data">
             @csrf
 			
-			<div class="form-group row">
+			<div class="form-group row hide">
                         <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
                         <div class="col-sm-10">
                             <select name="institute_type" id="institute_type" class="custom-select" required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
                                 @foreach($institutes as $id => $type)
                                 <option value="{{$id}}">{{$type}}</option>
                                 @endforeach
@@ -26,13 +25,16 @@
 
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
-                        <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" required>
-                                <option value="" disabled selected="">Select School</option>                        
-                            </select>
-                        </div>
+                    <label class="col-form-label col-sm-2 text-sm-right">Course Type</label>
+                    <div class="col-sm-10">
+                        <select name="course_type" id="school" class="custom-select"  required>
+						<option value="">Select Course Type</option>
+						@foreach($schools as $id => $type)
+							<option value="{{$id}}" >{{$type}}</option>
+						@endforeach
+						</select>
                     </div>
+            </div>
 					
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">Course</label>
@@ -43,14 +45,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
-                        <div class="col-sm-10">
-                            <select name="class" id="class" class="custom-select" required>
-                                <option value="" disabled selected="">Select Class</option>                        
-                            </select>
-                        </div>
-                    </div>
+                  
 					
             <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Subject Name</label>
@@ -58,12 +53,7 @@
                     <input type="text" name="subject_name" placeholder="Subject Name" value="{{old('subject_name')}}" class="form-control" required>
                 </div>
             </div>
-			 <div class="form-group row">
-                <label class="col-form-label col-sm-2 text-sm-right">Price</label>
-                <div class="col-sm-10">
-                    <input type="text" name="subject_price" placeholder="Subject Price" value="{{old('subject_price')}}" class="form-control" required>
-                </div>
-            </div>
+			
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Banner Image</label>
                     <div class="col-sm-10">

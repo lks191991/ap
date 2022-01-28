@@ -33,19 +33,19 @@ $routeName = Route::currentRouteName();
                         </ul> -->
         </li>
         @role('admin|subadmin')
-		<li class="sidenav-item {{ (strpos($routeName, 'backend.categories') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.schools') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.courses') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.classes') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.subjects') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.topics') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.video') !== false)  ? ' open' : '' }}" style="">
+		<li class="sidenav-item {{ (strpos($routeName, 'backend.categories') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.schools') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.courses') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.classes') !== false)  ? ' open' : '' }}  {{(strpos($routeName, 'backend.subjects') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.topics') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.video') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.school') !== false)  ? ' open' : '' }} {{(strpos($routeName, 'backend.course') !== false)  ? ' open' : '' }}" style="">
             <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon ion ion-md-cube"></i>
               <div>Courses Manager</div>
             </a>
 
             <ul class="sidenav-menu">
-        <li class="sidenav-item{{ (strpos($routeName, 'backend.categories') !== false) ? ' active' : '' }}">
+       <!-- <li class="sidenav-item{{ (strpos($routeName, 'backend.categories') !== false) ? ' active' : '' }}">
             <a href="{{ route('backend.categories.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>Institutions</div></a>
-        </li>
+        </li>-->
 		
 
         <li class="sidenav-item{{ ((strpos($routeName, 'backend.schools') !== false) || (strpos($routeName, 'backend.school') !== false)) ? ' active' : '' }}">
-            <a href="{{ route('backend.schools') }}" class="sidenav-link"><i class="sidenav-icon fas fa-school"></i><div>Schools</div></a>
+            <a href="{{ route('backend.schools') }}" class="sidenav-link"><i class="sidenav-icon fas fa-list"></i><div>Courses Type</div></a>
         </li>
         
 		
@@ -54,9 +54,9 @@ $routeName = Route::currentRouteName();
             <a href="{{ route('backend.courses') }}" class="sidenav-link"><div><i class="sidenav-icon fas fa-book-reader"></i>Courses</div></a>
         </li>
 
-        <li class="sidenav-item{{ (strpos($routeName, 'backend.classes') !== false)  ? ' active' : '' }}">
+        <!--  <li class="sidenav-item{{ (strpos($routeName, 'backend.classes') !== false)  ? ' active' : '' }}">
             <a href="{{ route('backend.classes.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-chalkboard"></i><div>Classes</div></a>
-        </li>
+        </li>-->
 
 		
 

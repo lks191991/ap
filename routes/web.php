@@ -22,8 +22,8 @@ Route::get('/account/verify/{token}', 'RegisterController@verifyUser')->name('us
 Auth::routes();
 Route::get('/', 'HomeController@index')->name('front');
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/course-list/{CourseId}', 'HomeController@courseList')->name('course-list');
-Route::get('/course-details/{subjectId}', 'HomeController@courseDetails')->name('course-details');
+Route::get('/course-list/{CourseTypeId}', 'HomeController@courseList')->name('course-list');
+Route::get('/course-details/{uuid}', 'HomeController@courseDetails')->name('course-details');
 Route::get('/course-search', 'HomeController@courseSearch')->name('course-search');
 Route::get('/auto-search', 'HomeController@autoSearch')->name('auto-search');
 
@@ -55,7 +55,8 @@ Route::get('/terms-conditions', 'PageController@terms')->name('termsConditions')
     Route::get('/profile', 'StudentController@profile')->name('profile');
 	Route::post('/profile', 'StudentController@updateProfileTutor')->name('updateProfileTutor');
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
-	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
+	Route::get('/my-mylearning-list', 'StudentController@mylearningListCourse')->name('mylearningListCourse');
+    Route::get('/my-mylearning-list/{cid}', 'StudentController@mylearningList')->name('mylearningList');
 	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}/{tab?}', 'StudentController@mylearningStart')->name('mylearningStart');
     Route::delete('/destroy-favourites/{id}', 'StudentController@destroyFavourite')->name('destroyFavourites');
     Route::get('/set-favourites', 'StudentController@setFavourites')->name('setFavourites');
@@ -108,6 +109,8 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'ajax.'], f
     Route::post('/category/schools/{std_filter?}', 'AjaxController@getSchools')->name('category.schools');
     Route::post('/school-departments', 'AjaxController@getSchoolDepartments')->name('school.departments');
     Route::post('/school-courses', 'AjaxController@getSchoolCourses')->name('school.courses');
+    Route::post('/course-subjects', 'AjaxController@getCoursesubjects')->name('course.subjects');
+
     Route::post('/stdfilter-courses/{std_filter?}', 'AjaxController@getStudentfilterCourses')->name('school.stdfiltercourses');
     Route::post('/department-courses', 'AjaxController@getDepartmentCourses')->name('department.courses');
     Route::post('/school-courseclasses', 'AjaxController@getSchoolCourseclasses')->name('school.courseclasses');

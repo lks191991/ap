@@ -2,22 +2,21 @@
 
 @section('content')
 <h4 class="font-weight-bold py-3 mb-4">
-    <span class="text-muted font-weight-light">Schools /</span> Edit School
+    <span class="text-muted font-weight-light">Courses Type /</span> Edit
 </h4>
 
 <div class="card mb-4">
     <h6 class="card-header">
-        Edit School
+        Edit Courses Type
     </h6>
     <div class="card-body">
         @includeif('backend.message')
         <form action="{{route('backend.school.update', $school->id)}}" method = "post" enctype="multipart/form-data">
             @csrf
-            <div class="form-group row">
+            <div class="form-group row hide">
                 <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
                 <div class="col-sm-10">
                     <select name="school_category" class="custom-select" disabled required>
-                        <option value="">Select Institute Type</option>
                         @foreach($categories as $category)
                         <option value="{{$category->id}}" @if($school->school_category == $category->id) selected="selected" @endif>{{$category->name}}</option>
                         @endforeach
@@ -28,7 +27,7 @@
             <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Name</label>
                 <div class="col-sm-10">
-                    <input type="text" name="school_name" placeholder="School Name" class="form-control" value="{{$school->school_name}}" required>
+                    <input type="text" name="school_name" placeholder="Name" class="form-control" value="{{$school->school_name}}" required>
                 </div>
             </div>
 

@@ -45,7 +45,6 @@
 										<tr>
 											<th scope="col">Name</th>
 											<th scope="col">Course</th>
-											<th scope="col">Class</th>
 											<th scope="col">Subject</th>
 											<th class="col">Status</th>
 											<th class="col">Action</th>
@@ -54,13 +53,11 @@
 									<tbody>
 									@foreach($topics as $topic)
 									@php 
-					$class_details = $topic->class_details($topic->subject->class_id);
-					$course_details = $topic->course_details($class_details->course_id);
+					$course_details = $topic->course_details($topic->subject->course_id);
 				@endphp
 										<tr>
 											<th scope="row">{{$topic->topic_name}}</th>
 											<td>{{$course_details->name}}</td>
-											<td>{{$class_details->class_name}}</td>
 											<td>{{$topic->subject->subject_name}}</td>
 											<td>{{$topic->status ? 'Active':'Pending'}}</td>
 											<td>

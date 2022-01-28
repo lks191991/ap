@@ -47,7 +47,8 @@ class SubjectController extends Controller
     {
         
         $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        return view('backend.subjects.create', compact('institutes'));
+        $schools = School::orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
+        return view('backend.subjects.create', compact('institutes','schools'));
     }
 
     /**
@@ -58,17 +59,15 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $class_id = $request->input('class');
+        $course_id = $request->input('course');
 
-        $classes_details = Classes::where('id', $class_id)->first();
       
         $validator = Validator::make($request->all(), [
-					'subject_price' => 'required|numeric',
                     'subject_name' => [
                         'required',
                         'max:180',
-                        Rule::unique('subjects')->where(function ($query) use($class_id) {
-                                    return $query->where('class_id', $class_id);
+                        Rule::unique('subjects')->where(function ($query) use($course_id) {
+                                    return $query->where('course_id', $course_id);
                                 })
                     ],
         ]);
@@ -111,20 +110,17 @@ class SubjectController extends Controller
 
         //form data is available in the request object
         
-		$class = Classes::findOrFail($request->input('class'));
-		$subject->course_id = $class->course_id;
+		$subject->course_id = $course_id;
         $subject->subject_name = $request->input('subject_name');
-		$subject->subject_price = $request->input('subject_price');
-        $subject->class_id = $request->input('class');
+        $subject->school_id = $request->input('course_type');
+		$subject->subject_price = 0;
+        $subject->class_id = 1;
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;
 
         $subject->save();
 
-        /* if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.classes.show', $subject->class_id)->with('success', 'Subject created Successfully');
-        } else { */
+      
             return redirect()->route('backend.subjects.index')->with('success', 'Subject created Successfully');
-        //}
     }
 
     /**
@@ -157,22 +153,14 @@ class SubjectController extends Controller
         $subject = Subject::find($id);
 
         $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        $classes_details = Classes::where("id", $subject->class_id)->select('course_id')->where('status', '=', 1)->first();
-        $subject->course_id = $classes_details->course_id;
 
         $course_details = Course::where("id", $subject->course_id)->select('school_id')->where('status', '=', 1)->first();
-        $subject->school_id = $course_details->school_id;
+       
 
+        $schools = School::orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
+        $courses = Course::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
 
-
-        $school_details = School::where("id", $subject->school_id)->select('school_category')->where('status', '=', 1)->first();
-        $subject->category_id = $school_details->school_category;
-
-        $schools = School::where('school_category', $subject->category_id)->orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
-        $courses = Course::where('school_id', $subject->school_id)->orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        $classes = Classes::where('course_id', $subject->course_id)->orderBy('class_name')->where('status', '=', 1)->pluck('class_name', 'id');
-
-        return view('backend.subjects.edit', compact('subject', 'institutes', 'schools', 'courses', 'classes'));
+        return view('backend.subjects.edit', compact('subject', 'institutes', 'schools', 'courses'));
     }
 
     /**
@@ -199,18 +187,16 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         $subject = Subject::find($id);
-        $class_id = $subject->class_id;
+        $course_id = $request->input('course');
 
-        $classes_details = Classes::where('id', $class_id)->first();
 
 
         $validator = Validator::make($request->all(), [
-			'subject_price' => 'required|numeric',
                     'subject_name' => [
                         'required',
                         'max:180',
-                        Rule::unique('subjects')->where(function ($query) use($class_id, $id) {
-                                    return $query->where('class_id', $class_id)->where('id', '<>', $id);
+                        Rule::unique('subjects')->where(function ($query) use($course_id, $id) {
+                                    return $query->where('course_id', $course_id)->where('id', '<>', $id);
                                 })
                     ],
         ]);
@@ -255,8 +241,11 @@ class SubjectController extends Controller
         }
 		
 		
+        $subject->course_id = $course_id;
         $subject->subject_name = $request->input('subject_name');
-		$subject->subject_price = $request->input('subject_price');
+		$subject->subject_price = 0;
+        $subject->school_id = $request->input('course_type');
+        $subject->class_id = 1;
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;
         $subject->save(); //persist the data
 

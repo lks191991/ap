@@ -67,7 +67,7 @@ class Subject extends Model
     {
        $course_details = Course::find($course_id);
 	   if(isset($course_details->name) && !empty($course_details->name)) {
-			return $course_details;
+			return $course_details->name;
 	   } else {
 			return '';
 	   }

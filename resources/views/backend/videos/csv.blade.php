@@ -24,21 +24,16 @@
                 <hr class="border-light m-0">
                 <div class="card-body">                   
                     
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>Institution</label>
-                        <select name="institute_type" id="institute_type" class="custom-select" required>
-                            <option value="" selected="" disabled="">Choose Institute Type</option>
-                            @foreach($institutes as $id => $type)
-                            <option value="{{$id}}">{{$type}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>School</label>
-                        <select name="school" id="school" class="custom-select" required>
-                            <option value="" disabled selected="">Select School</option>                        
-                        </select>
-                    </div>  
+                   
+                    <div class="form-group course_wrapper">
+                    <label>Course Type</label>
+                        <select name="school" id="school" class="custom-select"  required>
+						<option value="">Select Course Type</option>
+						@foreach($schools as $id => $type)
+							<option value="{{$id}}" >{{$type}}</option>
+						@endforeach
+						</select>
+					</div>
                   
                     <div class="form-group course_wrapper">
                         <label>Course</label>
@@ -47,12 +42,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Class</label>
-                        <select name="class" id="class" class="custom-select" required>
-                            <option value="" disabled selected="">Select Class</option>                        
-                        </select>
-                    </div>
+                   
                 
                     <div class="form-group date_field_group">
                         <label>Date</label>
@@ -126,7 +116,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>    
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 <script>
-var category_id = "{{old('institute_type')}}";
 var school_id = "{{old('school')}}";
 var class_id = "{{old('class')}}";
 var course_id = "{{old('course')}}";
@@ -143,30 +132,10 @@ var tutor_id = "{{old('tutor')}}";
        
         var play_on = "{{old('date')}}";
       
-        
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-          
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                    if(school_id){
-                        $("#school").val(school_id).trigger('change');
-                    }
-                }
-            });
-        });
-        
-        if(category_id){
-            $("#institute_type").val(category_id).trigger('change');
-        }
+       
         
        $("#school").on("change", function () {
             var school_id = $(this).val();
-            var institute_type = $("#institute_type").val();
 			
 				$.ajax({
 					type: "POST",
@@ -182,20 +151,16 @@ var tutor_id = "{{old('tutor')}}";
         });
         
        
-        
-        $("#school_course").on("change", function () {
+       $("#school_course").on("change", function () {
             var school_course = $('#school_course').val();
           
             if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.courseclasses") }}',
+                    url: '{{ route("ajax.course.subjects") }}',
                     data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
-                        $("#class").html(data);
-                        if(class_id){
-                            $("#class").val(class_id).trigger('change');
-                        }
+                        $("#subject").html(data);
                     }
                 });
             }

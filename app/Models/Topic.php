@@ -13,11 +13,13 @@ class Topic extends Model
 	
 	use SoftDeletes;
 	
+   
+	
     public function subject()
     {
-        return $this->hasOne(Subject::Class, 'id', 'subject_id')->withDefault();
+        return $this->belongsTo(Subject::Class, 'subject_id', 'id')->withDefault();
     }
-	
+
 	public function videos()
     {
 

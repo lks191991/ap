@@ -3,7 +3,6 @@
 @section('scripts')
 <script>
 var school_id = "{{request('school')}}";
-var class_id = "{{request('class')}}";
 var course_id = "{{request('course')}}";
 var subject_id = "{{request('subject')}}";
 
@@ -28,19 +27,19 @@ var subject_id = "{{request('subject')}}";
             });
 
         });
-
-        $("#school_course").on("change", function () {
+		
+		 $("#school_course").on("change", function () {
             var school_course = $('#school_course').val();
-            //var school_course = $('#school_course option:selected').attr('data-id');
-            if (school_course) {
+          
+            if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.stdfiltercourseclasses",[1]) }}',
-                    data: {'course_id': school_course, '_token': '{{ csrf_token() }}'},
+                    url: '{{ route("ajax.course.subjects") }}',
+                    data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
-                        $("#class").html(data);
-					 if(class_id){
-                            $("#class").val(class_id).trigger('change');
+                         $("#subject").html(data);
+                        if(subject_id){
+                            $("#subject").val(subject_id).trigger('change');
                         }
                     }
                 });
@@ -99,7 +98,7 @@ var subject_id = "{{request('subject')}}";
 				<form action="{{route('backend.videos.index')}}" id="filterForm" method = "get" >
                     <th class="align-top">Date</th>
                     <th class="align-top">
-                        School
+                        Course Type
                         @role('admin|subadmin')
                         <select name="school" id="school" class="custom-select">
                             <option value="" selected="">All</option>
@@ -117,15 +116,7 @@ var subject_id = "{{request('subject')}}";
                         </select>
                         @endrole
                     </th>
-                    <th class="align-top">
-                        Class
-                        <select name="class" id="class" class="custom-select">
-                            <option value="" selected="">All</option>
-                            @foreach($classes as $id => $type)
-                            <option value="{{$id}}" data-id="{{$id}}">{{$type}}</option>
-                            @endforeach
-                        </select>
-                    </th>
+                   
                     <th class="align-top">
                         Subject
                         <select name="subject" id="subject" class="custom-select">
@@ -152,7 +143,6 @@ var subject_id = "{{request('subject')}}";
                     <td>{{$video->playOn()}}</td>
                     <td>{{$video->school->school_name}}</td>
                     <td>{{$video->course->name}}</td>
-                    <td>{{$video->classDetail->class_name}}</td>
                     <td>{{$video->subject->subject_name}}</td>
                     <td>
                         <p><strong>{{$video->getTitleAttribute()}}</strong></p>

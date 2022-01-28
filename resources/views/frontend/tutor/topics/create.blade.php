@@ -35,25 +35,16 @@
 						 <form action="{{route('frontend.topic.store')}}" method = "post">
             @csrf
 
-            <div class="form-group mb-4">
-									<div class="row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="form-control" required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-                                <option value="{{$id}}">{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div></div>
+          
                     <div class="form-group mb-4">
 									<div class="row">
-                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
+                        <label class="col-form-label col-sm-2 text-sm-right">Course Type</label>
                         <div class="col-sm-10">
-                            <select name="school" id="school" class="form-control" required>
-                                <option value="" disabled selected="">Select School</option>                        
+                            <select name="course_type" id="school" class="form-control" required>
+                                <option value="" disabled selected="">Select Course Type</option>   
+                                @foreach($schools as $id => $type)
+                                <option value="{{$id}}" >{{$type}}</option>
+                                @endforeach                     
                             </select>
                         </div>
                     </div></div>
@@ -68,15 +59,7 @@
                         </div>
                     </div></div>
 
-                   <div class="form-group mb-4">
-									<div class="row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
-                        <div class="col-sm-10">
-                            <select name="class" id="class" class="form-control" required>
-                                <option value="" disabled selected="">Select Class</option>                        
-                            </select>
-                        </div>
-                    </div></div>
+                
 			
 			
 				<div class="form-group mb-4">
@@ -117,20 +100,7 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-			
-			
-			
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                }
-            });
-        });
+     
 
         $("#school").on("change", function () {
             var school_id = $(this).val();
@@ -155,29 +125,16 @@
             if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.courseclasses") }}',
+                    url: '{{ route("ajax.course.subjects") }}',
                     data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#class").html(data);
-                    }
-                });
-            }
-        });
-		
-		$("#class").on("change", function () {
-            var class_id = $('#class').val();
-          
-            if(class_id) {                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.classsubjects") }}',
-                    data: {'class_id' : class_id, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
                         $("#subject").html(data);
                     }
                 });
             }
         });
+		
+	
         
         
  });

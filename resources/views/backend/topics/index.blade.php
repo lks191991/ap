@@ -4,103 +4,62 @@
 
 <script type="text/javascript">
     $(function () {
-        
+		var school_id = "{{request('school')}}";
+        var course_id = "{{request('school_course')}}";
+        var subject_id = "{{request('subject')}}";      
+      
 	$("#school").on("change", function () {
             //var school_id = $(this).val();
 			var school_id = $('#school option:selected').attr('data-id');
            
 				$.ajax({
 					type: "POST",
-					url: '{{ route("ajax.school.stdfiltercourses") }}',
+					url: '{{ route("ajax.school.stdfiltercourses",[1]) }}',
 					data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
 					success: function (data) {
 						$("#school_course").html(data);
+						if(course_id){
+                            $("#school_course").val(course_id).trigger('change');
+                        }
 					}
 				});
 			
         });
-		
+
+if(school_id){
+$("#school").val(school_id).trigger('change');
+}	
 		$("#school_course").on("change", function () {
            // var school_course = $('#school_course').val();
 			var school_course = $('#school_course option:selected').attr('data-id');
             if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.stdfiltercourseclasses") }}',
+                    url: '{{ route("ajax.course.subjects",[1]) }}',
                     data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
-                        $("#class").html(data);
-                    }
-                });
-            }
-        });
-
-		$("#class").on("change", function () {
-            var class_id = $('#class option:selected').attr('data-id');
-          
-            if(class_id) {                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.filterclasssubjects") }}',
-                    data: {'class_id' : class_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
                         $("#subject").html(data);
+						if(subject_id){
+                            $("#subject").val(subject_id).trigger('change');
+                        }
                     }
                 });
             }
         });
-		  
-	var table = $('#topic-list').DataTable({
-		   "order": [[ 0, "asc" ]],
-				"columns": [
-				  null,
-				  { "orderable": false },
-				  { "orderable": false },
-				  { "orderable": false },
-				  { "orderable": false },
-				  { "orderable": false },
-				  null,
-				  { "orderable": false }
-				],
-				dom: 'lrtip'
-		});
-		  
-	$('#topic_name').on('keyup', function(){
-	    //alert('gdfgfd');
-	    regExSearch = this.value;
-		table.column(1).search(regExSearch, true, false).draw();
-		  // table.search(this.value, true, false).draw();   
-		});
-	
-		$('#school').on('change', function(){		
-	   //alert('gdfgfd');
-		regExSearch = this.value +'\\s*$';
-		table.column(2).search(regExSearch, true, false).draw();
-	   //table.search(this.value, true, false).draw();   
-		});
-	   
-	   $('#school_course').on('change', function(){		
-		   //alert('gdfgfd');
-			regExSearch = this.value +'\\s*$';
-			table.column(3).search(regExSearch, true, false).draw();
-		   //table.search(this.value, true, false).draw();   
-		});
-		
-		$('#class').on('change', function(){		
-		   //alert('gdfgfd');
-		   regExSearch = this.value +'\\s*$';
-		   table.column(4).search(regExSearch, true, false).draw();
-		   table.search(this.value, true, false).draw();   
-		});
-		
-		$('#subject').on('change', function(){		
-		   //alert('gdfgfd');
-		   regExSearch = this.value +'\\s*$';
-		   table.column(5).search(regExSearch, true, false).draw();
-		   table.search(this.value, true, false).draw();   
-		});
 
+		
 	
+		  
+	
+
+		$('#filterBtn').on('click', function () {
+            $('#filterForm').submit()
+        });
+	
+    	$('#ResetBtn').on('click', function () {
+            window.location.href = "{{route('backend.topics.index')}}";
+        });
+
     });
 </script>
 @endsection
@@ -118,32 +77,28 @@
         <table id="topic-list" class="table table-striped table-bordered">
             <thead>
                 <tr>
+				<form action="{{route('backend.topics.index')}}" id="filterForm" method = "get" >
                     <th class="align-top">S.No</th>
                     <th class="align-top">
 						Topic Name
-						<input type="text" name="topic_name" id="topic_name" class="form-control">
+						<input type="text" name="topic_name"   value="{{request('topic_name')}}" id="topic_name" class="form-control">
 					</th>
 					<th class="align-top">
-						School
+					Course Type
 						<select name="school" id="school" class="custom-select">
 								<option value="" selected="">All</option>
 								@foreach($schools as $id => $type)
-									<option value="{{$type}}" data-id="{{$id}}">{{$type}}</option>
+									<option value="{{$id}}" data-id="{{$id}}">{{$type}}</option>
 								@endforeach
 						</select>
 					</th>
 					<th class="align-top">
 						Course
-						<select name="course" id="school_course" class="custom-select">
+						<select name="school_course" id="school_course" class="custom-select">
 										<option value="" selected="">All</option>
 						</select>
 					</th>
-					<th class="align-top">
-						Class
-						<select name="class" id="class" class="custom-select">
-								<option value="" selected="">All</option>                        
-						</select>
-					</th>
+					
 					<th class="align-top">
 						Subject
 						<select name="subject" id="subject" class="custom-select">
@@ -151,21 +106,27 @@
 						</select>
 					</th>
                     <th class="align-top">Status</th>
-                    <th class="align-top">Action</th>
+                    <th class="align-top">Action
+					<div class="row">
+					<input type="submit" value="Filter" style="margin-left: 6px; margin-right: 7px;" id="filterBtn" class="btn btn-primary btn-sm rounded-pill d-block">
+					<input type="button" value="Reset" id="ResetBtn" class="btn btn-primary rounded-pill btn-sm d-block">
+					</div>
+
+					</th>
+					</form>
                 </tr>
+				
             <tbody>
                 @php $i=0; @endphp
                 @foreach($topics as $topic)
 				@php 
-					$class_details = $topic->class_details($topic->subject->class_id);
-					$course_details = $topic->course_details($class_details->course_id);
+					$course_details = $topic->course_details($topic->subject->course_id);
 				@endphp
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{$topic->topic_name}}</td>
-					<td>{{$topic->school_details($course_details->school_id)}}</td>
+					<td>{{$topic->school_details($topic->subject->school_id)}}</td>
 					<td>{{$course_details->name}}</td>
-					<td>{{$class_details->class_name}}</td>
 					<td>{{$topic->subject->subject_name}}</td>
                     <td>{{$topic->status ? 'Active':'Disabled'}}</td>
                     <td>
@@ -185,6 +146,7 @@
             </tbody>
             </thead>
         </table>
+		{{ $topics->appends(request()->input())->links() }}
     </div>
 </div>
 @endsection

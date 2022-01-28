@@ -59,15 +59,15 @@ $routeName = Route::currentRouteName();
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 								@foreach($menus as $menu)
                                 <li class="mega-menu-tree">
-                                    <a class="dropdown-item" href="{{route('course-list',['CourseId'=>$menu->id])}}">{{$menu->name}} <i
+                                    <a class="dropdown-item" href="{{route('course-list',['CourseTypeId'=>$menu->id])}}">{{$menu->school_name}} <i
                                             class="fas fa-caret-down d-lg-none"></i></a>
                                     <ul class="mega-menu-tree-list p-0 list-unstyled">
-									@foreach($menu->subject as $sub)
+									@foreach($menu->courses as $course)
 									@php
-									$count=GLB::hasVideo($sub->id);
+									$count=GLB::hasVideo($course->id);
 									@endphp
 									@if($count>0)
-                                        <li><a class="dropdown-item" href="{{route('course-details',['subjectId'=>$sub->id])}}">{{$sub->subject_name}}</a></li>
+                                        <li><a class="dropdown-item" href="{{route('course-details',['uuid'=>$course->uuid])}}">{{$course->name}}</a></li>
 										
 										@endif 
                                       @endforeach  
@@ -93,7 +93,7 @@ $routeName = Route::currentRouteName();
 								@if(Auth::user()->profile_completed==1)
 								<li><a class="dropdown-item p-2" href="{{route('frontend.profile')}}"><i class="far fa-user me-2"></i> Profile</a>
 								</li>
-								<li><a class="dropdown-item p-2" href="{{route('frontend.mylearningList')}}"><i class="far fa-bookmark me-2"></i> My Learning</a>
+								<li><a class="dropdown-item p-2" href="{{route('frontend.mylearningListCourse')}}"><i class="far fa-bookmark me-2"></i> My Learning</a>
 								</li>
 								@else
 								<li><a class="dropdown-item p-2" href="{{route('frontend.profile')}}"><i class="far fa-user me-2"></i> Profile</a>

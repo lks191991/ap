@@ -13,26 +13,12 @@
             <form action="{{route('backend.course.update', $course->id)}}" method = "post" enctype="multipart/form-data">
 			@csrf
 			
-			<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" disabled required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-                                <option value="{{$id}}" @if($school_details->school_category == $id) selected @endif>{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-            </div>
-			
-			
 			
 			<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">School</label>
+                    <label class="col-form-label col-sm-2 text-sm-right">Course Type</label>
                     <div class="col-sm-10">
-                        <select name="school_name" id="school" class="custom-select" disabled required>
-						<option value="">Select School</option>
+                        <select name="course_type" id="school" class="custom-select"  required>
+						<option value="">Select Course Type</option>
 						@foreach($schools as $school)
 							<option value="{{$school->id}}" @if($course->school_id == $school->id) selected="selected" @endif>{{$school->school_name}}</option>
 						@endforeach
@@ -40,14 +26,27 @@
                     </div>
             </div>
 			
-			 
+           
                 <div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Course Name</label>
                     <div class="col-sm-10">
                         <input type="text" name="name" placeholder="Course Name" class="form-control" value="{{$course->name}}" required>
                     </div>
                 </div>
-				
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Course Price</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="course_price" placeholder="Course Price" value="{{$course->course_price}}" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Demo Video URL</label>
+                    <div class="col-sm-10">
+                        <input type="text" name="demo_video_url" placeholder="Demo Video URL" value="{{$course->demo_video_url}}" class="form-control" required>
+                    </div>
+                </div>
+
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Banner Image</label>
                     <div class="col-sm-10">

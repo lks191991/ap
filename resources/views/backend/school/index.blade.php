@@ -55,9 +55,9 @@ table.dataTable thead .sorting::after {
 }
 </style>
 <h4 class="d-flex justify-content-between align-items-center w-100 font-weight-bold py-3 mb-4">
-    <div>Schools</div>
+    <div>Courses Type</div>
 	@role('admin|subadmin')
-		<a href="{{route('backend.school.create')}}" class="btn btn-primary rounded-pill d-block"><span class="ion ion-md-add"></span>&nbsp;Create school</a>
+		<a href="{{route('backend.school.create')}}" class="btn btn-primary rounded-pill d-block"><span class="ion ion-md-add"></span>&nbsp;Create New</a>
 	@endrole
 	</h4>
 
@@ -67,8 +67,7 @@ table.dataTable thead .sorting::after {
             <thead>
                 <tr>
                     <th class="align-top">S.No</th>
-                    <th style="min-width: 18rem" class="align-top">School Name</th>
-                    <th style="min-width: 18rem" class="align-top">Institution</th>
+                    <th style="min-width: 18rem" class="align-top">Courses Type</th>
 					<th class="align-top">Status</th>
                     <th class="align-top">Action</th>
                 </tr>
@@ -78,7 +77,6 @@ table.dataTable thead .sorting::after {
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{$school->school_name}}</td>
-                    <td>{{$school->category->name}}</td>
 					<td>{{$school->status ? 'Active':'Disabled'}}</td>
                     <td>
                         <a href ="{{route('backend.school.edit', $school->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>

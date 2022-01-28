@@ -34,7 +34,7 @@
 							<img src="{{ asset($subject->banner_image)}}" alt="product" />
 						</div>
 						<div class="product-content">
-							<h3>{{$subject->subject_name}}</h3>
+							<h3>{{$subject->name}}</h3>
 							<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 								<li>
 									<i class="fas fa-star"></i>
@@ -53,10 +53,10 @@
 								</li>
 							</ul>
 							<div class="price">
-								<span class="regular-price">{!!Config::get('constants.currency')!!}{{$subject->subject_price}}</span>
+								<span class="regular-price">{!!Config::get('constants.currency')!!}{{$subject->course_price}}</span>
 							</div>
 							<div class="view-product-detail mt-3 mb-2">
-								<a href="{{route('course-details',['subjectId'=>$subject->id])}}" class="btn btn-primary w-100">View</a>
+								<a href="{{route('course-details',['uuid'=>$subject->uuid])}}" class="btn btn-primary w-100">View</a>
 							</div>
 						</div>
 					</div>

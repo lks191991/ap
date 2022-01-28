@@ -10,22 +10,22 @@
     .plyr--video .plyr__controls{
         padding-top: 15px !important;
     }
-	.share-button{display:none;}
-	.topiclist{
-    max-height: 250px;
-    overflow-y: scroll;
-}
-.mt-rem-10{
-	margin-top:10rem;
-}
 </style>
 @endsection
 
 @section('scripts')
 
 
-<script src="https://player.vimeo.com/api/player.js"></script>
-
+<script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+<script>
+    const player = new Plyr('#video_player_box',{
+        settings: ['captions', 'quality', 'speed', 'loop'],        
+      });
+      
+      player.on('ended', event => {
+        player.restart();
+      });
+</script>
 @endsection
 
 @section('content')
@@ -55,41 +55,64 @@
 		<div class="container">
 			<div class="row gx-lg-5">
 				<div class="col-lg-8">
-					<h2 class="section-heading">{{$subject->subject_name}}</h2>
+					<h2 class="section-heading">{{$course->name}}</h2>
 					<div class="course-product-block mt-4 lesson-video" id="video_player_box">
-					<div style="padding:56.25% 0 0 0;position:relative;">
-					<iframe src="https://player.vimeo.com/video/{{$video->video_id}}?h=40d4b25142&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;" id="videoframe"></iframe>
-					</div>
+					<iframe class="bg-dark" src="{{$course->demo_video_url}}?byline=false"  id="videoPlayer" width="100%" height="315"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+					
 					</div>
 					<div class="product-detail-block mt-rem-10" >
-						<h2 class="section-heading">Topics</h2>
-						<ul class="mb-0 mt-3 topiclist">
-						@foreach($subject->topics as $topic)
-							<li class="mt-2">
-								<a href="javascript:;" class="link">{{$topic->topic_name}}</a>
-							</li>
+						<div class="product-details-action-btn-block">
+						<h2 class="section-heading">Course content</h2>
+						<div class="accordion mt-4" id="accordionExample">
+						@foreach($subjects as $key1 => $subject)
+							
+							<div class="accordion-item">
+								<h2 class="accordion-header" id="heading{{$key1}}">
+									<button class="accordion-button" type="button" data-bs-toggle="collapse"
+										data-bs-target="#collapse{{$key1}}" aria-expanded="true" aria-controls="collapseOne">
+										{{$subject->subject_name}}
+									</button>
+								</h2>
+								<div id="collapse{{$key1}}" class="accordion-collapse collapse "
+									aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+									<div class="accordion-body">
+										<ul class="mb-0 my-courses-cont-link">
+										@foreach($subject->topics as $key1 => $topic)
+											<li>
+												<a  class="link">{{$topic->topic_name}}</a>
+											</li>
+											@endforeach
+										</ul>
+									</div>
+								</div>
+							</div>
+						
 						@endforeach	
-						</ul>
+						</div>
+					</div>
+					
 					</div>
 					<div class="product-detail-block mt-5">
 						<div class="custom-tabbing">
 							<ul class="nav nav-tabs" id="myTab" role="tablist">
-								<li class="nav-item" role="presentation">
-									<button class="nav-link active" id="home-tab" data-bs-toggle="tab"
-										data-bs-target="#home" type="button" role="tab" aria-controls="home"
-										aria-selected="true">Course Description</button>
+								<li class="nav-item " role="presentation">
+									<a class="nav-link active" id="home-tab" data-bs-toggle="tab"
+										data-bs-target="#home" href="#home" role="tab" aria-controls="home"
+										aria-selected="true">Descriptions</a>
 								</li>
+							
 							
 							</ul>
 							<div class="tab-content" id="myTabContent">
-								<div class="tab-pane fade show active" id="home" role="tabpanel"
+							<div class="tab-pane show  active" id="home" role="tabpanel"
 									aria-labelledby="home-tab">
 									<div class="tabbing-block">
-										<p class="description">{{$course->description}}</p>
+										<h3>Course Description</h3>
+										<p class="description">{!!$course->description!!}</p>
 									</div>
 									
 								</div>
-								
+							
 							</div>
 						</div>
 					</div>
@@ -101,34 +124,27 @@
 								<span>
 									<img src="{{asset('images/p-icon-course.svg')}}" style="height: 35px;" alt="Icon" /> Course Type : 
 								</span>
-								<span>{{$course->name}}</span>
+								<span>{{$course->school->school_name}}</span>
 							</li>
 							<li>
 								<span>
 									<img src="{{asset('images/p-icon-subject.svg')}}" style="height: 35px;" alt="Icon" /> Course : 
 								</span>
-								<span>{{$subject->subject_name}}</span>
-							</li>
-							<li>
-								<span>
-									<img src="{{asset('images/p-icon1.svg')}}" style="height: 35px;" alt="Icon" /> Level : 
-								</span>
-								<span>{{$subject->subject_class->class_name}}</span>
+								<span>{{$course->name}}</span>
 							</li>
 							
 							<li>
 								<span>
 									<img src="{{asset('images/p-icon3.svg')}}" style="height: 35px;" alt="Icon" /> Price : 
 								</span>
-								<span>{!!Config::get('constants.currency')!!}@if($subject->subject_price==0) Free @else {{$subject->subject_price}} @endif</span>
+								<span>{!!Config::get('constants.currency')!!}@if($course->course_price==0) Free @else {{$course->course_price}} @endif</span>
 							</li>
 						</ul>
 						@if(isset(Auth::user()->id))
 							<form action="{{ route('frontend.payment') }}" method="get">
 						{{ csrf_field() }}
 						<input type="hidden"  name="cid" value="{{$course->uuid}}" />
-						<input type="hidden"  name="sid" value="{{$subject->uuid}}" />
-						<input type="hidden"  name="classid" value="{{$subject->class_id}}" />
+						
 						<button type="submit" class="buy_now-btn btn btn-primary w-100 mt-4">Buy Now</button>
 						</form>
 						@else

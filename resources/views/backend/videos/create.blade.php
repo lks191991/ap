@@ -24,21 +24,16 @@
                 <hr class="border-light m-0">
                 <div class="card-body">                   
                     
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>Institution</label>
-                        <select name="institute_type" id="institute_type" class="custom-select" required>
-                            <option value="" selected="" disabled="">Choose Institute Type</option>
-                            @foreach($institutes as $id => $type)
-                            <option value="{{$id}}">{{$type}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>School</label>
-                        <select name="school" id="school" class="custom-select" required>
-                            <option value="" disabled selected="">Select School</option>                        
-                        </select>
-                    </div>  
+                    
+                   <div class="form-group course_wrapper">
+                    <label>Course Type</label>
+                        <select name="course_type" id="school" class="custom-select"  required>
+						<option value="">Select Course Type</option>
+						@foreach($schools as $id => $type)
+							<option value="{{$id}}" >{{$type}}</option>
+						@endforeach
+						</select>
+					</div>
                   
                     <div class="form-group course_wrapper">
                         <label>Course</label>
@@ -47,17 +42,6 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label>Class</label>
-                        <select name="class" id="class" class="custom-select" required>
-                            <option value="" disabled selected="">Select Class</option>                        
-                        </select>
-                    </div>
-                
-                    <div class="form-group date_field_group">
-                        <label>Date</label>
-                        <input class="flatpickr flatpickr-input date form-control" value="{{old('date')}}" type="text" name="date" id="date" required />
-                    </div>
                  
                     
                     <div class="form-group">
@@ -73,7 +57,12 @@
                             <option value="" selected="" disabled="">Choose Topic</option>                                
                         </select>                
                     </div>
-
+					
+					  <div class="form-group date_field_group">
+                        <label>Date</label>
+                        <input class="flatpickr flatpickr-input date form-control" value="{{old('date')}}" type="text" name="date" id="date" required />
+                    </div>
+					
                     <div class="form-group course_wrapper">
                         <label>Tutor</label>
                         <select name="tutor" id="tutor" class="custom-select" required>
@@ -193,9 +182,7 @@ if(old('note_file')) {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.js"></script>    
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.2.3/flatpickr.css">
 <script>
-var category_id = "{{old('institute_type')}}";
-var school_id = "{{old('school')}}";
-var class_id = "{{old('class')}}";
+var school_id = "{{old('course_type')}}";
 var course_id = "{{old('course')}}";
 var subject_id = "{{old('subject')}}";
 var topic_id = "{{old('topic')}}";
@@ -211,25 +198,9 @@ var tutor_id = "{{old('tutor')}}";
         var play_on = "{{old('date')}}";
       
         
-        $("#institute_type").on("change", function () {
-            var category_id = $(this).val();
-          
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.category.schools") }}',
-                data: {'category': category_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school").html(data.schools);
-                    if(school_id){
-                        $("#school").val(school_id).trigger('change');
-                    }
-                }
-            });
-        });
+       
         
-        if(category_id){
-            $("#institute_type").val(category_id).trigger('change');
-        }
+      
         
        $("#school").on("change", function () {
             var school_id = $(this).val();
@@ -248,50 +219,27 @@ var tutor_id = "{{old('tutor')}}";
 				});
         });
         
-       
+         if(school_id){
+            $("#school").val(school_id).trigger('change');
+        }
         
-        $("#school_course").on("change", function () {
+         $("#school_course").on("change", function () {
             var school_course = $('#school_course').val();
           
             if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.courseclasses") }}',
+                    url: '{{ route("ajax.course.subjects") }}',
                     data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
-                        $("#class").html(data);
-                        if(class_id){
-                            $("#class").val(class_id).trigger('change');
-                        }
+                        $("#subject").html(data);
                     }
                 });
             }
         });
         
-        $("#class").on("change", function () {
-            var class_id = $('#class').val();
-            if(play_on){
-                $("#date").trigger('change');
-            }
-            if(class_id) {                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.class.subject") }}',
-                    data: {'class_id' : class_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#subject").html(data);
-                        if(subject_id){
-                            $("#subject").val(subject_id).trigger('change');
-                        }
-                    }
-                });
-            }
-        });
-        $("#date").on("change", function () {
-            var class_id = $('#class').val();
-            var playon = $('#date').val();
-            
-        });
+       
+        
         
         
         $("#subject").on("change", function () {

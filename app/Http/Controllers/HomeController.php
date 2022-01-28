@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Subject;
 use App\Models\Classes;
 use App\Models\Video;
+use App\Models\Rateing;
 use DB;
 use Carbon\Carbon;
 
@@ -40,79 +41,49 @@ class HomeController extends Controller
 	public function index()
     {
 		//session()->forget('newCustomer');
-		$topCourses = Subject::where('status', '=', 1)->limit(4)->get();
+		$topCourses = Course::where('status', '=', 1)->limit(4)->get();
 		$allCoursesList = Course::where('status', '=', 1)->get();
-		$latestCourses = Subject::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
+		$latestCourses = Course::where('status', '=', 1)->limit(8)->orderBy('created_at','DESC')->get();
 		
         return view('frontend.home',compact('topCourses','latestCourses','allCoursesList'));
     }
 	
 	
-	public function courseList(Request $request,$CourseId)
+	public function courseList(Request $request,$CourseTypeId)
     {
 		
-		$allCourses = Subject::where('course_id', '=', $CourseId)->where('status', '=', 1)->orderBy('created_at','DESC')->has('videos')->paginate(20);
+		$allCourses = Course::with('videos')->where('school_id', '=', $CourseTypeId)->where('status', '=', 1)->orderBy('created_at','DESC')->has('videos')->paginate(20);
 		
         return view('frontend.list',compact('allCourses'));
     }
 	
-	/* public function courseListWithClassPage(Request $request,$CourseId)
-    {
-		
-		$allCourses = Subject::where('class_id', '=', $CourseId)->where('status', '=', 1)->orderBy('created_at','DESC')->paginate(20);
-		
-        return view('frontend.list',compact('allCourses'));
-    } */
-	
-	/* public function courseSearchOldWithCLass(Request $request)
-    {
-		$data = $request->all();
-		
-		$query = Subject::where('status', '=', 1);
-		if(isset($data['search_courses']) and !empty($data['search_courses']))
-		{
-			$query->where('class_id', '=', $data['search_courses']);
-		}
-		if(isset($data['search_text']) and !empty($data['search_text']))
-		{
-			$query->where('subject_name', 'like', '%' . $data['search_text'] . '%');
-		}
-		$allCourses = $query->orderBy('created_at','DESC')->paginate(20);
-		
-        return view('frontend.course_search',compact('allCourses'));
-    } */
-	
+
 	public function courseSearch(Request $request)
     {
 		$data = $request->all();
 		
-		$query = Subject::where('status', '=', 1);
-		if(isset($data['search_courses']) and !empty($data['search_courses']))
-		{
-			$query->where('course_id', '=', $data['search_courses']);
-		}
+		$query = Course::where('status', '=', 1);
+		
 		if(isset($data['search_text']) and !empty($data['search_text']))
 		{
-			$query->where('subject_name', 'like', '%' . $data['search_text'] . '%');
+			$query->where('name', 'like', '%' . $data['search_text'] . '%');
 		}
 		$allCourses = $query->orderBy('created_at','DESC')->has('videos')->paginate(20);
 		
         return view('frontend.course_search',compact('allCourses'));
     }
 	
-	public function courseDetails($subjectId)
+	public function courseDetails($uuid)
     {
 		
-		$subject = Subject::with('topics','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->orderBy('created_at','DESC')->first();
 		
-		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
-		$video = Video::where('status', '=', 1)->where('subject_id', '=', $subject->id)->first();
-		if(!$video)
-		{
-		return redirect()->route('course-list',[$subject->course_id])->with('error', 'Course not available currently');
+		
+		$course = Course::where('status', '=', 1)->where('uuid', '=', $uuid)->has('videos')->first();
+		
+		$subjects = Subject::with('topics')->where('course_id', '=', $course->id)->where('status', '=', 1)->orderBy('created_at','DESC')->get();
+		
 
-		}
-        return view('frontend.subject_details',compact('subject','course','video'));
+        return view('frontend.subject_details',compact('course','subjects'));
     }
 	
 	

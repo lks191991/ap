@@ -67,22 +67,21 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Course Type</th>
+                                        <td>{{$course->school->school_name}}</td>
+                                        </tr>
+                                        <tr>
                                         <th scope="col">Course</th>
-                                        <th scope="col">Level</th>
+                                        <td>{{$course->name}}</td>
+                                        </tr>
+                                        <tr>
                                         <th scope="col">Price</th>
+                                        <td>{!!Config::get('constants.currency')!!}@if($course->course_price==0) Free @else {{$course->course_price}} @endif</td>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{$course->name}}</td>
-                                        <td>{{$subject->subject_name}}</td>
-                                        <td>{{$subject->subject_class->class_name}}</td>
-                                        <td><b>{!!Config::get('constants.currency')!!}{{$subject->subject_price}}</b></td>
-                                    </tr>
-                                </tbody>
+                                
                                 <tfoot>
                                     <tr>
-                                        <th colspan="3">Apply Coupon Code</th>
+                                        <th>Apply Coupon Code</th>
                                         <td >
                                             @if(session('discount')==0)
                                             <div id="coupon_input_box" class="row">
@@ -103,9 +102,9 @@
                                     </td>
                                     </tr>
                                     <tr>
-                                        <th colspan="3">Total</th>
+                                        <th>Total</th>
                                         @if(session('discount')==0)
-                                        <td><b>{!!Config::get('constants.currency')!!}<span id="total_price">{{$subject->subject_price}}</span></td>
+                                        <td><b>{!!Config::get('constants.currency')!!}<span id="total_price">{{$course->course_price}}</span></td>
                                         @else
                                         <td><b>{!!Config::get('constants.currency')!!}<span id="total_price">{{session('newPrice')}}</span></td>
                                         @endif
@@ -172,7 +171,7 @@
                       
                     </div>
                         </div>
-                        <input type="hidden"  id="sid"  name="sid" value="{{$subject->uuid}}" />
+                        <input type="hidden"  id="cid"  name="cid" value="{{$course->uuid}}" />
                     </form>
                     </div>
                     </div>
@@ -254,14 +253,14 @@ $(function() {
         $("#coupon_code_button").click(function() { 
             $("#coupon_code_button").prop('disabled',true);
             var code =$("#coupon_code").val();		
-            var sid =$("#sid").val();
+            var cid =$("#cid").val();
 		 
 		 $.ajax({
 			 type:'POST',
 			 url:"{{route('frontend.applyCoupon')}}",
 			 data:{  
 			 "code": code,
-             "sid": sid,
+             "cid": cid,
              "_token": "{{ csrf_token() }}",
 		 },
 		 dataType:"json",
@@ -327,14 +326,14 @@ $(function() {
 
 $("#coupon_code_remove_button").click(function() { 
             var code =$("#applied_code").html();		
-            var sid =$("#sid").val();
+            var cid =$("#cid").val();
 		 
 		 $.ajax({
 			 type:'POST',
 			 url:"{{route('frontend.removeCoupon')}}",
 			 data:{  
 			 "code": code,
-             "sid": sid,
+             "cid": cid,
              "_token": "{{ csrf_token() }}",
 		 },
 		 dataType:"json",

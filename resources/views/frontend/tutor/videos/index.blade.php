@@ -45,7 +45,6 @@
 										<tr>
 											<th scope="col">Date</th>
 											<th scope="col">Course</th>
-											<th scope="col">Class</th>
 											<th scope="col">Subject</th>
 											<th scope="col">Title</th>
 											<th class="col">Status</th>
@@ -58,13 +57,12 @@
 										<tr>
 											<td >{{ \Carbon\Carbon::parse($video->created_at)->format('d-M-Y')}}</td>
 											  <td>{{$video->course->name}}</td>
-                    <td>{{$video->classDetail->class_name}}</td>
-                    <td>{{$video->subject->subject_name}}</td>
-                    <td>
-                        <p><strong>{{$video->getTitleAttribute()}}</strong></p>
-                    </td>
-                    <td>{{$video->status ? 'Active':'Pending'}}</td>
-					<td>
+												<td>{{$video->subject->subject_name}}</td>
+												<td>
+													<p><strong>{{$video->getTitleAttribute()}}</strong></p>
+												</td>
+												<td>{{$video->status ? 'Active':'Pending'}}</td>
+												<td>
 												<a href ="{{route('frontend.video.edit', $video->uuid)}}"  title="Edit"><button class="btn btn-sm edit-btn"><i class="fas fa-edit"></i></button>
 												</a><form method="POST" action="{{route('frontend.video.destroy', $video->id)}}" style="display: inline-block;">
                             {{ csrf_field() }}

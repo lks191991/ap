@@ -94,7 +94,7 @@ class SchoolController extends Controller
                                     return $query->where('school_category', $school_category);
                                 })
                     ],
-        ]);
+        ],['school_name.required' => 'Please enter course type']);
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {

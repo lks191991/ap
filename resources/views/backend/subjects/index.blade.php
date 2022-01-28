@@ -42,8 +42,6 @@
 				  { "orderable": false },
 				  { "orderable": false },
 				  { "orderable": false },
-				  { "orderable": false },
-				  { "orderable": false },
 				  null,
 				  { "orderable": false }
 				],
@@ -71,12 +69,7 @@
 		   //table.search(this.value, true, false).draw();   
 		});
 		
-		$('#class').on('change', function(){		
-		   //alert('gdfgfd');
-		   regExSearch = this.value +'\\s*$';
-		   table.column(4).search(regExSearch, true, false).draw();
-		   table.search(this.value, true, false).draw();   
-		});
+		
 		
         
     });
@@ -102,7 +95,7 @@
 					<input type="text" name="subject_name" id="subject_name" class="form-control">
 					</th>
 					<th class="align-top">
-					School Name
+					Course Type
 					<select name="school" id="school" class="custom-select" required>
 							<option value="" selected="">All</option>
 							@foreach($schools as $id => $type)
@@ -116,15 +109,7 @@
 									<option value="" selected="">All</option>
 						</select>
 					</th>
-					<th style="min-width: 7rem" class="align-top">
-						Class
-						<select name="class" id="class" class="custom-select" required>
-                                <option value="" selected="">All</option>                        
-                        </select>
-					</th>
-					   <th class="align-top">
-					Price
-					</th>
+					
                     <th class="align-top">Status</th>
                     <th class="align-top">Action</th>
                 </tr>
@@ -134,10 +119,8 @@
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{$subject->subject_name}}</td>
-					<td>{{$subject->school_details($subject->course_details($subject->subject_class->course_id)->school_id)}}</td>
-					<td>{{$subject->course_details($subject->subject_class->course_id)->name}}</td>
-					<td>@if(isset($subject->subject_class->class_name) && !empty(($subject->subject_class->class_name))){{$subject->subject_class->class_name}}@endif</td>
-					<td>{!!Config::get('constants.currency')!!}{{$subject->subject_price}}</td>
+					<td>{{$subject->school_details($subject->school_id)}}</td>
+					<td>{{$subject->course_details($subject->course_id)}}</td>
                     <td>{{$subject->status ? 'Active':'Disabled'}}</td>
                    <td>
                         <a href ="{{route('backend.subjects.edit', $subject->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="Edit"><i class="ion ion-md-create"></i></a>

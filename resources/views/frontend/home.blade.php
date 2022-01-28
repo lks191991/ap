@@ -15,17 +15,8 @@
 							<form action="{{ route('course-search') }}" method="get">
 							{{ csrf_field() }}
 							<div class="form-group row">
-								<div class="col-md-3 px-md-0">
-									<select class="w-100" required name="search_courses" style="border:3px solid #0dcaf0;border-right: 0px;">
-										<option value="">Select Courses</option>
-										 @foreach($allCoursesList as $acl)
-										  <option value="{{$acl->id}}">
-										   {{$acl->name}}
-										  </option>
-										@endforeach
-									</select>
-								</div>
-								<div class="col-md-9 px-md-0 position-relative">
+							
+								<div class="col-md-12 px-md-0 position-relative">
 									<input type="text" class="w-100" id="search" style="border:3px solid #0dcaf0" name="search_text" placeholder="What do you want to learn?" />
 									<button type="submit"><i class="fas fa-search"></i></button>
 								</div>
@@ -59,7 +50,7 @@
 							<img src="{{ asset($topCourse->banner_image)}}" alt="product" />
 						</div>
 						<div class="product-content">
-							<h3>{{$topCourse->subject_name}}</h3>
+							<h3>{{$topCourse->name}}</h3>
 							<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 								<li>
 									<i class="fas fa-star"></i>
@@ -82,8 +73,7 @@
 								<span class="regular-price"></span>
 							</div>-->
 							<div class="view-product-detail mt-3 mb-2">
-							<a href="{{route('course-details',['subjectId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
-								<!--<a href="{{route('course-list',['CourseId'=>$topCourse->course_id])}}" class="btn btn-primary w-100">View</a>-->
+							<a href="{{route('course-details',['uuid'=>$topCourse->uuid])}}" class="btn btn-primary w-100">View</a>
 							</div>
 						</div>
 					</div>
@@ -161,7 +151,7 @@
 								<img src="{{ asset($topCourse->banner_image)}}" alt="product" />
 							</div>
 							<div class="product-content">
-								<h3>{{$topCourse->subject_name}}</h3>
+								<h3>{{$topCourse->name}}</h3>
 								<ul class="p-0 mt-0 list-unstyled d-flex rating-stars">
 									<li>
 										<i class="fas fa-star"></i>
@@ -184,8 +174,7 @@
 									<span class="regular-price">$999</span>
 								</div>-->
 								<div class="view-product-detail mt-3 mb-2">
-								<a href="{{route('course-details',['subjectId'=>$topCourse->id])}}" class="btn btn-primary w-100">View</a>
-									<!--<a href="{{route('course-list',['CourseId'=>$topCourse->course_id])}}" class="btn btn-primary w-100">View</a>-->
+								<a href="{{route('course-details',['uuid'=>$topCourse->uuid])}}" class="btn btn-primary w-100">View</a>
 								</div>
 							</div>
 						</div>

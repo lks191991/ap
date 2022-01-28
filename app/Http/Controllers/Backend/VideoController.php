@@ -43,37 +43,17 @@ class VideoController extends Controller
 		{
 			$query->where('school_id','=',$filter['school']);
 		}
-		if(isset($filter['school_course']) && !empty($filter['school_course']))
+		if(isset($filter['course']) && !empty($filter['course']))
 		{
-			$query->where('course_id','=',$filter['school_course']);
+			$query->where('course_id','=',$filter['course']);
 		}
-		if(isset($filter['class']) && !empty($filter['class']))
-		{
-			$query->where('class_id','=',$filter['class']);
-		}
+		
 		if(isset($filter['subject']) && !empty($filter['subject']))
 		{
 			$query->where('subject_id','=',$filter['subject']);
 		}
         
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $query = $query->where('school_id','=',$profile->school_id);
-				$courses = Course::where('school_id',$profile->school_id)->where('status',1)->orderBy('name')->select('id', 'name')
-                        ->get();
-				$school_details = School::where('id', $profile->school_id)->select('school_category')->first();
-				if($school_details->school_category === config("constants.BASIC_SCHOOL")){
-					
-					if(isset($courses[0]->id)) {
-						$classes = Classes::where('course_id',$courses[0]->id)->where('status',1)->orderBy('class_name')
-								->pluck('class_name','id');
-					}
-				} 
-            } 
-			
-		} 
-        
+      
         $videos = $query->orderBy('id', 'desc')->paginate(20);
 		
 		$repoted_count = array();
@@ -85,13 +65,7 @@ class VideoController extends Controller
 		
 		$query = School::where('status','=',1);
 		
-		 if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $school_id = $profile->school_id;
-               $query = $query->where('id','=',$school_id);
-            }            
-        }
+		
         
         $schools = $query->orderBy('school_name')
                         ->pluck('school_name','id');
@@ -108,17 +82,16 @@ class VideoController extends Controller
      */
     public function create()
     {
-        $query = SchoolCategory::where('status','=',1);
-        $school_id = 0;
-        $category_id = 0;
+        $query = School::where('status','=',1);
+      
         $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
    
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
+        $schools = $query->orderBy('school_name')
+        ->pluck('school_name','id');
         
         
         
-        return view('backend.videos.create',  compact('institutes','school_id','category_id','tutors'));
+        return view('backend.videos.create',  compact('schools','tutors'));
     }
 
     /**
@@ -130,9 +103,8 @@ class VideoController extends Controller
     public function store(Request $request)
     {        
         $validator = Validator::make($request->all(), [
-            'school' => 'required',
+            'course_type' => 'required',
             'course' => 'required',
-            'class' => 'required',
             'date' => 'required',
             'subject' => 'required',
             'topic' => 'required',
@@ -156,11 +128,17 @@ class VideoController extends Controller
             
             $video_id = '';
             if($request->video_type == 'url') {
-                $video_url = $request->video_url;
                
                 $video_url = $request->video_url;
                 $video_url_ex = explode("https://vimeo.com/", $video_url);
-                $video_id = $video_url_ex[1];
+                if(isset($video_url_ex[1]) && !empty($video_url_ex[1]))
+                    {
+                        $video_id = $video_url_ex[1];
+                    }
+                    else
+                    {
+                        $video_id = 0;
+                    }
             }
             
             
@@ -208,9 +186,9 @@ class VideoController extends Controller
 				$video->banner_image = $imagePath;
 			}
 		
-            $video->school_id = $request->school;
+            $video->school_id = $request->course_type;
             $video->course_id = $request->course;
-            $video->class_id = $request->class;
+            $video->class_id = 1;
             $video->play_on = $request->date;
             $video->video_id = $video_id;
             $video->video_url = $request->video_url;
@@ -266,12 +244,14 @@ class VideoController extends Controller
         
         $video = Video::uuid($uuid);
 		
-        $query = SchoolCategory::where('status','=',1);
-       $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
+        $query = School::where('status','=',1);
+      
+        $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
+   
+        $schools = $query->orderBy('school_name')
+        ->pluck('school_name','id');
         
-        return view('backend.videos.edit', compact('video','institutes','tutors'));
+        return view('backend.videos.edit', compact('video','schools','tutors'));
     }
 
     /**
@@ -284,9 +264,7 @@ class VideoController extends Controller
     public function update(Request $request, $id)
     {   
         $validator = Validator::make($request->all(), [
-            //'school' => 'required',
             'course' => 'required',
-            'class' => 'required',
             'date' => 'required',
             'subject' => 'required',
             'topic' => 'required',            
@@ -312,8 +290,15 @@ class VideoController extends Controller
              if($request->video_type == 'url') {
                 $video_url = $request->video_url;
                 $video_url_ex = explode("https://vimeo.com/", $video_url);
-                $video_id = $video_url_ex[1];
-                
+              
+                if(isset($video_url_ex[1]) && !empty($video_url_ex[1]))
+                    {
+                        $video_id = $video_url_ex[1];
+                    }
+                    else
+                    {
+                        $video_id = 0;
+                    }
                 /* $video_data = SiteHelpers::getVimeoVideoData($video_url);
                 
                 if(!isset($video_data->video_id) || empty($video_data->video_id)){
@@ -380,7 +365,6 @@ class VideoController extends Controller
 			
         }	
             $video->course_id = $request->course;
-            $video->class_id = $request->class;
             $video->play_on = $request->date;
             $video->video_id = $video_id;
             $video->video_url = $request->video_url;
@@ -449,17 +433,15 @@ class VideoController extends Controller
      */
     public function csvUploadVideo()
     {
-        $query = SchoolCategory::where('status','=',1);
-        $school_id = 0;
-        $category_id = 0;
+        $query = School::where('status','=',1);
+      
         $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
    
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
+        $schools = $query->orderBy('school_name')
+        ->pluck('school_name','id');
         
         
-        
-        return view('backend.videos.csv',  compact('institutes','school_id','category_id','tutors'));
+        return view('backend.videos.csv',  compact('schools','tutors'));
     }
 
     /**
@@ -473,7 +455,6 @@ class VideoController extends Controller
         $validator = Validator::make($request->all(), [
             'school' => 'required',
             'course' => 'required',
-            'class' => 'required',
             'date' => 'required',
             'subject' => 'required',
             'tutor' => 'required',
@@ -554,7 +535,7 @@ class VideoController extends Controller
 							$video = new Video();
 							$video->school_id = $request->school;
 							$video->course_id = $request->course;
-							$video->class_id = $request->class;
+							$video->class_id = 1;
 							$video->play_on = $request->date;
 							$video->video_id = 1;
 							$video->video_url = trim($importData[2]);

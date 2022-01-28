@@ -225,6 +225,34 @@ class AjaxController extends Controller
 
         return $options;
     }
+
+    /**
+     * get classroom options for a School. 
+     * return string $options
+     */
+    public function getCoursesubjects(Request $request, $default = 0)
+    {
+        $options = '<option value="" disabled selected>Choose Class</option>';
+
+        $course_id = $request->course_id;
+
+
+        if ($course_id > 0) {
+
+            $subjects = Subject::where('status', 1)
+                            ->where('course_id', '=', $course_id)
+                            ->orderBy('subject_name')
+                            ->select('id', 'subject_name')->get();
+
+            if (!$subjects->isEmpty()) {
+                foreach ($subjects as $cls) {
+                    $options .= '<option value="' . $cls->id . '">' . $cls->subject_name . '</option>';
+                }
+            }
+        }
+
+        return $options;
+    }
 	
 	/**
      * get class in student filter. 

@@ -49,6 +49,13 @@ class School extends Model
                         ->whereHas('latestVideoWithKey');
     }
     
+    public function courses()
+    {
+        $query = $this->hasMany(Course::class, 'school_id');
+
+        return $query;
+    }
+
     /*
      * Get referenced record of category.
      */

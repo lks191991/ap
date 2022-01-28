@@ -474,19 +474,28 @@ class StudentController extends Controller
         return view('frontend.tutor.upload_video_file', compact('video','video_thumb'));
     }
 	
-	
-	public function mylearningList(Request $request)
+	public function mylearningListCourse(Request $request)
     {
 		$user = Auth::user();
-		$data = UserSubscription::with('course','subject','user')->where("user_id",$user->id)->paginate(20);
+		$data = UserSubscription::with('course','user')->where("user_id",$user->id)->paginate(20);
 		
-		return view('frontend.my-learning',compact('data'));
+		return view('frontend.my-learning-course',compact('data'));
+	}
+
+	public function mylearningList(Request $request,$cid)
+    {
+		$user = Auth::user();
+        $course = Course::uuid($cid);
+		$data = UserSubscription::with('course','subject','user')->where("course_id",$course->id)->where("user_id",$user->id)->first();
+		$subjects = Subject::where('course_id', '=', $data->course_id)->where('status', '=', 1)->orderBy('created_at','DESC')->has('videos')->paginate(20);
+
+		return view('frontend.my-learning',compact('data','subjects','course'));
 	}
 	
 	public function mylearningStart(Request $request,$id,$subjectId,$videoUid=null,$tab=0)
     {
 		$user = Auth::user();
-		$data = UserSubscription::where("id",$id)->where("user_id",$user->id)->where("subject_id",$subjectId)->first();
+		$data = UserSubscription::where("id",$id)->where("user_id",$user->id)->first();
 		if(!$data)
 		{
 			return redirect()->route('mylearningList')->with('error', 'Course not available currently');
@@ -497,12 +506,12 @@ class StudentController extends Controller
 		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
 		if($videoUid==null)
 		{
-			$video = Video::where('status', '=', 1)->where('subject_id', '=', $subject->id)->where('video_upload_type', '=', 'main')->first();
+			$video = Video::where('status', '=', 1)->where('subject_id', '=', $subjectId)->where('video_upload_type', '=', 'main')->first();
 		}
 		else{
-		$video = Video::where('uuid', '=', $videoUid)->where('status', '=', 1)->where('subject_id', '=', $subject->id)->first();	
+		    $video = Video::where('uuid', '=', $videoUid)->where('status', '=', 1)->where('subject_id', '=', $subject->id)->first();	
 		}
-
+       
         $averageRating = Rateing::where('video_id', $video->id)->avg('rating');
         $myRateing = 0;
         $myRateingGiven  = Rateing::where('video_id', $video->id)->where('user_id', $user->id)->sum('rating');

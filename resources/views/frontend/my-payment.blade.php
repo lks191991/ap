@@ -50,7 +50,7 @@
 									@foreach($data as $dt)
 										<tr>
 											<th scope="row">{{$dt->payment->transaction_id}}</th>
-											<td>{{$dt->subject->subject_name}}</td>
+											<td>{{$dt->course->name}}</td>
 											<td>{!!Config::get('constants.currency')!!}{{$dt->price}}</td>
 											<td>{{ \Carbon\Carbon::parse($dt->payment->created_at)->format('d-M-Y')}}</td>
 										</tr>

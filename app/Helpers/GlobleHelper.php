@@ -7,7 +7,7 @@ use App\Models\StudentHistory;
 use App\Models\Video;
 use App\Models\Classes;
 use App\Models\Course;
-use App\Models\Subject;
+use App\Models\School;
 use App\Models\SchoolCategory;
 use Auth;
 use Session;
@@ -194,10 +194,7 @@ class GlobleHelper
 	
 	public static function getAllCourse(){
 		
-		$menus = Course::with('subject','subject.video')->whereHas('subject', function($q){
-		$q->where('status', 1);
-		})->where('status', 1)->get();
-		
+		$menus = School::with('courses')->where('status', 1)->get();
 		return $menus;
 			
 	}

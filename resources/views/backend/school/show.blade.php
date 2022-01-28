@@ -15,9 +15,7 @@
                     <div class="media-body ml-5">
                         <h4 class="font-weight-bold mb-4">{{$school->school_name}}</h4>
                     
-                        <div class="text-muted mb-2">
-                            <strong>School Category:</strong> {{$school->category->name}}
-                        </div>
+                       
                       
                     </div>
                 </div>

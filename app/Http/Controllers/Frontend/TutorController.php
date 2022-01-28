@@ -51,6 +51,7 @@ class TutorController extends Controller
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
         }
 
+        
         $topics = Topic::where("user_id",Auth::user()->id)->orderBy('id', 'desc')->paginate(20);
 
         return view('frontend.tutor.topics.index', compact('topics'));
@@ -66,10 +67,11 @@ class TutorController extends Controller
 		if (!Auth::user()->hasRole('tutor')) {
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
         }
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
+        $schools = School::with('subject')->where('status', '=', 1)->orderBy('school_name')
+        ->pluck('school_name', 'id');
         $subjects = Subject::orderBy('subject_name')->where('status', '=', 1)->pluck('subject_name', 'id');
 
-        return view('frontend.tutor.topics.create', compact('subjects', 'institutes'));
+        return view('frontend.tutor.topics.create', compact('subjects', 'schools'));
     }
 
     /**
@@ -99,7 +101,10 @@ class TutorController extends Controller
       
 
             $validator = Validator::make($request->all(), [
-                        'subject' => 'required',
+                    
+                    'subject' => 'required',
+                    'course_type' => 'required',
+                    'course' => 'required',
                         'topic_name' => [
                             'required',
                             'max:180',
@@ -162,28 +167,17 @@ class TutorController extends Controller
 		if ($topic->user_id !=Auth::user()->id) {
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
         }
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        $subject_details = Subject::where("id", $topic->subject_id)->select('class_id')->first();
-        $topic->class_id = $subject_details->class_id;
-        //echo $subject_details->class_id; exit;
-        $classes_details = Classes::where("id", $subject_details->class_id)->select('course_id')->first();
-        $topic->course_id = $classes_details->course_id;
-        //echo $topic->course_id; exit;
-        $course_details = Course::where("id", $topic->course_id)->select('school_id')->first();
-        $topic->school_id = $course_details->school_id;
 
+        $subject_details = Subject::where("id", $topic->subject_id)->first();
+        $topic->school_id = $subject_details->school_id;
+        $topic->course_id = $subject_details->course_id;
+        $topic->school_id = $subject_details->school_id;
 
-
-        $school_details = School::where("id", $topic->school_id)->select('school_category')->first();
-        $topic->category_id = $school_details->school_category;
-
-        $schools = School::where('school_category', $topic->category_id)->orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
+        $schools = School::orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
         $courses = Course::where('school_id', $topic->school_id)->orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
-        $classes = Classes::where('course_id', $topic->course_id)->orderBy('class_name')->where('status', '=', 1)->pluck('class_name', 'id');
+        $subjects = Subject::where('course_id', $topic->course_id)->orderBy('subject_name')->where('status', '=', 1)->pluck('subject_name', 'id');
 
-        $subjects = Subject::orderBy('subject_name')->where('class_id', $subject_details->class_id)->where('status', '=', 1)->pluck('subject_name', 'id');
-
-        return view('frontend.tutor.topics.edit', compact('topic', 'subjects', 'institutes', 'schools', 'courses', 'classes'));
+        return view('frontend.tutor.topics.edit', compact('topic', 'subjects', 'schools', 'courses'));
     }
 
     
@@ -219,7 +213,9 @@ class TutorController extends Controller
         $topic = Topic::find($id);
 
             $validator = Validator::make($request->all(), [
-                        //'subject' => 'required',
+                        'subject' => 'required',
+                        'course_type' => 'required',
+                        'course' => 'required',
                         'topic_name' => [
                             'required',
                             'max:180',
@@ -237,7 +233,11 @@ class TutorController extends Controller
                             ->withInput();
         }
 
-
+        if($request->input('topic_name')!==$topic->topic_name)
+        {
+            $topic->status = 0;
+        }
+        $topic->subject_id = $request->subject;
         $topic->topic_name = $request->input('topic_name');
         $topic->save(); //persist the data
 
@@ -259,11 +259,14 @@ class TutorController extends Controller
 		
         $topic = Topic::find($id);
 
-        $subject_details = Subject::where('id', $topic->subject_id)->first();
-        $course_id = $subject_details->subject_class->course_id;
+        if (isset($topic->id) && !empty($topic->id)) {
+            $videos = Video::where('topic_id', $topic->id)->select('id')->get();
+            foreach ($videos as $video) {
+                if (isset($video->id) && !empty($video->id))
+                    $video->delete();
+            }
+        }
 
-        $course_details = Course::where('id', $course_id)->select('school_id')->first();
-       
         $topic->delete();
 
             return redirect()->route('frontend.topics')->with('success', 'Topic Deleted Successfully');
@@ -307,16 +310,15 @@ class TutorController extends Controller
             return redirect()->route('frontend.profile')->with('error', 'Unauthorized user');
         }
 		
-        $query = SchoolCategory::where('status','=',1);
-        $school_id = 0;
-        $category_id = 0;
+        $query = School::where('status','=',1);
+      
    
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
+        $schools = $query->orderBy('school_name')
+        ->pluck('school_name','id');
         
         
         
-        return view('frontend.tutor.videos.create',  compact('institutes','school_id','category_id'));
+        return view('frontend.tutor.videos.create',  compact('schools'));
     }
 
     /**
@@ -340,9 +342,8 @@ class TutorController extends Controller
 		
 		$tutor_id = Auth::user()->id;
         $validator = Validator::make($request->all(), [
-            'school' => 'required',
+            'course_type' => 'required',
             'course' => 'required',
-            'class' => 'required',
             'date' => 'required',
             'subject' => 'required',
             'topic' => 'required',
@@ -366,7 +367,15 @@ class TutorController extends Controller
             $video_id = '';
             if($request->video_type == 'url') {
                 $video_url = $request->video_url;
-                $video_id = 1;
+                $video_url_ex = explode("https://vimeo.com/", $video_url);
+                if(isset($video_url_ex[1]) && !empty($video_url_ex[1]))
+                    {
+                        $video_id = $video_url_ex[1];
+                    }
+                    else
+                    {
+                        $video_id = 0;
+                    }
             }
             
             
@@ -413,10 +422,9 @@ class TutorController extends Controller
 				$imagePath = 'uploads/video_banner/' . $newName;
 				$video->banner_image = $imagePath;
 			}
-		
-            $video->school_id = $request->school;
+            $video->school_id = $request->course_type;
             $video->course_id = $request->course;
-            $video->class_id = $request->class;
+            $video->class_id = 1;
             $video->play_on = $request->date;
             $video->video_id = $video_id;
             $video->video_url = $request->video_url;
@@ -477,11 +485,14 @@ class TutorController extends Controller
 		
 		
 		
-        $query = SchoolCategory::where('status','=',1);
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
+        $query = School::where('status','=',1);
+      
+   
+        $schools = $query->orderBy('school_name')
+        ->pluck('school_name','id');
         
-        return view('frontend.tutor.videos.edit', compact('video','institutes'));
+        
+        return view('frontend.tutor.videos.edit', compact('video','schools'));
     }
 
     /**
@@ -501,9 +512,7 @@ class TutorController extends Controller
         }
 		
         $validator = Validator::make($request->all(), [
-            //'school' => 'required',
             'course' => 'required',
-            'class' => 'required',
             'date' => 'required',
             'subject' => 'required',
             'topic' => 'required',            
@@ -576,7 +585,6 @@ class TutorController extends Controller
 			
         }	
             $video->course_id = $request->course;
-            $video->class_id = $request->class;
             $video->play_on = $request->date;
             $video->video_id = $video_id;
             $video->video_url = $request->video_url;

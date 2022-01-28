@@ -46,7 +46,7 @@
 									<tbody>
 									@foreach($studentFavourites as $studentFavourite)
 									@php
-									$data = \App\Models\UserSubscription::where("user_id",$studentFavourite->student_id)->where("subject_id",$studentFavourite->video->subject_id)->first();
+									$data = \App\Models\UserSubscription::where("user_id",$studentFavourite->student_id)->where("course_id",$studentFavourite->video->course_id)->first();
 									
 									@endphp
 										<tr>

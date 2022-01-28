@@ -26,7 +26,6 @@
                 <div class="card-body">                   
 
 
-                    <input type="hidden" name="institute_type" value="{{$video->school_id}}" id="institute_type" />
                     <input type="hidden" name="school" value="{{$video->school_id}}" id="school" />
                     
                  
@@ -36,18 +35,6 @@
                         <select name="course" id="school_course" class="custom-select" required>
                             <option value="" disabled selected="">Select Course</option>
                         </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Class</label>
-                        <select name="class" id="class" class="custom-select" required>
-                            <option value="" disabled selected="">Select Class</option>                        
-                        </select>
-                    </div>
-
-                    <div class="form-group date_field_group">
-                        <label>Date</label>
-                        <input class="flatpickr flatpickr-input date form-control" value="{{$video->play_on}}" type="text" name="date" id="date" required />
                     </div>
 
                     <div class="form-group">
@@ -63,6 +50,22 @@
                             <option value="" selected="" disabled="">Choose Topic</option>                                
                         </select>                
                     </div>
+
+                    <div class="form-group date_field_group">
+                        <label>Date</label>
+                        <input class="flatpickr flatpickr-input date form-control" value="{{$video->play_on}}" type="text" name="date" id="date" required />
+                    </div>
+
+                    <div class="form-group course_wrapper">
+                        <label>Tutor</label>
+                         <select name="tutor" id="tutor" class="custom-select" required>
+                            <option value="" disabled selected="">Select Tutor</option>
+							 @foreach($tutors as $id => $type)
+                            <option value="{{$type->id}}" @if($type->id == $video->tutor_id ) selected @endif>{{$type->first_name}} {{$type->last_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
 
                 </div>
             </div>
@@ -122,16 +125,7 @@
                     </div> 
                     
                     
-                    <div class="form-group course_wrapper">
-                        <label>Tutor</label>
-                         <select name="tutor" id="tutor" class="custom-select" required>
-                            <option value="" disabled selected="">Select Tutor</option>
-							 @foreach($tutors as $id => $type)
-                            <option value="{{$type->id}}" @if($type->id == $video->tutor_id ) selected @endif>{{$type->first_name}} {{$type->last_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
+                   
                     <div class="form-group">
                         <label>Keywords</label>
                         <input type="text" value="{{$video->keywords}}" name="keywords" id="keywords" data-role="tagsinput" class="form-control" />
@@ -177,7 +171,6 @@ $size = $video->noteFileSize();
         
         $('.period_field_group').hide();
         
-        var category_id = "{{$video->school->school_category}}";
         var school_id = "{{$video->school_id}}";
         var course_id = "{{$video->course_id}}";
         var class_id = "{{$video->class_id}}";      
@@ -208,30 +201,10 @@ $size = $video->noteFileSize();
             if(school_course) {                
                 $.ajax({
                     type: "POST",
-                    url: '{{ route("ajax.school.courseclasses") }}',
+                    url: '{{ route("ajax.course.subjects") }}',
                     data: {'course_id' : school_course, '_token': '{{ csrf_token() }}'},
                     success: function (data) {
-                        $("#class").html(data);
-                        if(class_id){
-                            $("#class").val(class_id).trigger('change');
-                        }
-                    }
-                });
-            }
-        });
-        
-        $("#class").on("change", function () {
-            var class_id = $('#class').val();
-            if(play_on){
-                $("#date").trigger('change');
-            }
-            if(class_id) {                
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.class.subject") }}',
-                    data: {'class_id' : class_id, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#subject").html(data);
+                         $("#subject").html(data);
                         if(subject_id){
                             $("#subject").val(subject_id).trigger('change');
                         }
@@ -239,6 +212,8 @@ $size = $video->noteFileSize();
                 });
             }
         });
+        
+       
         $("#date").on("change", function () {
             var class_id = $('#class').val();
             var playon = $('#date').val();
