@@ -56,9 +56,16 @@
 			<div class="row gx-lg-5">
 				<div class="col-lg-8">
 					<h2 class="section-heading">{{$course->name}}</h2>
-					<div class="course-product-block mt-4 lesson-video" >
-						
-					<iframe class="bg-dark" src="{{$course->demo_video_url}}?byline=false"  id="videoPlayer" width="100%" height="315"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+					@php
+						if (strpos($course->demo_video_url,'vimeo.com') !== false) {
+						$toutube = 0;
+						} else {
+							$toutube = 1;
+						}
+						@endphp
+
+					<div class="course-product-block mt-4 lesson-video" @if ($toutube=='1')id="video_player_box" @endif>
+					<iframe class="bg-dark" src="{{$course->demo_video_url}}?byline=false"  id="videoPlayer" width="100%" height="350"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
 					
 					</div>
 					<div class="product-detail-block mt-rem-10" >
