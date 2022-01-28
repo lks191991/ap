@@ -56,7 +56,8 @@
 			<div class="row gx-lg-5">
 				<div class="col-lg-8">
 					<h2 class="section-heading">{{$course->name}}</h2>
-					<div class="course-product-block mt-4 lesson-video" id="video_player_box">
+					<div class="course-product-block mt-4 lesson-video" >
+						
 					<iframe class="bg-dark" src="{{$course->demo_video_url}}?byline=false"  id="videoPlayer" width="100%" height="315"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
 					
 					</div>
