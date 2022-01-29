@@ -39,7 +39,7 @@
 								<div class="col-lg-6 col-md-6">
 									<div class="product-block">
 										<div class="product-thumbnail">
-											<img src="{{ asset($dt->banner_image)}}" alt="product" />
+											<img src="{{ asset($course->banner_image)}}" alt="product" />
 										</div>
 										<div class="product-content">
 											<h3>{{$dt->subject_name}}</h3>

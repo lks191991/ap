@@ -28,7 +28,7 @@
                         <label class="col-form-label col-sm-2 text-sm-right">Course Type</label>
                         <div class="col-sm-10">
                             <select name="course_type" id="school" class="custom-select" required>
-                                <option value="" disabled selected="">Select School</option>
+                                <option value="" disabled selected="">Select Course Type</option>
 								@foreach($schools as $id => $val)
                                 <option value="{{$id}}" @if($id == $subject->school_id ) selected @endif>{{$val}}</option>
                                 @endforeach								
