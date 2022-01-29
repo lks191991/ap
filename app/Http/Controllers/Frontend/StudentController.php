@@ -501,7 +501,7 @@ class StudentController extends Controller
 			return redirect()->route('mylearningList')->with('error', 'Course not available currently');
 		}
 		
-		$subject = Subject::with('topics','topics.videos','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->first()->sortBy('topics.id');
+		$subject = Subject::with('topics','topics.videos','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->orderBy('created_at','DESC')->first();
 		
 		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
 		if($videoUid==null)

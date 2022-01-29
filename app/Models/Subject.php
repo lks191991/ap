@@ -35,7 +35,7 @@ class Subject extends Model
      */
     public function topics()
     {
-        $query = $this->hasMany(Topic::class, 'subject_id')->orderBy('weight', 'asc');
+        $query = $this->hasMany(Topic::class, 'subject_id')->orderBy('id', 'asc');
 
         return $query;
     }
