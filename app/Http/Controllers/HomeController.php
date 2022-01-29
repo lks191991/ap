@@ -78,10 +78,14 @@ class HomeController extends Controller
 		
 		
 		
-		$course = Course::where('status', '=', 1)->where('uuid', '=', $uuid)->has('videos')->first();
+        $course = Course::where('status', '=', 1)->where('uuid', '=', $uuid)->first();
 		
-		$subjects = Subject::with('topics')->where('course_id', '=', $course->id)->where('status', '=', 1)->orderBy('created_at','DESC')->get();
-		
+		$subjects = Subject::with('topics')->where('course_id', '=', $course->id)->where('status', '=', 1)->orderBy('created_at','DESC')->has('videos')->get();
+		if($course->demo_video_url=='')
+		{
+		return redirect()->route('course-list',[$course->id])->with('error', 'Course not available currently');
+
+		}
 
         return view('frontend.subject_details',compact('course','subjects'));
     }

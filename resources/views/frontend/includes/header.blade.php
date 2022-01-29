@@ -63,13 +63,7 @@ $routeName = Route::currentRouteName();
                                             class="fas fa-caret-down d-lg-none"></i></a>
                                     <ul class="mega-menu-tree-list p-0 list-unstyled">
 									@foreach($menu->courses as $course)
-									@php
-									$count=GLB::hasVideo($course->id);
-									@endphp
-									@if($count>0)
                                         <li><a class="dropdown-item" href="{{route('course-details',['uuid'=>$course->uuid])}}">{{$course->name}}</a></li>
-										
-										@endif 
                                       @endforeach  
                                     </ul>
                                 </li>
