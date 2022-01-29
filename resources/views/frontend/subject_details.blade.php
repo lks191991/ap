@@ -130,7 +130,7 @@
 						<ul class="p-0 list-unstyled">
 						<li>
 								<span>
-									<img src="{{asset('images/p-icon-course.svg')}}" style="height: 35px;" alt="Icon" /> Course Type : 
+									<img src="{{asset('images/p-icon-course-icon.png')}}" style="height: 35px;" alt="Icon" /> Course Type : 
 								</span>
 								<span>{{$course->school->school_name}}</span>
 							</li>
