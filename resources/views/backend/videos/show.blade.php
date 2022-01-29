@@ -121,7 +121,7 @@
                 @endphp
                 @if ($toutube=='1')
                 <div class="lesson-video" id="video_player_box" >
-					<iframe class="bg-dark" src="{{$course->video_url}}?byline=false"  id="videoPlayer" width="100%" height="350"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
+					<iframe class="bg-dark" src="{{$video->video_url}}?byline=false"  id="videoPlayer" width="100%" height="350"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
 					
 					</div>
                     @endif
