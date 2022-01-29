@@ -71,7 +71,7 @@ $routeName = Route::currentRouteName();
                             </ul>
                         </li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
+							<a class="nav-link" href="{{route('frontend.aboutUs')}}">About</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{{route('frontend.contactUs')}}">Contact</a>
