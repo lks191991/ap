@@ -52,7 +52,7 @@ class HomeController extends Controller
 	public function courseList(Request $request,$CourseTypeId)
     {
 		
-		$allCourses = Course::with('videos')->where('school_id', '=', $CourseTypeId)->where('status', '=', 1)->orderBy('created_at','DESC')->has('videos')->paginate(20);
+		$allCourses = Course::with('videos')->where('school_id', '=', $CourseTypeId)->where('status', '=', 1)->orderBy('created_at','DESC')->paginate(20);
 		
         return view('frontend.list',compact('allCourses'));
     }
@@ -68,7 +68,7 @@ class HomeController extends Controller
 		{
 			$query->where('name', 'like', '%' . $data['search_text'] . '%');
 		}
-		$allCourses = $query->orderBy('created_at','DESC')->has('videos')->paginate(20);
+		$allCourses = $query->orderBy('created_at','DESC')->paginate(20);
 		
         return view('frontend.course_search',compact('allCourses'));
     }
