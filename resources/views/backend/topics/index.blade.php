@@ -55,8 +55,7 @@
 				"columns": [
 				  null,
 				  { "orderable": false },
-				  { "orderable": false },
-				  { "orderable": false },
+				 
 				  { "orderable": false },
 				  { "orderable": false },
 				  null,
@@ -72,33 +71,21 @@
 		  // table.search(this.value, true, false).draw();   
 		});
 	
-		$('#school').on('change', function(){		
+		$('#class').on('change', function(){		
 	   //alert('gdfgfd');
 		regExSearch = this.value +'\\s*$';
 		table.column(2).search(regExSearch, true, false).draw();
 	   //table.search(this.value, true, false).draw();   
 		});
 	   
-	   $('#school_course').on('change', function(){		
+	   $('#subject').on('change', function(){		
 		   //alert('gdfgfd');
 			regExSearch = this.value +'\\s*$';
 			table.column(3).search(regExSearch, true, false).draw();
 		   //table.search(this.value, true, false).draw();   
 		});
 		
-		$('#class').on('change', function(){		
-		   //alert('gdfgfd');
-		   regExSearch = this.value +'\\s*$';
-		   table.column(4).search(regExSearch, true, false).draw();
-		   table.search(this.value, true, false).draw();   
-		});
 		
-		$('#subject').on('change', function(){		
-		   //alert('gdfgfd');
-		   regExSearch = this.value +'\\s*$';
-		   table.column(5).search(regExSearch, true, false).draw();
-		   table.search(this.value, true, false).draw();   
-		});
 
 	
     });
@@ -123,29 +110,19 @@
 						Topic Name
 						<input type="text" name="topic_name" id="topic_name" class="form-control">
 					</th>
+					
+					
 					<th class="align-top">
-						School
-						<select name="school" id="school" class="custom-select">
-								<option value="" selected="">All</option>
+					School
+						<select name="class" id="class" class="custom-select">
+								<option value="" selected="">All</option>   
 								@foreach($schools as $id => $type)
 									<option value="{{$type}}" data-id="{{$id}}">{{$type}}</option>
-								@endforeach
+								@endforeach                     
 						</select>
 					</th>
 					<th class="align-top">
-						Course
-						<select name="course" id="school_course" class="custom-select">
-										<option value="" selected="">All</option>
-						</select>
-					</th>
-					<th class="align-top">
-						Class
-						<select name="class" id="class" class="custom-select">
-								<option value="" selected="">All</option>                        
-						</select>
-					</th>
-					<th class="align-top">
-						Subject
+					Course
 						<select name="subject" id="subject" class="custom-select">
 									<option value="" selected="">All</option>                        
 						</select>
@@ -163,8 +140,6 @@
                 <tr>
                     <td>{{ ++$i }}</td>
                     <td>{{$topic->topic_name}}</td>
-					<td>{{$topic->school_details($course_details->school_id)}}</td>
-					<td>{{$course_details->name}}</td>
 					<td>{{$class_details->class_name}}</td>
 					<td>{{$topic->subject->subject_name}}</td>
                     <td>{{$topic->status ? 'Active':'Disabled'}}</td>

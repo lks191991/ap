@@ -12,40 +12,8 @@ var subject_id = "{{request('subject')}}";
 <script type="text/javascript">
        $(document).ready(function () {
 
-        $("#school").on("change", function () {
-            var school_id = $(this).val();
-            //var school_id = $('#school option:selected').attr('data-id');
-            $.ajax({
-                type: "POST",
-                url: '{{ route("ajax.school.stdfiltercourses",[1]) }}',
-                data: {'school_id': school_id, '_token': '{{ csrf_token() }}'},
-                success: function (data) {
-                    $("#school_course").html(data);
-					 if(course_id){
-                            $("#school_course").val(course_id).trigger('change');
-                        }
-                }
-            });
-
-        });
-
-        $("#school_course").on("change", function () {
-            var school_course = $('#school_course').val();
-            //var school_course = $('#school_course option:selected').attr('data-id');
-            if (school_course) {
-                $.ajax({
-                    type: "POST",
-                    url: '{{ route("ajax.school.stdfiltercourseclasses",[1]) }}',
-                    data: {'course_id': school_course, '_token': '{{ csrf_token() }}'},
-                    success: function (data) {
-                        $("#class").html(data);
-					 if(class_id){
-                            $("#class").val(class_id).trigger('change');
-                        }
-                    }
-                });
-            }
-        });
+       
+       
 
         $("#class").on("change", function () {
             //var class_id = $('#class option:selected').attr('data-id');
@@ -118,9 +86,11 @@ var subject_id = "{{request('subject')}}";
             $('#filterForm').submit()
         });
 	
-	
-		if(school_id){
-		$("#school").val(school_id).trigger('change');
+		$('#ResetBtn').on('click', function () {
+            window.location.href = "{{route('backend.videos.index')}}";
+        });
+		if(class_id){
+		$("#class").val(class_id).trigger('change');
 		}
 
     });
@@ -142,27 +112,9 @@ var subject_id = "{{request('subject')}}";
                 <tr>
 				<form action="{{route('backend.videos.index')}}" id="filterForm" method = "get" >
                     <th class="align-top">Date</th>
+                   
                     <th class="align-top">
-                        School
-                        @role('admin|subadmin')
-                        <select name="school" id="school" class="custom-select">
-                            <option value="" selected="">All</option>
-                            @foreach($schools as $id => $type)
-                            <option value="{{$id}}" data-id="{{$id}}">{{$type}}</option>
-                            @endforeach
-                        </select>
-                        @endrole
-                    </th>
-                    <th class="align-top">
-                        Course
-                        @role('admin|subadmin')
-                        <select name="course" id="school_course" class="custom-select">
-                            <option value="" selected="">All</option>
-                        </select>
-                        @endrole
-                    </th>
-                    <th class="align-top">
-                        Class
+                    School
                         <select name="class" id="class" class="custom-select">
                             <option value="" selected="">All</option>
                             @foreach($classes as $id => $type)
@@ -171,7 +123,7 @@ var subject_id = "{{request('subject')}}";
                         </select>
                     </th>
                     <th class="align-top">
-                        Subject
+                    Course
                         <select name="subject" id="subject" class="custom-select">
                             <option value="" selected="">All</option>  
 							@foreach($subjects as $id => $type)
@@ -194,8 +146,7 @@ var subject_id = "{{request('subject')}}";
                 @foreach($videos as $video)
                 <tr>
                     <td>{{$video->playOn()}}</td>
-                    <td>{{$video->school->school_name}}</td>
-                    <td>{{$video->course->name}}</td>
+                   
                     <td>{{$video->classDetail->class_name}}</td>
                     <td>{{$video->subject->subject_name}}</td>
                     <td>

@@ -1,8 +1,7 @@
 <!-- Header -->
-@php 
-$menus=GLB::getAllCourse();
-
- @endphp
+@php
+$routeName = Route::currentRouteName();
+@endphp
 	<header class="header-main">
 		<div class="top-strip border-bottom py-2">
 			<div class="container">
@@ -26,11 +25,11 @@ $menus=GLB::getAllCourse();
 					<div class="col-md-6">
 						<ul class="p-0 m-0 d-flex justify-content-md-end list-unstyled list-gap contact-list flex-wrap">
 							<li>
-								<a href="tel:+91-0866-2974130"><i class="fas fa-phone-alt ms-md-2 me-1"></i> +91-0123-1234567</a>
+								<a href="tel:+91-0866-2974130"><i class="fas fa-phone-alt ms-md-2 me-1"></i> {!! $settings['contact_number'] !!}</a>
 							</li>
 							<li>
 								<a href="mailto:bieap1819@gmail.com"><i class="fas fa-envelope ms-md-2 me-1"></i>
-									email@gmail.com</a>
+								{!! $settings['contact_email'] !!}</a>
 							</li>
 						</ul>
 					</div>
@@ -50,7 +49,7 @@ $menus=GLB::getAllCourse();
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
+							<a class="nav-link {{ strpos($routeName, 'home') !== false ? ' active' : '' }} " aria-current="page" href="{{route('home')}}">Home</a>
 						</li>
 						 <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -72,10 +71,10 @@ $menus=GLB::getAllCourse();
                             </ul>
                         </li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
+							<a class="nav-link {{ strpos($routeName, 'frontend.aboutUs') !== false ? ' active' : '' }}" href="{{route('frontend.aboutUs')}}">About</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{route('frontend.contactUs')}}">Contact</a>
+							<a class="nav-link {{ strpos($routeName, 'frontend.contactUs') !== false ? ' active' : '' }}" href="{{route('frontend.contactUs')}}">Contact</a>
 						</li>
 						
 						@if(isset(Auth::user()->id))

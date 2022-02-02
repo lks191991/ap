@@ -14,35 +14,12 @@
             @csrf
             @method('PUT')
             
-			<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" readonly required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-                                <option value="{{$id}}" @if($id == $topic->category_id ) selected @endif>{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div>
+			
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
+                        <label class="col-form-label col-sm-2 text-sm-right">Institute</label>
                         <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" readonly required>
-                                <option value="" disabled selected="">Select School</option>
-								@foreach($schools as $id => $val)
-                                <option value="{{$id}}" @if($id == $topic->school_id ) selected @endif>{{$val}}</option>
-                                @endforeach								
-                            </select>
-                        </div>
-                    </div>
-					
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Course</label>
-                        <div class="col-sm-10">
-                            <select name="course" id="school_course" class="custom-select" readonly required>
-                                <option value="" disabled selected="">Select Course</option>
+                            <select name="institute" id="school_course" class="custom-select" readonly required>
+                                <option value="" disabled selected="">Select Institute</option>
 								@foreach($courses as $id => $val)
                                 <option value="{{$id}}" @if($id == $topic->course_id ) selected @endif>{{$val}}</option>
                                 @endforeach
@@ -51,10 +28,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
+                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
                         <div class="col-sm-10">
                             <select name="class" id="class" class="custom-select" readonly required>
-                                <option value="" disabled selected="">Select Class</option>
+                                <option value="" disabled selected="">Select School</option>
 								@foreach($classes as $id => $val)
                                 <option value="{{$id}}" @if($id == $topic->class_id ) selected @endif>{{$val}}</option>
                                 @endforeach
@@ -63,10 +40,10 @@
                     </div>
 			
 			<div class="form-group row">
-                <label class="col-form-label col-sm-2 text-sm-right">Subject</label>
+                <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                 <div class="col-sm-10">
-                    <select name="subject" id="subject" class="custom-select" readonly required>
-                        <option value="" selected="" disabled="">Choose Subject</option>
+                    <select name="course" id="subject" class="custom-select" readonly required>
+                        <option value="" selected="" disabled="">Choose Course</option>
                     @foreach($subjects as $id => $name)
                         <option value="{{$id}}" @if($id == $topic->subject_id ) selected @endif>{{$name}}</option>
                     @endforeach

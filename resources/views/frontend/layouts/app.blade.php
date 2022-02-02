@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 		integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="icon" type="image/x-icon" href="{{asset('favicon.png')}}">
+        <link rel="icon" type="image/png" href="{{asset('favicon.png')}}">
 	<!-- Owl Carousel -->
 	<link rel="stylesheet" href="{{ asset('css/front/owl.carousel.min.css')}}" type="text/css">
 
@@ -33,6 +33,11 @@
   </head>
   
     <body>
+    @php 
+$menus=GLB::getAllCourse();
+$settings= SiteHelpers::contactDetails();
+
+ @endphp
 	@include('frontend.includes.header')
         <div id="app" >
             
@@ -128,8 +133,7 @@
 		});
  $( function() {
     $( "#dob" ).datepicker({ 
-	minDate: -50,
-	maxDate: "0",
+	
 	dateFormat: 'dd-mm-yy',
 	changeMonth: true,
     changeYear: true

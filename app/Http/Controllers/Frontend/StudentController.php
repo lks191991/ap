@@ -53,18 +53,17 @@ class StudentController extends Controller
     public function profileFirst()
     {
 
-        $states = State::where('status', '=', 1)->orderBy('name')->pluck('name', 'id');
         if (Auth::user()->userRole->role->slug == 'admin') {
             return redirect()->route('backend.dashboard');
         } else if (Auth::user()->userRole->role->slug == 'student') {
 			
             $student = User::where("id",Auth::user()->id)->first();
-            return view('frontend.student.profile-first', compact('student','states'));
+            return view('frontend.student.profile-first', compact('student'));
 
         } else if (Auth::user()->userRole->role->slug == 'tutor') {
 
             $tutor = User::where("id",Auth::user()->id)->first();
-            return view('frontend.tutor.profile-first', compact('tutor','states'));
+            return view('frontend.tutor.profile-first', compact('tutor'));
             return $this->tutor();
         }
     }
@@ -479,7 +478,7 @@ class StudentController extends Controller
 	public function mylearningList(Request $request)
     {
 		$user = Auth::user();
-		$data = UserSubscription::with('course','subject','user')->where("user_id",$user->id)->paginate(20);
+		$data = UserSubscription::with('subject','user')->where("user_id",$user->id)->paginate(20);
 		
 		return view('frontend.my-learning',compact('data'));
 	}
@@ -495,7 +494,7 @@ class StudentController extends Controller
 		
 		$subject = Subject::with('topics','topics.videos','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->orderBy('created_at','DESC')->first();
 		
-		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
+		
 		if($videoUid==null)
 		{
 			$video = Video::where('status', '=', 1)->where('subject_id', '=', $subject->id)->where('video_upload_type', '=', 'main')->first();
@@ -519,7 +518,7 @@ class StudentController extends Controller
         $this->studentVideo($video->id, $user->id);
         $video_watch_count = StudentVideo::where('video_id', $video->id)->sum('video_watch_count');
 
-		return view('frontend.my-learning-details',compact('subject','course','video','data','tab','isFav','video_watch_count','averageRating','myRateing'));
+		return view('frontend.my-learning-details',compact('subject','video','data','tab','isFav','video_watch_count','averageRating','myRateing'));
 	}
 	
     public function setRatingvideo(Request $request)

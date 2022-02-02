@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ContactInquiry;
 use App\Models\Setting;
+use App\Models\Page;
 use App\Mail\sendContactInquiry;
 use App\Models\Newsletter;
 use Illuminate\Support\Facades\Mail;
@@ -83,7 +84,7 @@ class PageController extends Controller
                 'message'        => $request->input('message'),
             );
         $setting = Setting::where('key_name','admin_email')->first(); 
-        $sendTo = 'sunil.sharma@dotsquares.com';
+        $sendTo = $setting->admin_email;
         //$sendTo = 'xtraclass@mailinator.com';
 	
 		Mail::to($setting->val, "New contact inquiry")->send(new sendContactInquiry($data));    
@@ -117,6 +118,24 @@ class PageController extends Controller
             return redirect()->route('home')->with('success',"Your email has been successfully saved.");
          }
 
+    }
+
+    public function aboutUs()
+    {	
+        $page = Page::where('id','1')->first();
+        return view('frontend.pages.pageall',compact('page'));
+    }
+
+    public function privacy()
+    {	
+        $page = Page::where('id','2')->first();
+        return view('frontend.pages.pageall',compact('page'));
+    }
+
+    public function terms()
+    {	
+        $page = Page::where('id','3')->first();
+        return view('frontend.pages.pageall',compact('page'));
     }
     
 }

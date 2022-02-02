@@ -39,14 +39,7 @@ class VideoController extends Controller
 		$classes = array();
         
         $query = Video::where('id','<>',0);
-		if(isset($filter['school']) && !empty($filter['school']))
-		{
-			$query->where('school_id','=',$filter['school']);
-		}
-		if(isset($filter['school_course']) && !empty($filter['school_course']))
-		{
-			$query->where('course_id','=',$filter['school_course']);
-		}
+		
 		if(isset($filter['class']) && !empty($filter['class']))
 		{
 			$query->where('class_id','=',$filter['class']);
@@ -56,23 +49,7 @@ class VideoController extends Controller
 			$query->where('subject_id','=',$filter['subject']);
 		}
         
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $query = $query->where('school_id','=',$profile->school_id);
-				$courses = Course::where('school_id',$profile->school_id)->where('status',1)->orderBy('name')->select('id', 'name')
-                        ->get();
-				$school_details = School::where('id', $profile->school_id)->select('school_category')->first();
-				if($school_details->school_category === config("constants.BASIC_SCHOOL")){
-					
-					if(isset($courses[0]->id)) {
-						$classes = Classes::where('course_id',$courses[0]->id)->where('status',1)->orderBy('class_name')
-								->pluck('class_name','id');
-					}
-				} 
-            } 
-			
-		} 
+      
         
         $videos = $query->orderBy('id', 'desc')->paginate(20);
 		
@@ -83,22 +60,14 @@ class VideoController extends Controller
 			$repoted_count[$video->id] = $report_video_count;
 		}
 		
-		$query = School::where('status','=',1);
 		
-		 if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $school_id = $profile->school_id;
-               $query = $query->where('id','=',$school_id);
-            }            
-        }
-        
-        $schools = $query->orderBy('school_name')
-                        ->pluck('school_name','id');
+        $query = Classes::where('status', '=', 1);
+        $classes = $query->orderBy('class_name')
+                ->pluck('class_name', 'id');
 	$subjects = Subject::where('status','=',1)->select('subject_name','id')->get();
 						
 		
-		return view('backend.videos.index', compact('videos', 'repoted_count', 'schools', 'courses', 'classes','subjects'));
+		return view('backend.videos.index', compact('videos', 'repoted_count', 'classes','subjects'));
     }
 
     /**
@@ -108,7 +77,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        $query = SchoolCategory::where('status','=',1);
+        $query = Course::where('status','=',1);
         $school_id = 0;
         $category_id = 0;
         $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
@@ -130,7 +99,6 @@ class VideoController extends Controller
     public function store(Request $request)
     {        
         $validator = Validator::make($request->all(), [
-            'school' => 'required',
             'course' => 'required',
             'class' => 'required',
             'date' => 'required',
@@ -143,6 +111,10 @@ class VideoController extends Controller
             //'video_file' => 'required_without:video_url',
             'description' => 'required',  
             //'note_file' => 'sometimes|mimes:jpeg,jpg,png,pdf,doc,docx,ppt,pptx,zip|max:20480',
+        ],[
+            'course.required' => "Institute Name required",
+            'class.required' => "Shool Name required",
+            'subject.required' => "Course Name required",
         ]);
         
 
@@ -218,7 +190,7 @@ class VideoController extends Controller
 				$video->banner_image = $imagePath;
 			}
 		
-            $video->school_id = $request->school;
+            $video->school_id = 1;
             $video->course_id = $request->course;
             $video->class_id = $request->class;
             $video->play_on = $request->date;
@@ -276,7 +248,7 @@ class VideoController extends Controller
         
         $video = Video::uuid($uuid);
 		
-        $query = SchoolCategory::where('status','=',1);
+        $query = Course::where('status','=',1);
        $tutors = Tutor::where('status','=',1)->select('first_name','last_name','id')->get();
         $institutes = $query->orderBy('name')
                         ->pluck('name','id');
@@ -307,6 +279,10 @@ class VideoController extends Controller
             'description' => 'required',  
             //'note_file' => 'sometimes|mimes:jpeg,png,pdf,doc,docx,ppt,pptx,zip|max:20480',
             'tutor' => 'required'      
+        ],[
+            'course.required' => "Institute Name required",
+            'class.required' => "Shool Name required",
+            'subject.required' => "Course Name required",
         ]);
                                 
         // if the validator fails, redirect back to the form

@@ -44,7 +44,7 @@
                     </th>
                   <th class="align-top">Watched</th>
                   
-                    <th class="align-top">Subject</th>
+                    <th class="align-top">Course</th>
 					 <th  class="align-top">Topic</th>
 					<th class="align-top">Video Title
 					<div class="row">

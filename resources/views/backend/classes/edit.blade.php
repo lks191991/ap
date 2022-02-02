@@ -13,36 +13,15 @@
         <form action="{{route('backend.classes.update', $class->id)}}" method = "POST">
             @csrf
             @method('PUT')
-			<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" disabled required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-                                <option value="{{$id}}" @if($id == $class->category_id ) selected @endif>{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
-                        <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" disabled required>
-                                <option value="" disabled selected="">Select School</option>
-								@foreach($schools as $id => $val)
-                                <option value="{{$id}}" @if($id == $class->school_id ) selected @endif>{{$val}}</option>
-                                @endforeach								
-                            </select>
-                        </div>
-                    </div>
+			
+                  
 				
 					
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Course</label>
+                        <label class="col-form-label col-sm-2 text-sm-right">Institute</label>
                         <div class="col-sm-10">
-                            <select name="course" id="school_course" class="custom-select" disabled required>
-                                <option value="" disabled selected="">Select Course</option>
+                            <select name="institute" id="school_course" class="custom-select"  required>
+                                <option value="" disabled selected="">Select Institute</option>
 								@foreach($courses as $id => $val)
                                 <option value="{{$id}}" @if($id == $class->course_id ) selected @endif>{{$val}}</option>
                                 @endforeach
@@ -50,9 +29,9 @@
                         </div>
                     </div>
             <div class="form-group row">
-                <label class="col-form-label col-sm-2 text-sm-right">Class Name</label>
+                <label class="col-form-label col-sm-2 text-sm-right">School Name</label>
                 <div class="col-sm-10">
-                    <input type="text" name="class_name" placeholder="Class Name" class="form-control" value="{{$class->class_name}}" required>
+                    <input type="text" name="class_name" placeholder="School Name" class="form-control" value="{{$class->class_name}}" required>
                 </div>
             </div>
             <div class="form-group row">

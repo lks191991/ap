@@ -2,7 +2,7 @@
 
 <html lang="en" class="default-style">
     <head>
-        <title>Saurya</title>
+        <title>{{ config('app.name', '')}}</title>
 
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
@@ -110,8 +110,15 @@
 			
 			$( function() {
     $( "#dob" ).datepicker({ 
+
+	
+	dateFormat: 'dd-mm-yy',
+	changeMonth: true,
+    changeYear: true
+	});
+
+    $( ".dateinput" ).datepicker({ 
 	minDate: -50,
-	maxDate: "0",
 	dateFormat: 'dd-mm-yy',
 	changeMonth: true,
     changeYear: true

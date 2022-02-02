@@ -44,7 +44,7 @@
                     </th>
                   
                   
-                    <th class="align-top">Subject
+                    <th class="align-top">Course
 
                     </th>
 					 <th  class="align-top">Topic

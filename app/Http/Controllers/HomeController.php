@@ -68,14 +68,13 @@ class HomeController extends Controller
 		
 		$subject = Subject::with('topics','subject_class')->where('id', '=', $subjectId)->where('status', '=', 1)->orderBy('created_at','DESC')->first();
 		
-		$course = Course::where('status', '=', 1)->where('id', '=', $subject->course_id)->first();
 		$video = Video::where('status', '=', 1)->where('subject_id', '=', $subject->id)->first();
 		if(!$video)
 		{
 		return redirect()->route('course-list',[$subject->course_id])->with('error', 'Course not available currently');
 
 		}
-        return view('frontend.subject_details',compact('subject','course','video'));
+        return view('frontend.subject_details',compact('subject','video'));
     }
 	
 	

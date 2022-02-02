@@ -2,46 +2,24 @@
 
 @section('content')
 <h4 class="font-weight-bold py-3 mb-4">
-    <span class="text-muted font-weight-light">Subjects /</span> Edit Subject
+    <span class="text-muted font-weight-light">Courses /</span> Edit Course
 </h4>
 <div class="card mb-4">
     <h6 class="card-header">
-        Edit Subject
+        Edit Course
     </h6>
     <div class="card-body">
         @includeif('backend.message')
         <form action="{{route('backend.subjects.update', $subject->id)}}" enctype="multipart/form-data" method = "POST">
             @csrf
             @method('PUT')
-			<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
-                        <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" disabled required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
-                                @foreach($institutes as $id => $type)
-                                <option value="{{$id}}" @if($id == $subject->category_id ) selected @endif>{{$type}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
-                        <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" disabled required>
-                                <option value="" disabled selected="">Select School</option>
-								@foreach($schools as $id => $val)
-                                <option value="{{$id}}" @if($id == $subject->school_id ) selected @endif>{{$val}}</option>
-                                @endforeach								
-                            </select>
-                        </div>
-                    </div>
+			
 					
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Course</label>
+                        <label class="col-form-label col-sm-2 text-sm-right">Institute</label>
                         <div class="col-sm-10">
                             <select name="course" id="school_course" class="custom-select" disabled required>
-                                <option value="" disabled selected="">Select Course</option>
+                                <option value="" disabled selected="">Select Institute</option>
 								@foreach($courses as $id => $val)
                                 <option value="{{$id}}" @if($id == $subject->course_id ) selected @endif>{{$val}}</option>
                                 @endforeach
@@ -50,10 +28,10 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
+                        <label class="col-form-label col-sm-2 text-sm-right">School</label>
                         <div class="col-sm-10">
                             <select name="class" id="class" class="custom-select" disabled required>
-                                <option value="" disabled selected="">Select Class</option>
+                                <option value="" disabled selected="">Select School</option>
 								@foreach($classes as $id => $val)
                                 <option value="{{$id}}" @if($id == $subject->class_id ) selected @endif>{{$val}}</option>
                                 @endforeach
@@ -62,9 +40,9 @@
                     </div>
             
 			<div class="form-group row">
-                <label class="col-form-label col-sm-2 text-sm-right">Subject Name</label>
+                <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                 <div class="col-sm-10">
-                    <input type="text" name="subject_name" placeholder="Subject Name" class="form-control" value="{{$subject->subject_name}}" required>
+                    <input type="text" name="subject_name" placeholder="Course Name" class="form-control" value="{{$subject->subject_name}}" required>
                 </div>
             </div>
 			<div class="form-group row">
@@ -73,7 +51,12 @@
                     <input type="text" name="subject_price" placeholder="Subject Price" class="form-control" value="{{$subject->subject_price}}" required>
                 </div>
             </div>
-			
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Demo Video URL</label>
+                <div class="col-sm-10">
+                    <input type="text" name="demo_video_url" placeholder="Demo Video URL" value="{{$subject->demo_video_url}}" class="form-control" required>
+                </div>
+            </div>
 			<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">Banner Image</label>
                     <div class="col-sm-10">
@@ -86,7 +69,13 @@
 						</small>
 					</div>
                 </div>
-				
+                <div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Description</label>
+                <div class="col-sm-10">
+                <textarea class="form-control" name="description" rows="3" required>{{$subject->description}}</textarea>
+                </div>
+                       
+                    </div> 
             <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right"></label>
                 <div class="col-sm-10">

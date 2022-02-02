@@ -25,20 +25,7 @@ class CourseController extends Controller
     public function index()
     {	
 
-		if(Auth::user()->hasRole('school')){
-            return redirect()->route('backend.dashboard');          
-        }
-
-		//Show all courses from the database and return to view
-		if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-			   $courses = Course::where('school_id', $profile->school_id)->orderBy('id', 'desc')->get();
-             }            
-        } else {
 			$courses = Course::orderBy('id', 'desc')->get();
-		} 
-        
 		
 		//pr($schools); 
 		//echo json_encode($schools);
@@ -58,25 +45,10 @@ class CourseController extends Controller
             return redirect()->route('backend.dashboard');          
         }
 	
-		$query = SchoolCategory::where('status','=',1);
        
-        //Check for the user profile      
-        if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if(isset($profile->school_id)){
-                $school_id = $profile->school_id;
-                $category_id = $profile->school->school_category;
-                $query = $query->where('id','=',$profile->school->school_category);
-            }            
-        } 
-        
-        $institutes = $query->orderBy('name')
-                        ->pluck('name','id');
 		
-		
-		$schools = School::where('status', 1)->get();
 			
-		return view('backend.course.create', compact('schools', 'institutes'));
+		return view('backend.course.create');
     }
 
     /**
@@ -90,29 +62,13 @@ class CourseController extends Controller
 		 //Persist the course in the database
         //form data is available in the request object
         $course = new Course();
-		$school_id = $request->input('school_name');
-		
-		if(Auth::user()->hasRole('school')){
-            $profile = Auth::user()->profile;
-            if($profile->school_id != $school_id){
-				return redirect()->route('backend.dashboard');
-			}
-		}
 		
 		$institute_type = $request->input('institute_type');
 		$ajax_request = $request->input('ajax_request');
 		
 			
 			$validator = Validator::make($request->all(), [
-				'institute_type' => 'required',
-				'school_name' => 'required',
-				'name' => [
-					'required',
-					'max:180',
-					Rule::unique('courses')->where(function ($query) use($school_id) {  
-						return $query->where('school_id', $school_id);
-					})
-				],
+				'name' => 'required|unique:courses,name|max:180',   
 				
 			]);
 		
@@ -122,42 +78,16 @@ class CourseController extends Controller
                 ->withInput();
         }
 		
-		 /** Below code for save banner_image * */
-        if ($request->hasFile('banner_image')) {
-
-            $validator = Validator::make($request->all(), [
-                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                            ], [
-                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('backend.courses.create')->withErrors($validator)->withInput();
-            }
-
-            $destinationPath = public_path('/uploads/course/');
-            $newName = '';
-            $fileName = $request->all()['banner_image']->getClientOriginalName();
-            $file = request()->file('banner_image');
-            $fileNameArr = explode('.', $fileName);
-            $fileNameExt = end($fileNameArr);
-            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
-
-            $file->move($destinationPath, $newName);
-
-            $imagePath = 'uploads/course/' . $newName;
-            $course->banner_image = $imagePath;
-        }
 		
        //input method is used to get the value of input with its
         //name specified
 		$course->name = $request->input('name');
-		$course->school_id = $request->input('school_name');
-		$course->description = $request->input('description');
+		$course->school_id = 1;
+		$course->description = '';
 		$course->status = ($request->input('status') !== null)? $request->input('status'):0;
 		$course->save(); //persist the data
 		
-			return redirect()->route('backend.courses')->with('success','Course Created Successfully');
+			return redirect()->route('backend.courses')->with('success','Institution Created Successfully');
     }
 
     /**
@@ -193,11 +123,8 @@ class CourseController extends Controller
         $course = Course::find($id);
 		
 		
-		$institutes = SchoolCategory::orderBy('name')->where('status','=',1)->pluck('name','id');
-		$school_details = School::where('id',$course->school_id)->select('school_category')->first();
-		$schools = School::where('status',1)->where('school_category',$school_details->school_category)->get();
 		
-		return view('backend.course.edit',compact('course', 'schools', 'institutes', 'school_details'));
+		return view('backend.course.edit',compact('course'));
 
     }
 	
@@ -237,15 +164,13 @@ class CourseController extends Controller
 		
 			
 			$validator = Validator::make($request->all(), [
-				//'institute_type' => 'required',
-				//'school_name' => 'required',
-				'name' => [
-					'required',
-					'max:180',
-					Rule::unique('courses')->where(function ($query) use($school_id, $id) {  
-						return $query->where('school_id', $school_id)->where('id','<>', $id);
-					})
-				],
+                'name' => [
+                    'required',
+                    'max:180',
+                    Rule::unique('courses')->where(function ($query) use($id) {  
+                        return $query->where('id','<>', $id);
+                    })
+                ],
 				
 			]);
 		
@@ -255,44 +180,12 @@ class CourseController extends Controller
                 ->withInput();
         }
 		
-		if ($request->hasFile('banner_image')) {
-
-            $validator = Validator::make($request->all(), [
-                        'banner_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-                            ], [
-                        'banner_image.max' => 'The banner image may not be greater than 2 mb.',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->route('backend.subjects.edit', $id)->withErrors($validator)->withInput();
-            }
-
-            $destinationPath = public_path('/uploads/course/');
-            $newName = '';
-            $fileName = $request->all()['banner_image']->getClientOriginalName();
-            $file = request()->file('banner_image');
-            $fileNameArr = explode('.', $fileName);
-            $fileNameExt = end($fileNameArr);
-            $newName = date('His') . rand() . time() . '__' . $fileNameArr[0] . '.' . $fileNameExt;
-
-            $file->move($destinationPath, $newName);
-
-            $oldImage = public_path($course->banner_image);
-            //echo $oldImage; exit;
-            if (!empty($course->banner_image) && file_exists($oldImage)) {
-                unlink($oldImage);
-            }
-
-            $imagePath = 'uploads/course/' . $newName;
-            $course->banner_image = $imagePath;
-        }
 		
 		$course->name = $request->input('name');
-		$course->description = $request->input('description');
 		$course->status = ($request->input('status') !== null)? $request->input('status'):0;
         $course->save(); //persist the data
 		
-        return redirect()->route('backend.courses')->with('success','Course Information Updated Successfully');
+        return redirect()->route('backend.courses')->with('success','Institution Information Updated Successfully');
 		
         
 
@@ -333,6 +226,6 @@ class CourseController extends Controller
 		
         $course->delete();
 		
-			return redirect()->route('backend.courses')->with('success','Course Deleted Successfully');
+			return redirect()->route('backend.courses')->with('success','Institution Deleted Successfully');
 	}
 }

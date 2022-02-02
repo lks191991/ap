@@ -26,6 +26,19 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Contact Number</label>
+                <div class="col-sm-10">
+                    <input type="text" name="contact_number" placeholder="Contact Number" value="{{ $settings['contact_number'] }}" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Contact Us Address</label>
+                <div class="col-sm-10">
+                    <textarea name="contact_page_address" placeholder="Contact Us Address" class="form-control">{{ $settings['contact_page_address'] }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Records Per Page</label>
                 <div class="col-sm-10">
                     <select name="records_per_page" placeholder="Records Per Page" class="custom-select" required>
@@ -37,7 +50,7 @@
                     
                 </div>
             </div>
-
+        
             <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Default Meta Title</label>
                 <div class="col-sm-10">

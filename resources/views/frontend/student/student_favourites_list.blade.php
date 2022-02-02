@@ -37,7 +37,7 @@
 								<table class="table custom-table mt-4">
 									<thead>
 										<tr>
-											<th scope="col">Subject</th>
+											<th scope="col">Course</th>
 											<th scope="col">Topic</th>
 											<th scope="col">Video</th>
 											<th class="col">Action</th>

@@ -60,7 +60,7 @@
                     <div class="col-sm-6 col-xl-9">{{$video->video_upload_type}}</div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Subject</strong></div>
+                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Course</strong></div>
                     <div class="col-sm-6 col-xl-9">{{$video->topic->subject->subject_name}}</div>
                 </div>
                 <div class="row">
@@ -74,27 +74,10 @@
                 
                
                 <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2"><strong>Class</strong></div>
+                    <div class="col-sm-6 col-xl-3 mb-2"><strong>School</strong></div>
                     <div class="col-sm-6 col-xl-9">{{$video->classDetail->class_name}}</div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2">
-                        <strong>
-                           @if($video->school->school_category == config('constants.UNIVERSITY')) Program @else Course @endif
-                        </strong>
-                    </div>
-                    <div class="col-sm-6 col-xl-9">{{$video->course->name}}</div>
-                </div>
-                           
-                
-                <div class="row">
-                    <div class="col-sm-6 col-xl-3 mb-2"><strong>School Name</strong></div>
-                    <div class="col-sm-6 col-xl-9">
-                      
-                        {{$video->school->school_name}} <small>({{$video->school->category->name}})</small>
-                    </div>
-                </div>
                 
                 <div class="row">
                     <div class="col-sm-6 col-xl-3 mb-2"><strong>Tutor</strong></div>

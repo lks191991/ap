@@ -23,34 +23,22 @@
                 <div class="card-header">Video General Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">                   
-                    
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>Institution</label>
-                        <select name="institute_type" id="institute_type" class="custom-select" required>
-                            <option value="" selected="" disabled="">Choose Institute Type</option>
+                   
+                  
+                    <div class="form-group course_wrapper" >
+                        <label>Institute</label>
+                        <select name="course" id="school_course" class="custom-select" required>
+                            <option value="" disabled selected="">Select Institute</option>
                             @foreach($institutes as $id => $type)
                             <option value="{{$id}}">{{$type}}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="form-group @role('school') d-none @endrole">
-                        <label>School</label>
-                        <select name="school" id="school" class="custom-select" required>
-                            <option value="" disabled selected="">Select School</option>                        
-                        </select>
-                    </div>  
-                  
-                    <div class="form-group course_wrapper">
-                        <label>Course</label>
-                        <select name="course" id="school_course" class="custom-select" required>
-                            <option value="" disabled selected="">Select Course</option>
-                        </select>
-                    </div>
 
                     <div class="form-group">
-                        <label>Class</label>
+                        <label>School</label>
                         <select name="class" id="class" class="custom-select" required>
-                            <option value="" disabled selected="">Select Class</option>                        
+                            <option value="" disabled selected="">Select School</option>                        
                         </select>
                     </div>
                 
@@ -61,7 +49,7 @@
                  
                     
                     <div class="form-group">
-                        <label>Subject</label>
+                        <label>Course</label>
                         <select name="subject" id="subject" class="custom-select" required>
                             <option value="" selected="" disabled="">Choose Subject</option>                                
                         </select>               
@@ -83,7 +71,10 @@
                             @endforeach
                         </select>
                     </div>
-                       
+                    <div class="form-group">
+                        <label>Video Description</label>
+                        <textarea class="form-control" name="description" rows="3" required>{{old('description')}}</textarea>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -92,17 +83,8 @@
                 <div class="card-header">Video Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">
-                    <!--  <div class="form-inline mb-4">
-                        <label class="custom-control custom-radio justify-content-start mr-2">
-                            <input name="video_type" type="radio" class="custom-control-input video_type" value="url" required="">
-                            <span class="custom-control-label">Video by URL</span>
-                        </label>
-                     <label class="custom-control custom-radio justify-content-start mr-2">
-                            <input name="video_type" type="radio" class="custom-control-input video_type" value="file" >
-                            <span class="custom-control-label">Video by File</span>
-                        </label> 
-                    </div>-->
-					<div class="form-inline mb-4">
+                 
+					<div class="form-inline mb-4" style="display:none">
 					 <label class="custom-control custom-radio justify-content-start mr-2">
                             <input name="video_upload_type"checked type="radio" class="custom-control-input " value="main" >
                             <span class="custom-control-label">Main Video</span>
@@ -129,10 +111,7 @@
 					
 					
 				
-                    <div class="form-group">
-                        <label>Video Description</label>
-                        <textarea class="form-control" name="description" rows="3" required>{{old('description')}}</textarea>
-                    </div> 
+                 
 
                     <div class="form-group">
                         <label>Upload Note (If any)</label>

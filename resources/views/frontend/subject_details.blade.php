@@ -85,7 +85,7 @@
 								<div class="tab-pane fade show active" id="home" role="tabpanel"
 									aria-labelledby="home-tab">
 									<div class="tabbing-block">
-										<p class="description">{{$course->description}}</p>
+										<p class="description">{{$subject->description}}</p>
 									</div>
 									
 								</div>
@@ -99,22 +99,17 @@
 						<ul class="p-0 list-unstyled">
 						<li>
 								<span>
-									<img src="{{asset('images/p-icon-course.svg')}}" style="height: 35px;" alt="Icon" /> Course Type : 
+									<img src="{{asset('images/p-icon-course.svg')}}" style="height: 35px;" alt="Icon" />{{$subject->subject_class->class_name}}
 								</span>
-								<span>{{$course->name}}</span>
+								
 							</li>
 							<li>
 								<span>
-									<img src="{{asset('images/p-icon-subject.svg')}}" style="height: 35px;" alt="Icon" /> Course : 
+									<img src="{{asset('images/p-icon-subject.svg')}}" style="height: 35px;" alt="Icon" />{{$subject->subject_name}} 
 								</span>
-								<span>{{$subject->subject_name}}</span>
+								
 							</li>
-							<li>
-								<span>
-									<img src="{{asset('images/p-icon1.svg')}}" style="height: 35px;" alt="Icon" /> Level : 
-								</span>
-								<span>{{$subject->subject_class->class_name}}</span>
-							</li>
+							
 							
 							<li>
 								<span>
@@ -126,7 +121,6 @@
 						@if(isset(Auth::user()->id))
 							<form action="{{ route('frontend.payment') }}" method="get">
 						{{ csrf_field() }}
-						<input type="hidden"  name="cid" value="{{$course->uuid}}" />
 						<input type="hidden"  name="sid" value="{{$subject->uuid}}" />
 						<input type="hidden"  name="classid" value="{{$subject->class_id}}" />
 						<button type="submit" class="buy_now-btn btn btn-primary w-100 mt-4">Buy Now</button>

@@ -32,14 +32,14 @@
                  
 
                     <div class="form-group course_wrapper">
-                        <label>Course</label>
+                        <label>Institute</label>
                         <select name="course" id="school_course" class="custom-select" required>
                             <option value="" disabled selected="">Select Course</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label>Class</label>
+                        <label>School</label>
                         <select name="class" id="class" class="custom-select" required>
                             <option value="" disabled selected="">Select Class</option>                        
                         </select>
@@ -51,9 +51,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Subject</label>
+                        <label>Course</label>
                         <select name="subject" id="subject" class="custom-select" required>
-                            <option value="" selected="" disabled="">Choose Subject</option>                                
+                            <option value="" selected="" disabled="">Choose Course</option>                                
                         </select>               
                     </div>
 
@@ -63,7 +63,21 @@
                             <option value="" selected="" disabled="">Choose Topic</option>                                
                         </select>                
                     </div>
+                    <div class="form-group course_wrapper">
+                        <label>Tutor</label>
+                         <select name="tutor" id="tutor" class="custom-select" required>
+                            <option value="" disabled selected="">Select Tutor</option>
+							 @foreach($tutors as $id => $type)
+                            <option value="{{$type->id}}" @if($type->id == $video->tutor_id ) selected @endif>{{$type->first_name}} {{$type->last_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
+                    <div class="form-group">
+                        <label>Video Description</label>
+                        <textarea class="form-control" name="description" rows="3" required>{{$video->description}}</textarea>
+                    </div> 
+                    
                 </div>
             </div>
         </div>
@@ -72,7 +86,7 @@
                 <div class="card-header">Video Details</div>
                 <hr class="border-light m-0">
                 <div class="card-body">
-                   <div class="form-inline mb-4">
+                   <div class="form-inline mb-4" style="display:none">
 					 <label class="custom-control custom-radio justify-content-start mr-2">
                             <input name="video_upload_type" type="radio" class="custom-control-input " value="main" @if($video->video_upload_type=='main') checked @endif  >
                             <span class="custom-control-label">Main Video</span>
@@ -116,22 +130,9 @@
 						</small>
 					</div>
                 </div>
-                    <div class="form-group">
-                        <label>Video Description</label>
-                        <textarea class="form-control" name="description" rows="3" required>{{$video->description}}</textarea>
-                    </div> 
+                 
                     
                     
-                    <div class="form-group course_wrapper">
-                        <label>Tutor</label>
-                         <select name="tutor" id="tutor" class="custom-select" required>
-                            <option value="" disabled selected="">Select Tutor</option>
-							 @foreach($tutors as $id => $type)
-                            <option value="{{$type->id}}" @if($type->id == $video->tutor_id ) selected @endif>{{$type->first_name}} {{$type->last_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <div class="form-group">
                         <label>Keywords</label>
                         <input type="text" value="{{$video->keywords}}" name="keywords" id="keywords" data-role="tagsinput" class="form-control" />

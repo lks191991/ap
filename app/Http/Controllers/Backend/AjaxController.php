@@ -41,7 +41,7 @@ class AjaxController extends Controller
 		if(!empty($for_student_filter))
 		$sch_opts = '<option value="" selected>All</option>';
 		else
-        $sch_opts = '<option value="" disabled selected>Select School</option>';
+        $sch_opts = '<option value="" disabled selected>Select</option>';
 
 
         $category = $request->category;
@@ -81,7 +81,7 @@ class AjaxController extends Controller
      */
     public function getSchoolCourses(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Select Course</option>';
+        $options = '<option value="" disabled selected>Select</option>';
 
         $school_id = $request->school_id;
 
@@ -142,7 +142,7 @@ class AjaxController extends Controller
      */
     public function getDepartmentCourses(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Select Course</option>';
+        $options = '<option value="" disabled selected>Select</option>';
         
         $department_id = $request->department_id;
         
@@ -173,7 +173,7 @@ class AjaxController extends Controller
      */
     public function getSchoolDepartments(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Select Department</option>';
+        $options = '<option value="" disabled selected>Select</option>';
 
         $school_id = $request->school_id;
 
@@ -204,7 +204,7 @@ class AjaxController extends Controller
      */
     public function getSchoolCourseclasses(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Choose Class</option>';
+        $options = '<option value="" disabled selected>Choose</option>';
 
         $course_id = $request->course_id;
 
@@ -263,7 +263,7 @@ class AjaxController extends Controller
      */
     public function getSchoolClassSubjects(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Choose Subject</option>';
+        $options = '<option value="" disabled selected>Choose</option>';
 
         $class_id = $request->class_id;
 
@@ -368,7 +368,7 @@ class AjaxController extends Controller
      */
     public function getClassSubjects(Request $request, $default = 0)
     {
-        $subj_options = '<option value="" disabled selected>Choose Subject</option>';
+        $subj_options = '<option value="" disabled selected>Choose</option>';
 
         $class_id = $request->class_id;
 
@@ -394,7 +394,7 @@ class AjaxController extends Controller
      */
     public function getSubjectTopics(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Select Topic</option>';
+        $options = '<option value="" disabled selected>Select</option>';
 
         $subject_id = $request->subject_id;
 
@@ -421,7 +421,7 @@ class AjaxController extends Controller
 	
 	public function getSubjectTopicsTutor(Request $request, $default = 0)
     {
-        $options = '<option value="" disabled selected>Select Topic</option>';
+        $options = '<option value="" disabled selected>Select</option>';
 
         $subject_id = $request->subject_id;
 		$user_id = $request->user_id;

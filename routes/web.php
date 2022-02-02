@@ -35,16 +35,21 @@ Route::get('/auto-search', 'HomeController@autoSearch')->name('auto-search');
  */
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
 Route::get('/contact-us', 'PageController@getContact')->name('contactUs');
+Route::get('/about-us', 'PageController@aboutUs')->name('aboutUs');
 Route::post('/contact-us', 'PageController@sendContact')->name('contactUsPost');
 Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newsletterSave');
-
+Route::get('/privacy-policy', 'PageController@privacy')->name('privacyPolicy');
+Route::get('/terms-conditions', 'PageController@terms')->name('termsConditions');
 
 //Route::namespace('Auth')->group(function () {
 	 /* Payment Route */
 	Route::get('/payment', 'PaymentController@index')->name('payment');
-	Route::post('/payment', 'PaymentController@stripePost')->name('paymentpost');
+	Route::post('/payment', 'PaymentController@paymentPost')->name('paymentpost');
 	Route::get('/success', 'PaymentController@paymentSuccess')->name('paymentSuccess');
 	Route::get('/faild', 'PaymentController@paymentFaild')->name('paymentFaild');
+    Route::post('/apply-coupon', 'PaymentController@applyCoupon')->name('applyCoupon');
+    Route::post('/remove-coupon', 'PaymentController@removeCoupon')->name('removeCoupon');
+
     /* Student Profiule Route */
     Route::get('/profile-first', 'StudentController@profileFirst')->name('profile.first');
     Route::get('/profile', 'StudentController@profile')->name('profile');
@@ -132,37 +137,55 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     //Route::resource('schools', 'SchoolController')->name('schools');
     //schools routes
-    Route::get('/schools', 'SchoolController@index')->name('schools');
+  /*  Route::get('/schools', 'SchoolController@index')->name('schools');
     Route::get('/school/create', 'SchoolController@create')->name('school.create');
     Route::post('/school/store', 'SchoolController@store')->name('school.store');
     Route::get('school/edit/{id}', 'SchoolController@edit')->name('school.edit');
     Route::post('school/update/{id}', 'SchoolController@update')->name('school.update');
     Route::delete('school/delete/{id}', 'SchoolController@destroy')->name('school.destroy');
     Route::get('/school/details/{id}', 'SchoolController@show')->name('school.show');
-    Route::post('/savesemester', 'SchoolController@savesemester')->name('school.savesemester');
+    Route::post('/savesemester', 'SchoolController@savesemester')->name('school.savesemester');*/
 
     //category routes
-    Route::resource('categories', 'CategoryController');
+    //Route::resource('categories', 'CategoryController');
 
     //course routes
-    Route::get('/courses', 'CourseController@index')->name('courses');
-    Route::get('/course/create/{id?}', 'CourseController@create')->name('course.create');
-    Route::post('/course/store', 'CourseController@store')->name('course.store');
-    Route::get('course/edit/{id}/{school_id?}', 'CourseController@edit')->name('course.edit');
-    Route::post('course/update/{id}', 'CourseController@update')->name('course.update');
-    Route::delete('course/delete/{id}/{school_id?}', 'CourseController@destroy')->name('course.destroy');
-    Route::get('/course/{id}', 'CourseController@show')->name('course.show');
-    Route::post('course/edit', 'CourseController@edit_ajax')->name('course.edit_ajax');
+    Route::get('/institutions', 'CourseController@index')->name('courses');
+    Route::get('/institute/create/{id?}', 'CourseController@create')->name('course.create');
+    Route::post('/institute/store', 'CourseController@store')->name('course.store');
+    Route::get('institute/edit/{id}/{school_id?}', 'CourseController@edit')->name('course.edit');
+    Route::post('institute/update/{id}', 'CourseController@update')->name('course.update');
+    Route::delete('institute/delete/{id}/{school_id?}', 'CourseController@destroy')->name('course.destroy');
+    Route::get('/institute/{id}', 'CourseController@show')->name('course.show');
+    Route::post('institute/edit', 'CourseController@edit_ajax')->name('course.edit_ajax');
     //classroom routes
     Route::resource('classrooms', 'ClassroomController');
 
     //Subject routes
-    Route::resource('subjects', 'SubjectController');
-    Route::post('subject/edit', 'SubjectController@edit_ajax')->name('subjects.edit_ajax');
+
+    Route::get('/courses', 'SubjectController@index')->name('subjects.index');
+    Route::get('/courses/create/{id?}', 'SubjectController@create')->name('subjects.create');
+    Route::post('/courses/store', 'SubjectController@store')->name('subjects.store');
+    Route::get('courses/edit/{id}', 'SubjectController@edit')->name('subjects.edit');
+    Route::put('courses/update/{id}', 'SubjectController@update')->name('subjects.update');
+    Route::delete('courses/delete/{id}', 'SubjectController@destroy')->name('subjects.destroy');
+    Route::get('/courses/{id}', 'SubjectController@show')->name('subjects.show');
+
+    //Route::resource('courses', 'SubjectController');
+  //  Route::post('course/edit', 'SubjectController@edit_ajax')->name('subjects.edit_ajax');
 
     //class routes
-    Route::resource('classes', 'ClassesController');
-    Route::post('class/edit', 'ClassesController@edit_ajax')->name('classes.edit_ajax');
+    Route::get('/schools', 'ClassesController@index')->name('classes.index');
+    Route::get('/school/create/{id?}', 'ClassesController@create')->name('classes.create');
+    Route::post('/school/store', 'ClassesController@store')->name('classes.store');
+    Route::get('school/edit/{id}', 'ClassesController@edit')->name('classes.edit');
+    Route::put('school/update/{id}', 'ClassesController@update')->name('classes.update');
+    Route::delete('school/delete/{id}', 'ClassesController@destroy')->name('classes.destroy');
+    Route::get('/school/{id}', 'ClassesController@show')->name('classes.show');
+
+
+    //Route::resource('classes', 'ClassesController');
+    //Route::post('class/edit', 'ClassesController@edit_ajax')->name('classes.edit_ajax');
 
     //Topic routes
     Route::resource('topics', 'TopicController');
@@ -195,6 +218,14 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::get('reports/favourited-videos-list', 'ReportsController@favouritedVideosList')->name('reports.favourited.videos.list');
     Route::get('reports/student-videos-watch', 'ReportsController@studentVideoswatch')->name('reports.student.videos.watch');
     Route::get('reports/total-videos-watch', 'ReportsController@totalVideoswatch')->name('reports.total.videos.watch');
+
+    //Coupon routes
+    Route::resource('coupons', 'CouponController');
+
+    Route::get('/pages', 'PagesController@index')->name('pages.index');
+    Route::get('/pages/{id}', 'PagesController@edit')->name('pages.edit');
+    Route::put('pages/edit/{id}', 'PagesController@update')->name('pages.update');
+
     //setting routes
     Route::resource('settings', 'SettingController');
 

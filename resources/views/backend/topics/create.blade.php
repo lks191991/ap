@@ -13,51 +13,36 @@
         <form action="{{route('backend.topics.store')}}" method = "post">
             @csrf
 
-            <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
+           
+					
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-2 text-sm-right">Institute</label>
                         <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
+                            <select name="institute" id="school_course" class="custom-select" required>
+                                <option value="" disabled selected="">Select Institute</option>
                                 @foreach($institutes as $id => $type)
                                 <option value="{{$id}}">{{$type}}</option>
-                                @endforeach
+                                @endforeach   
                             </select>
                         </div>
-
                     </div>
+
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">School</label>
                         <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" required>
-                                <option value="" disabled selected="">Select School</option>                        
-                            </select>
-                        </div>
-                    </div>
-					
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Course</label>
-                        <div class="col-sm-10">
-                            <select name="course" id="school_course" class="custom-select" required>
-                                <option value="" disabled selected="">Select Course</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
-                        <div class="col-sm-10">
                             <select name="class" id="class" class="custom-select" required>
-                                <option value="" disabled selected="">Select Class</option>                        
+                                <option value="" disabled selected="">Select School</option>
+                                                     
                             </select>
                         </div>
                     </div>
 			
 			
 				<div class="form-group row">
-					<label class="col-form-label col-sm-2 text-sm-right">Subject</label>
+					<label class="col-form-label col-sm-2 text-sm-right">Course</label>
 					<div class="col-sm-10">
-						<select name="subject" id="subject" class="custom-select" required>
-							<option value="" disabled selected="">Select Subject</option>
+						<select name="course" id="subject" class="custom-select" required>
+							<option value="" disabled selected="">Select Course</option>
 						</select>
 					</div>
 				</div>

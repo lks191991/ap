@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Auth;
 use App\User;
 use App\Helpers\SiteHelpers;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -212,10 +213,14 @@ class LoginController extends Controller
 		
         if(isset($user))
         {
+            
             if($user->status == 0 && $user->email_verified_at !== NULL) {
                 return redirect()->route('login')->with('error','Your account is deactivated. Please request admin for activate it.');
             } else if($user->email_verified_at === NULL) {
-                Mail::send('emails.emailVerificationEmail', ['token' => $user['token'],'register_as' => $user['name']], function($message) use($user){
+                $token = Str::random(64);
+                DB::table('users')->where('email', $user->email)->update(['token' => $token]);
+                
+                Mail::send('emails.emailVerificationEmail', ['token' => $token,'register_as' => $user['name']], function($message) use($user){
                     $message->to($user['email']);
                     $message->subject('Email Verification Mail');
                 });

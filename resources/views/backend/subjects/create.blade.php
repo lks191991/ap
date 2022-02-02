@@ -2,66 +2,54 @@
 
 @section('content')
 <h4 class="font-weight-bold py-3 mb-4">
-    <span class="text-muted font-weight-light">Subjects /</span> Create Subject
+    <span class="text-muted font-weight-light">Courses /</span> Create Course
 </h4>
 <div class="card mb-4">
     <h6 class="card-header">
-        Create Subject
+        Create Course
     </h6>
     <div class="card-body">
         @includeif('backend.message')
         <form action="{{route('backend.subjects.store')}}" method = "post" enctype="multipart/form-data">
             @csrf
 			
-			<div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Institute Type</label>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-2 text-sm-right">Institute</label>
                         <div class="col-sm-10">
-                            <select name="institute_type" id="institute_type" class="custom-select" required>
-                                <option value="" selected="" disabled="" class="d-none">Select Institute Type</option>
+                            <select name="course" id="school_course" class="custom-select" required>
+                                <option value="" disabled selected="">Select</option>
                                 @foreach($institutes as $id => $type)
                                 <option value="{{$id}}">{{$type}}</option>
                                 @endforeach
                             </select>
                         </div>
-
                     </div>
+
                     <div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">School</label>
                         <div class="col-sm-10">
-                            <select name="school" id="school" class="custom-select" required>
-                                <option value="" disabled selected="">Select School</option>                        
-                            </select>
-                        </div>
-                    </div>
-					
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Course</label>
-                        <div class="col-sm-10">
-                            <select name="course" id="school_course" class="custom-select" required>
-                                <option value="" disabled selected="">Select Course</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label class="col-form-label col-sm-2 text-sm-right">Class</label>
-                        <div class="col-sm-10">
-                            <select name="class" id="class" class="custom-select" required>
-                                <option value="" disabled selected="">Select Class</option>                        
+                            <select name="school" id="class" class="custom-select" required>
+                                <option value="" disabled selected="">Select</option>                        
                             </select>
                         </div>
                     </div>
 					
             <div class="form-group row">
-                <label class="col-form-label col-sm-2 text-sm-right">Subject Name</label>
+                <label class="col-form-label col-sm-2 text-sm-right">Course</label>
                 <div class="col-sm-10">
-                    <input type="text" name="subject_name" placeholder="Subject Name" value="{{old('subject_name')}}" class="form-control" required>
+                    <input type="text" name="subject_name" placeholder="Course Name" value="{{old('subject_name')}}" class="form-control" required>
                 </div>
             </div>
 			 <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right">Price</label>
                 <div class="col-sm-10">
-                    <input type="text" name="subject_price" placeholder="Subject Price" value="{{old('subject_price')}}" class="form-control" required>
+                    <input type="text" name="subject_price" placeholder="Course Price" value="{{old('subject_price')}}" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Demo Video URL</label>
+                <div class="col-sm-10">
+                    <input type="text" name="demo_video_url" placeholder="Demo Video URL" value="{{old('demo_video_url')}}" class="form-control" required>
                 </div>
             </div>
 				<div class="form-group row">
@@ -73,7 +61,14 @@
 						</small>
 					</div>
                 </div>
-				
+                <div class="form-group row">
+                <label class="col-form-label col-sm-2 text-sm-right">Description</label>
+                <div class="col-sm-10">
+                <textarea class="form-control" name="description" rows="3" required>{{old('description')}}</textarea>
+                </div>
+                       
+                    </div> 
+               
             <div class="form-group row">
                 <label class="col-form-label col-sm-2 text-sm-right"></label>
                 <div class="col-sm-10">

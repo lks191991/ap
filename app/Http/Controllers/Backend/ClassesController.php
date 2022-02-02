@@ -24,16 +24,11 @@ class ClassesController extends Controller
      */
     public function index()
     {
-       
-        $query = School::where('status', '=', 1);
 
-        $schools = $query->orderBy('school_name')
-                ->pluck('school_name', 'id');
-
-        //get all classes
         $classes = Classes::orderBy('id', 'desc')->get();
 
-        return view('backend.classes.index', compact('classes', 'schools'));
+      
+        return view('backend.classes.index', compact('classes'));
     }
 
     /**
@@ -44,14 +39,11 @@ class ClassesController extends Controller
     public function create()
     {
         
-        $query = SchoolCategory::where('status', '=', 1);
+        $courses = Course::where('status', '=', 1)->orderBy('name')
+        ->pluck('name', 'id');
 
-       
 
-        $institutes = $query->orderBy('name')
-                ->pluck('name', 'id');
-
-        return view('backend.classes.create', compact('institutes'));
+        return view('backend.classes.create', compact('courses'));
     }
 
     /**
@@ -64,61 +56,40 @@ class ClassesController extends Controller
     {
         $data = $request->all();
 
-        $course_id = $data['course'];
+        $school_name = $request->input('class_name');
+        $validator = Validator::make($request->all(), [
+            'institute' => 'required',
+            'class_name' => [
+                'required',
+                'max:180',
+                Rule::unique('classes')->where(function ($query) use($school_name) {  
+                    return $query->where('class_name', $school_name);
+                })
+            ]
+        ],[
+            'class_name.required' => "Shool Name required",
+            'class_name.unique' => "The Shool name has already been taken",
+        ]);
 
-        $course = Course::where('id', $course_id)->select('school_id')->first();
-
-       
-
-        if (!empty($request->input('ajax_request'))) {
-
-            $validator = Validator::make($request->all(), [
-                        'course' => 'required',
-                        'class_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('classes')->where(function ($query) use($course_id) {
-                                        return $query->where('course_id', $course_id);
-                                    })
-                        ],
-            ]);
-        } else {
-
-            $validator = Validator::make($request->all(), [
-                        'institute_type' => 'required',
-                        'school' => 'required',
-                        'course' => 'required',
-                        'class_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('classes')->where(function ($query) use($course_id) {
-                                        return $query->where('course_id', $course_id);
-                                    })
-                        ],
-            ]);
-        }
-
-        // if the validator fails, redirect back to the form
-        if ($validator->fails()) {
-            return Redirect::back()
-                            ->withErrors($validator) // send back all errors to the form
-                            ->withInput();
-        }
-
-
+  // if the validator fails, redirect back to the form
+  if ($validator->fails()) {
+    return Redirect::back()
+                    ->withErrors($validator) // send back all errors to the form
+                    ->withInput();
+}
         //form data is available in the request object
         $class = new Classes();
 
-        $class->course_id = $request->input('course');
+        $class->course_id = $request->input('institute');
         $class->class_name = $request->input('class_name');
         $class->status = ($request->input('status') !== null) ? $request->input('status') : 0;
 
         $class->save();
 
         if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.course.show', $class->course_id)->with('success', 'Class created Successfully');
+            return redirect()->route('backend.course.show', $class->course_id)->with('success', 'School created Successfully');
         } else {
-            return redirect()->route('backend.classes.index')->with('success', 'Class created Successfully');
+            return redirect()->route('backend.classes.index')->with('success', 'School created Successfully');
         }
     }
 
@@ -146,27 +117,13 @@ class ClassesController extends Controller
     public function edit($id)
     {
       
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
+        $courses = Course::where('status', '=', 1)->orderBy('name')
+        ->pluck('name', 'id');
 
         $class = Classes::find($id);
 
-        $course_details = Course::where("id", $class->course_id)->select('school_id')->first();
-        $class->school_id = $course_details->school_id;
 
-       
-
-        $school_details = School::where("id", $class->school_id)->select('school_category')->where('status', '=', 1)->first();
-        $class->category_id = $school_details->school_category;
-
-        $schools = School::where('school_category', $class->category_id)->orderBy('school_name')->where('status', '=', 1)->pluck('school_name', 'id');
-
-        $courses = Course::where('school_id', $class->school_id)->orderBy('name');
-
-      
-
-        $courses = $courses->where('status', '=', 1)->pluck('name', 'id');
-
-        return view('backend.classes.edit', compact('class', 'institutes', 'schools', 'courses'));
+        return view('backend.classes.edit', compact('class', 'courses'));
     }
 
     /**
@@ -193,33 +150,21 @@ class ClassesController extends Controller
     public function update(Request $request, $id)
     {
         $class = Classes::find($id);
-        $course_id = $class->course_id;
+        $school_name = $request->input('class_name');
 
-       
-        if (!empty($request->input('ajax_request'))) {
+        $validator = Validator::make($request->all(), [
+            'class_name' => [
+                'required',
+                'max:180',
+                Rule::unique('classes')->where(function ($query) use($id,$school_name) {  
+                    return $query->where('class_name', $school_name)->where('id', '<>', $id);
+                })
+            ]
+        ],[
+            'class_name.required' => "Shool Name required",
+            'class_name.unique' => "The Shool name has already been taken",
+        ]);
 
-            $validator = Validator::make($request->all(), [
-                        'class_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('classes')->where(function ($query) use($course_id, $id) {
-                                        return $query->where('course_id', $course_id)->where('id', '<>', $id);
-                                    })
-                        ],
-            ]);
-        } else {
-
-            $validator = Validator::make($request->all(), [
-                        'class_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('classes')->where(function ($query) use($course_id, $id) {
-                                        return $query->where('course_id', $course_id)->where('id', '<>', $id);
-                                    })
-                        ],
-            ]);
-
-        }
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {
@@ -235,9 +180,9 @@ class ClassesController extends Controller
         $class->save();
 
         if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.course.show', $class->course_id)->with('success', 'Class Information Updated Successfully');
+            return redirect()->route('backend.course.show', $class->course_id)->with('success', 'School Information Updated Successfully');
         } else {
-            return redirect()->route('backend.classes.index')->with('success', 'Class Information Updated Successfully');
+            return redirect()->route('backend.classes.index')->with('success', 'School Information Updated Successfully');
         }
     }
 
@@ -270,9 +215,9 @@ class ClassesController extends Controller
         $class->delete();
 
         if (!empty($request->input('ajax_request'))) {
-            return redirect()->route('backend.course.show', $class->course_id)->with('success', 'Class Deleted Successfully');
+            return redirect()->route('backend.course.show', $class->course_id)->with('success', 'School Deleted Successfully');
         } else {
-            return redirect()->route('backend.classes.index')->with('success', 'Class Deleted Successfully');
+            return redirect()->route('backend.classes.index')->with('success', 'School Deleted Successfully');
         }
     }
 

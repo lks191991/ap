@@ -26,18 +26,12 @@ class TopicController extends Controller
     {
        
 
-        $query = School::where('status', '=', 1);
+        $query = Classes::where('status', '=', 1);
 
-        if (Auth::user()->hasRole('school')) {
-            $profile = Auth::user()->profile;
-            if (isset($profile->school_id)) {
-                $school_id = $profile->school_id;
-                $query = $query->where('id', '=', $school_id);
-            }
-        }
+      
 
-        $schools = $query->orderBy('school_name')
-                ->pluck('school_name', 'id');
+        $schools = $query->orderBy('class_name')
+                ->pluck('class_name', 'id');
 
         //get all topics
         $topics = Topic::orderBy('id', 'desc')->get();
@@ -52,7 +46,7 @@ class TopicController extends Controller
      */
     public function create()
     {
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
+        $institutes = Course::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
         $subjects = Subject::orderBy('subject_name')->where('status', '=', 1)->pluck('subject_name', 'id');
 
         return view('backend.topics.create', compact('subjects', 'institutes'));
@@ -66,16 +60,16 @@ class TopicController extends Controller
      */
     public function store(Request $request)
     {
-        $subject_id = $request->subject;
+        $subject_id = $request->course;
 
         $subject_details = Subject::where('id', $subject_id)->first();
         $course_id = $subject_details->subject_class->course_id;
 
         $course_details = Course::where('id', $course_id)->select('school_id')->first();
       
-
-        if (!empty($request->input('ajax_request'))) {
+        
             $validator = Validator::make($request->all(), [
+                        'course' => 'required',
                         'topic_name' => [
                             'required',
                             'max:180',
@@ -84,18 +78,6 @@ class TopicController extends Controller
                                     })
                         ],
             ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                        'subject' => 'required',
-                        'topic_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('topics')->where(function ($query) use($subject_id) {
-                                        return $query->where('subject_id', $subject_id);
-                                    })
-                        ],
-            ]);
-        }
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {
@@ -107,7 +89,7 @@ class TopicController extends Controller
         //form data is available in the request object
         $topic = new Topic();
 
-        $topic->subject_id = $request->subject;
+        $topic->subject_id = $request->course;
         $topic->topic_name = $request->input('topic_name');
         $topic->status = ($request->input('status') !== null) ? $request->input('status') : 0;
 
@@ -193,7 +175,7 @@ class TopicController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $subject_id = $request->subject;
+        $subject_id = $request->course;
 
         $subject_details = Subject::where('id', $subject_id)->first();
 	
@@ -203,17 +185,7 @@ class TopicController extends Controller
        
         $topic = Topic::find($id);
 
-        if (!empty($request->input('ajax_request'))) {
-            $validator = Validator::make($request->all(), [
-                        'topic_name' => [
-                            'required',
-                            'max:180',
-                            Rule::unique('topics')->where(function ($query) use($subject_id, $id) {
-                                        return $query->where('subject_id', $subject_id)->where('id', '<>', $id);
-                                    })
-                        ],
-            ]);
-        } else {
+      
             $validator = Validator::make($request->all(), [
                         //'subject' => 'required',
                         'topic_name' => [
@@ -225,7 +197,6 @@ class TopicController extends Controller
                         ],
             ]);
 
-        }
 
         // if the validator fails, redirect back to the form
         if ($validator->fails()) {
@@ -234,7 +205,7 @@ class TopicController extends Controller
                             ->withInput();
         }
 
-
+        $topic->subject_id = $subject_id;
         $topic->topic_name = $request->input('topic_name');
         $topic->status = ($request->input('status') !== null) ? $request->input('status') : 0;
         $topic->save(); //persist the data

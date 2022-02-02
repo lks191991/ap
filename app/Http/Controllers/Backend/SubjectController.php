@@ -26,16 +26,16 @@ class SubjectController extends Controller
     {
        
 
-        $query = School::where('status', '=', 1);
+        $query = Classes::where('status', '=', 1);
 
 
-        $schools = $query->orderBy('school_name')
-                ->pluck('school_name', 'id');
+        $classes = $query->orderBy('class_name')
+                ->pluck('class_name', 'id');
 
         //get all subjects
         $subjects = Subject::orderBy('id', 'desc')->get();
 
-        return view('backend.subjects.index', compact('subjects', 'schools'));
+        return view('backend.subjects.index', compact('subjects', 'classes'));
     }
 
     /**
@@ -46,7 +46,7 @@ class SubjectController extends Controller
     public function create()
     {
         
-        $institutes = SchoolCategory::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
+        $institutes = Course::orderBy('name')->where('status', '=', 1)->pluck('name', 'id');
         return view('backend.subjects.create', compact('institutes'));
     }
 
@@ -58,11 +58,12 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        $class_id = $request->input('class');
+        $class_id = $request->input('school');
 
-        $classes_details = Classes::where('id', $class_id)->first();
       
         $validator = Validator::make($request->all(), [
+                    'school' => 'required',
+                    'demo_video_url' => 'required',
 					'subject_price' => 'required|numeric',
                     'subject_name' => [
                         'required',
@@ -70,7 +71,12 @@ class SubjectController extends Controller
                         Rule::unique('subjects')->where(function ($query) use($class_id) {
                                     return $query->where('class_id', $class_id);
                                 })
-                    ],
+                    ]
+        ],[
+            'subject_price.required' => "Price required",
+            'subject_price.numeric' => "Price only numeric",
+            'subject_name.required' => "Course Name required",
+            'subject_name.unique' => "The Course name has already been taken"
         ]);
 
         // if the validator fails, redirect back to the form
@@ -111,11 +117,12 @@ class SubjectController extends Controller
 
         //form data is available in the request object
         
-		$class = Classes::findOrFail($request->input('class'));
-		$subject->course_id = $class->course_id;
+		$subject->course_id =  $request->input('course');
         $subject->subject_name = $request->input('subject_name');
 		$subject->subject_price = $request->input('subject_price');
-        $subject->class_id = $request->input('class');
+        $subject->demo_video_url = $request->input('demo_video_url');
+        $subject->description = $request->input('description');
+        $subject->class_id = $class_id;
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;
 
         $subject->save();
@@ -123,7 +130,7 @@ class SubjectController extends Controller
         /* if (!empty($request->input('ajax_request'))) {
             return redirect()->route('backend.classes.show', $subject->class_id)->with('success', 'Subject created Successfully');
         } else { */
-            return redirect()->route('backend.subjects.index')->with('success', 'Subject created Successfully');
+            return redirect()->route('backend.subjects.index')->with('success', 'Course created Successfully');
         //}
     }
 
@@ -213,6 +220,11 @@ class SubjectController extends Controller
                                     return $query->where('class_id', $class_id)->where('id', '<>', $id);
                                 })
                     ],
+        ],[
+            'subject_price.required' => "Price required",
+            'subject_price.numeric' => "Price only numeric",
+            'subject_name.required' => "Course Name required",
+            'subject_name.unique' => "The Course name has already been taken"
         ]);
 
         // if the validator fails, redirect back to the form
@@ -257,11 +269,13 @@ class SubjectController extends Controller
 		
         $subject->subject_name = $request->input('subject_name');
 		$subject->subject_price = $request->input('subject_price');
+        $subject->demo_video_url = $request->input('demo_video_url');
+        $subject->description = $request->input('description');
         $subject->status = ($request->input('status') !== null) ? $request->input('status') : 0;
         $subject->save(); //persist the data
 
        
-            return redirect()->route('backend.subjects.index')->with('success', 'Subject Information Updated Successfully');
+            return redirect()->route('backend.subjects.index')->with('success', 'Course Information Updated Successfully');
     }
 
     /**
@@ -290,7 +304,7 @@ class SubjectController extends Controller
 
         $subject->delete();
 
-            return redirect()->route('backend.subjects.index')->with('success', 'Subject Deleted Successfully');
+            return redirect()->route('backend.subjects.index')->with('success', 'Course Deleted Successfully');
     }
 
 }

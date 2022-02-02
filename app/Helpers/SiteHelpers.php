@@ -416,6 +416,22 @@ class SiteHelpers
         return $limit;
     }
 
+    public static function contactDetails()
+    {
+        
+        $settings = Setting::get(); 
+        $data=[];
+        foreach($settings as $setting)
+        {
+            $data[$setting->key_name] = $setting->val;
+
+        }
+        
+    
+
+        return $data;
+    }
+
     public static function sendOtp($mobile, $message)
     {	
 	
