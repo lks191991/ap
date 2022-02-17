@@ -35,9 +35,11 @@ Route::get('/auto-search', 'HomeController@autoSearch')->name('auto-search');
  */
 Route::group(['namespace' => 'Frontend', 'as' => 'frontend.'], function () {
 Route::get('/contact-us', 'PageController@getContact')->name('contactUs');
+Route::get('/about-us', 'PageController@aboutUs')->name('aboutUs');
 Route::post('/contact-us', 'PageController@sendContact')->name('contactUsPost');
 Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newsletterSave');
-
+Route::get('/privacy-policy', 'PageController@privacy')->name('privacyPolicy');
+Route::get('/terms-conditions', 'PageController@terms')->name('termsConditions');
 
 //Route::namespace('Auth')->group(function () {
 	 /* Payment Route */
@@ -52,7 +54,7 @@ Route::post('/save-newsletter', 'PageController@saveNewsletter')->name('newslett
 	Route::post('/profile-student', 'StudentController@updateProfileStudent')->name('updateProfileStudent');
 	Route::get('/my-mylearning-list', 'StudentController@mylearningList')->name('mylearningList');
 	Route::get('/my-mylearning-details/{id}/{subjectId}/{videoUid?}/{tab?}', 'StudentController@mylearningStart')->name('mylearningStart');
-	Route::delete('/destroy-favourites/{id}', 'StudentController@destroyFavourite')->name('destroyFavourites');
+    Route::delete('/destroy-favourites/{id}', 'StudentController@destroyFavourite')->name('destroyFavourites');
     Route::get('/set-favourites', 'StudentController@setFavourites')->name('setFavourites');
     Route::get('/student-favourites', 'StudentController@studentFavourites')->name('studentFavourites');
     Route::post('/fleg-video', 'StudentController@flegVideo')->name('flegVideo');
@@ -205,7 +207,11 @@ Route::group(['namespace' => 'Backend', 'prefix' => 'admin', 'as' => 'backend.',
     Route::get('reports/favourited-videos-list', 'ReportsController@favouritedVideosList')->name('reports.favourited.videos.list');
     Route::get('reports/student-videos-watch', 'ReportsController@studentVideoswatch')->name('reports.student.videos.watch');
     Route::get('reports/total-videos-watch', 'ReportsController@totalVideoswatch')->name('reports.total.videos.watch');
-    //setting routes
+    Route::get('reports/total-student-tutor', 'ReportsController@totalCountStudentTutor')->name('reports.total.student.tutor');
+    Route::get('/pages', 'PagesController@index')->name('pages.index');
+    Route::get('/pages/{id}', 'PagesController@edit')->name('pages.edit');
+    Route::put('pages/edit/{id}', 'PagesController@update')->name('pages.update');   
+ //setting routes
     Route::resource('settings', 'SettingController');
 
     

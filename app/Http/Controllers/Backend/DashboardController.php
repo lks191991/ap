@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Helpers\SiteHelpers;
+use App\Models\Student;
+use App\Models\Tutor;
 use Auth;
 use App\Models\School;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -40,12 +43,15 @@ class DashboardController extends Controller
 		$student_count = SiteHelpers::dashboard_resource_count('students');
 		$tutor_count = SiteHelpers::dashboard_resource_count('tutors');
 		
-		$title = "BhiLearning Dashboard";
-		
+		$title = "AP Dashboard";
+        $students = Student::with('zone')->groupBy('zone_id')->select('zone_id', DB::raw('count(*) as total'))->orderBy('total', 'DESC')->limit(10)->get();
+      
+        $tutors = Tutor::with('zone')->groupBy('zone_id')->select('zone_id', DB::raw('count(*) as total'))->orderBy('total', 'DESC')->limit(10)->get();
+       
 			
 			return view('backend.dashboard', compact('title', 'institute_count', 'school_count', 'courses_count', 
 												 'classes_count', 'subject_count', 'topic_count', 'videos_count', 
-												 'student_count', 'tutor_count'));
+												 'student_count', 'tutor_count','students','tutors'));
 		
 	}
 }

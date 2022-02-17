@@ -25,16 +25,19 @@
 .btn-custom.fav-btn .icon{padding: 0;color: #868686;}
 .btn-custom.fav-btn .icon [class*="fa"]{font-size: 18px;}
 .btn-custom.fav-btn .icon.fav-active{color: #094d96;}
+</style>
 @if($myRateing>0)
+<style>
 .br-theme-fontawesome-stars .br-widget a:after {
   content: '\f005';
-  color: #EDB867;
-}
+  color: '#EDB867';
+} </style>
 @endif
-</style>
+
 @endsection
 
 @section('scripts')
+
  <script type="text/javascript" src="{{ asset('js/front/jquery.barrating.min.js') }}"></script>
 
 <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
@@ -167,7 +170,11 @@
 						</select></span>
 						
    
-					
+						@if(!empty($video->noteURL()))
+					<span style="padding: 0px 10px 0 0;">
+                        <a target="_blank" href="{{$video->noteURL()}}"  title="Download Note">Note <i class="fas fa-download"></i></a>
+						</span>
+                        @endif
 					<span ><a class="btn-custom " title="Total Watch"  ><span class="icon  "><i class="fas fa-eye"></i> {{$video_watch_count}}</span></a></span>
 					<span id="favBtnHtm"><a class="btn-custom fav-btn" href="{{route('frontend.setFavourites',['video_id'=>$video->id])}}" title="{{($isFav==0)? 'Add favourite' : 'Remove favourite'}}" id="favBtnId" ><span class="icon @if($isFav==1) fav-active @endif "><i class="fas fa-heart"></i></span></a></span>
 					

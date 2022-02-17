@@ -162,7 +162,8 @@ class StudentController extends Controller
         $tutor->city_id = $data['city_name'];
         $tutor->college_id = $data['college_name'];
         $tutor->tutor_subject = $data['tutor_subject'];
-       
+        $tutor->gender = $data['gender'];
+        $tutor->dob = date("d-m-Y",strtotime($data['dob']));
         $tutor->save(); 
 
         $user_more_info = User::find($tutor->user_id);
@@ -239,7 +240,8 @@ class StudentController extends Controller
         $student->district_id = $data['district_name'];
         $student->city_id = $data['city_name'];
         $student->college_id = $data['college_name'];
-       
+        $student->gender = $data['gender'];
+        $student->dob = date("d-m-Y",strtotime($data['dob']));
         $student->save(); //persist the data
         //save user other information
         $user_more_info = User::find($student->user_id);

@@ -85,6 +85,28 @@
 									
 									</div>
 								</div>
+<div class="from-group mb-4">
+									<div class="row">
+									<div class="col-md-6">
+											<label class="form-label">Gender</label>
+											<select name="gender" id="gender" class="form-control" >
+											<option value="" >Select</option>
+													<option value="Male" @if('Male' == $tutor->userData->gender ) selected @endif >Male</option>
+													<option value="Female" @if('Female' == $tutor->userData->gender ) selected @endif >Female</option>
+													<option value="Other" @if('Other' == $tutor->userData->gender ) selected @endif >Other</option>
+												</select>
+												
+										</div>
+											<div class="col-md-6">
+											<label class="form-label">DOB</label>
+											
+											<input type="text" class="form-control" name="dob" id="dob" readonly value="{{ $tutor->userData->dob }}"  placeholder="DOB"  >
+											
+										</div>
+									
+										
+									</div>
+									</div>
 								<div class="from-group mb-4">
 									<div class="row">
 									

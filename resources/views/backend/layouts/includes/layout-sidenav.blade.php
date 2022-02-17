@@ -129,7 +129,7 @@ $routeName = Route::currentRouteName();
         </li>
             </ul>
           </li>
-        <li class="sidenav-item {{ (strpos($routeName, 'backend.reports.favourited.videos.list') !== false)  ? ' open' : '' }}  {{ (strpos($routeName, 'backend.reports.student.videos.watch') !== false)  ? ' open' : '' }} {{ (strpos($routeName, 'backend.reports.total.videos.watch') !== false)  ? ' open' : '' }}" style="">
+        <li class="sidenav-item {{ (strpos($routeName, 'backend.reports.favourited.videos.list') !== false)  ? ' open' : '' }}  {{ (strpos($routeName, 'backend.reports.student.videos.watch') !== false)  ? ' open' : '' }} {{ (strpos($routeName, 'backend.reports.total.videos.watch') !== false)  ? ' open' : '' }} {{ (strpos($routeName, 'backend.reports.total.student.tutor') !== false)  ? ' open' : '' }}" style="">
             <a href="javascript:void(0)" class="sidenav-link sidenav-toggle"><i class="sidenav-icon fas fa-user"></i>
               <div>Reports</div>
             </a>
@@ -146,8 +146,14 @@ $routeName = Route::currentRouteName();
 			<a href="{{ route('backend.reports.total.videos.watch') }}" class="sidenav-link"><i class="sidenav-icon fas fa-eye"></i><div>Total Videos Watch</div></a>
         </li>
 		
+        <li class="sidenav-item{{ (strpos($routeName, 'backend.reports.total.student.tutor') !== false)  ? ' active' : '' }}">
+			<a href="{{ route('backend.reports.total.student.tutor') }}" class="sidenav-link"><i class="sidenav-icon fas fa-eye"></i><div>Total Student Tutor</div></a>
+        </li>
 		 </ul>
        </li>
+  <li class="sidenav-item{{ (strpos($routeName, 'backend.pages') !== false)  ? ' active' : '' }}">
+            <a href="{{ route('backend.pages.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-cog"></i><div>Pages</div></a>
+        </li>
 	@role('admin')	
 		<li class="sidenav-item{{ (strpos($routeName, 'backend.settings') !== false)  ? ' active' : '' }}">
             <a href="{{ route('backend.settings.index') }}" class="sidenav-link"><i class="sidenav-icon fas fa-cog"></i><div>Settings</div></a>

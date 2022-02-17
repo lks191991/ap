@@ -171,7 +171,76 @@
             </div>
 
         </div>
+        <div class="col-sm-6 col-xl-6">
+
+            <div class="card mb-6">
+			
+                <div class="card-body">
+                <div class="text-muted">Top 10 Student ZoneWise</div>
+        <div class="card-datatable table-responsive">
+            
+        <table id="video-list" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+				<th class="align-top">Zone
+					</th>
+                    <th class="align-top">
+                        Total Student
+                    </th>
+                    
+                  
+                </tr>
+            <tbody>
+                @foreach($students as $student)
+                <tr>
+                   
+                  <td>{{$student->zone->zone_name}}</td>
+                    <td>{{$student->total}}</td>
+                  
+                </tr>
+                @endforeach
+            </tbody>
+            </thead>
+        </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="col-sm-6 col-xl-6">
+
+<div class="card mb-6">
+
+    <div class="card-body">
+    <div class="text-muted">Top 10 Tutors ZoneWise</div>
+<div class="card-datatable table-responsive">
+
+<table id="video-list" class="table table-striped table-bordered">
+<thead>
+    <tr>
+    <th class="align-top">Zone
+        </th>
+        <th class="align-top">
+            Total Tutors
+        </th>
         
+      
+    </tr>
+<tbody>
+    @foreach($tutors as $tutor)
+    <tr>
+       
+      <td>{{$tutor->zone->zone_name}}</td>
+        <td>{{$tutor->total}}</td>
+      
+    </tr>
+    @endforeach
+</tbody>
+</thead>
+</table>
+</div>
+</div>
+</div>
+</div>
     </div>
     <!-- / Counters -->
 

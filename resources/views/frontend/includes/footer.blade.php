@@ -10,16 +10,16 @@
 						</div>
 						<ul class="p-0 mx-0 mb-0 mt-4 list-unstyled list-gap d-flex flex-wrap justify-content-center">
 							<li>
-								<a href="#">About</a>
+								<a  href="{{route('frontend.aboutUs')}}">About</a>
 							</li>
 							<li>
-								<a href="#">Contact</a>
+								<a href="{{route('frontend.contactUs')}}">Contact</a>
 							</li>
 							<li>
-								<a href="#">Privacy Policy</a>
+								<a href="{{route('frontend.privacyPolicy')}}">Privacy Policy</a>
 							</li>
 							<li>
-								<a href="#">Terms & Conditions</a>
+								<a href="{{route('frontend.termsConditions')}}">Terms & Conditions</a>
 							</li>
 						</ul>
 					</div>

@@ -117,7 +117,9 @@ var subject_id = "{{request('subject')}}";
 	$('#filterBtn').on('click', function () {
             $('#filterForm').submit()
         });
-	
+        $('#ResetBtn').on('click', function () {
+            window.location.href = "{{route('backend.videos.index')}}";
+        });
 	
 		if(school_id){
 		$("#school").val(school_id).trigger('change');

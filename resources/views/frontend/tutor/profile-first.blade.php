@@ -84,6 +84,28 @@
 									
 									</div>
 								</div>
+<div class="from-group mb-4">
+									<div class="row">
+									<div class="col-md-6">
+											<label class="form-label">Gender</label>
+											<select name="gender" id="gender" class="form-control" >
+											<option value="" >Select</option>
+													<option value="Male" @if('Male' == old('gender') ) selected @endif >Male</option>
+													<option value="Female" @if('Female' == old('gender') ) selected @endif >Female</option>
+													<option value="Other" @if('Other' == old('gender') ) selected @endif >Other</option>
+												</select>
+												
+										</div>
+											<div class="col-md-6">
+											<label class="form-label">DOB</label>
+											
+											<input type="text" class="form-control" name="dob" id="dob" readonly value="{{ old('dob') }}"  placeholder="DOB" >
+											
+										</div>
+									
+										
+									</div>
+									</div>
 								<div class="from-group mb-4">
 									<div class="row">
 									

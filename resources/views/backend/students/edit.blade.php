@@ -66,6 +66,24 @@
                     </div>
                 </div>
 				<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">Gender</label>
+                    <div class="col-sm-10">
+                       	<select name="gender" id="gender" class="custom-select" >
+											<option value="" >Select</option>
+												<option value="Male" @if('Male' == $student->gender ) selected @endif >Male</option>
+													<option value="Female" @if('Female' == $student->gender ) selected @endif >Female</option>
+													<option value="Other" @if('Other' == $student->gender ) selected @endif >Other</option>
+												</select>
+                    </div>
+                </div>
+				<div class="form-group row">
+                    <label class="col-form-label col-sm-2 text-sm-right">DOB</label>
+                    <div class="col-sm-10">
+					<input type="text" class="form-control" name="dob" id="dob" readonly value="{{ $student->dob }}"  placeholder="DOB" >
+                    </div>
+                </div>
+				
+				<div class="form-group row">
                         <label class="col-form-label col-sm-2 text-sm-right">State</label>
                         <div class="col-sm-10">
                             <select name="state_name" id="state_name" class="custom-select" required>
@@ -161,9 +179,61 @@
     </div>
 @endsection
 @section('scripts')
-<!--<script src="{{ mix('/assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>-->
-
 <script>
-  
+    $(document).ready(function () {
+        $("#state_name").on("change", function () {
+            var state_id = $(this).val();
+          
+            $.ajax({
+                type: "POST",
+                url: '{{ route("ajax.state.zones") }}',
+                data: {'state_id': state_id, '_token': '{{ csrf_token() }}'},
+                success: function (data) {
+                    $("#zones").html(data);
+                }
+            });
+        });
+		
+         $("#zones").on("change", function () {
+            var zone_id = $(this).val();
+          
+            $.ajax({
+                type: "POST",
+                url: '{{ route("ajax.zone.district") }}',
+                data: {'zone_id': zone_id, '_token': '{{ csrf_token() }}'},
+                success: function (data) {
+                    $("#districts").html(data);
+                }
+            });
+        });
+		
+		
+		$("#districts").on("change", function () {
+            var district_id = $(this).val();
+          
+            $.ajax({
+                type: "POST",
+                url: '{{ route("ajax.district.city") }}',
+                data: {'district_id': district_id, '_token': '{{ csrf_token() }}'},
+                success: function (data) {
+                    $("#cities").html(data);
+                }
+            });
+        });
+        
+		$("#cities").on("change", function () {
+            var city_id = $(this).val();
+          
+            $.ajax({
+                type: "POST",
+                url: '{{ route("ajax.city.colleges") }}',
+                data: {'city_id': city_id, '_token': '{{ csrf_token() }}'},
+                success: function (data) {
+                    $("#colleges").html(data);
+                }
+            });
+        });
+        
+ });
 </script>
 @stop

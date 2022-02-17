@@ -65,6 +65,7 @@ return [
 	'invalid_user' => 'Invalid User.',
 	'update_after_admin_approval' => 'Your request has been sent to admin. Once admin approved, changes will be refect on your account.',
 	'request_pending_to_admin' => 'Your request already pending with Admin',
+	'email_already_exists' => 'The email has already been taken.',
 	'booking_made_successfully' => 'Booking has been added successfully.',
 	'booking_could_not_saved' => 'Booking could not made, please try again.',
 	'booking_approved_successfully' => 'Successfully Approved',

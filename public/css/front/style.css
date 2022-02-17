@@ -130,7 +130,7 @@ h3 {
 }
 
 .bg-secondary {
-	background: var(--secondaryColorHover) !important;
+	background: #333 !important;
 }
 
 .link {
@@ -205,7 +205,7 @@ h3 {
 }
 
 .custom-navbar .navbar-brand {
-    max-width: 100px;
+    max-width: 160px;
 }
 
 .custom-navbar .navbar-nav .nav-item {
@@ -218,7 +218,7 @@ h3 {
 
 .custom-navbar .navbar-nav .nav-item .nav-link {
 	color: var(--textColor);
-	padding: 41px 10px;
+	padding: 30px 10px;
     border-bottom: solid 3px transparent;
 }
 
@@ -228,7 +228,7 @@ h3 {
 }
 
 .custom-navbar .navbar-nav .nav-item .btn {
-    margin-top: 31px;
+    margin-top: 20px;
 }
 
 .show-after-login {
@@ -272,6 +272,11 @@ h3 {
 
 .dropdown-menu .dropdown-item {
     padding: 0.5rem 1rem;
+}
+
+.dropdown-item {
+    white-space: normal;
+    text-align: left;
 }
 
 /*********************Header Ends*************************/
@@ -915,3 +920,58 @@ section > div> .row+.row {
 }
 
 /**************Order Summary Ends****************/
+
+.social-icon-fb:hover {
+    background: #fff!important;
+    color: #4267B2!important;
+        }
+        .social-icon-tw:hover {
+            background: #fff!important;
+            color: #00acee!important;
+        }
+        .social-icon-inst:hover {
+            background: #fff!important;
+            color:  #bc2a8d !important;
+        }
+        .social-icon-link:hover {
+            background: #fff!important;
+            color: #0077b5!important;
+        }
+        .social-icon-youtube:hover {
+            background: #fff!important;
+            color: #FF0000!important;
+        }
+
+        @media (min-width: 992px) {
+
+            .navbar-expand-lg .navbar-nav .dropdown-menu {
+                padding: 0;
+            }
+        
+            body .dropdown-item {
+                width: 250px;
+                white-space: normal;
+                word-break: break-word;
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+        
+            
+            body .dropdown-item:hover {
+                background: var(--primaryColor);
+                color: var(--colorWhite);
+            }
+        
+            body .dropdown-item:hover::after {
+                border-left-color: var(--colorPrimary);
+            }
+        
+            body .mega-menu-tree > .dropdown-item:hover {
+                border-radius: .25rem;
+            }
+        
+            .dropdown-item+.mega-menu-tree-list li .dropdown-item:hover {
+                background: var(--secondaryColor);
+            }
+        
+        }

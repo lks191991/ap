@@ -28,16 +28,17 @@
 						<form action="{{ route('register') }}" id="registerForm" method="post">
 			{{ csrf_field() }}
 							<div class="form-group mb-4">
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" checked @if(old('register_as')=='tutor') checked @endif value="tutor" name="register_as" id="signupTutor"
-										 />
-									<label class="form-check-label" for="signupTutor">Signup As Tutor</label>
-								</div>
-								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" @if(old('register_as')=='student') checked @endif value="student" name="register_as" id="signupStudent"
+							<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" checked @if(old('register_as')=='student') checked @endif value="student" name="register_as" id="signupStudent"
 										 />
 									<label class="form-check-label" for="signupStudent">Signup As Student</label>
 								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio"  @if(old('register_as')=='tutor') checked @endif value="tutor" name="register_as" id="signupTutor"
+										 />
+									<label class="form-check-label" for="signupTutor">Signup As Tutor</label>
+								</div>
+								
 								@if ($errors->has('register_as'))
 									<span class="d-block link-danger errorMsg"><small>{!! $errors->first('register_as') !!}</small></span>
 									@endif

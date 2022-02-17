@@ -1,36 +1,40 @@
 <!-- Header -->
 @php 
 $menus=GLB::getAllCourse();
-
+$routeName = Route::currentRouteName();
  @endphp
+ 
 	<header class="header-main">
 		<div class="top-strip border-bottom py-2">
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-md-6">
-						<ul class="m-0 p-0 list-unstyled social-icon d-flex list-gap flex-wrap">
+					<ul class="m-0 p-0 list-unstyled social-icon d-flex list-gap flex-wrap">
 							<li>
-								<a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+								<a href="{!! $settings['facebook_link'] !!}" class="social-icon-fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
 							</li>
 							<li>
-								<a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+								<a href="{!! $settings['twitter_link'] !!}" class="social-icon-tw" target="_blank"><i class="fab fa-twitter"></i></a>
 							</li>
 							<li>
-								<a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+								<a href="{!! $settings['instagram_link'] !!}" class="social-icon-inst" target="_blank"><i class="fab fa-instagram"></i></a>
 							</li>
 							<li>
-								<a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+								<a href="{!! $settings['linkedin_link'] !!}" class="social-icon-link" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+							</li>
+							<li> 
+								<a href="{!! $settings['youtube_link'] !!}" class="social-icon-youtube" target="_blank"><i class="fab fa-youtube"></i></a>
 							</li>
 						</ul>
 					</div>
 					<div class="col-md-6">
 						<ul class="p-0 m-0 d-flex justify-content-md-end list-unstyled list-gap contact-list flex-wrap">
 							<li>
-								<a href="tel:+91-0866-2974130"><i class="fas fa-phone-alt ms-md-2 me-1"></i> +91-0123-1234567</a>
+								<a href="tel:+91-0866-2974130"><i class="fas fa-phone-alt ms-md-2 me-1"></i> {!! $settings['contact_number'] !!}</a>
 							</li>
 							<li>
 								<a href="mailto:bieap1819@gmail.com"><i class="fas fa-envelope ms-md-2 me-1"></i>
-									email@gmail.com</a>
+								{!! $settings['contact_email'] !!}</a>
 							</li>
 						</ul>
 					</div>
@@ -50,7 +54,7 @@ $menus=GLB::getAllCourse();
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="{{route('home')}}">Home</a>
+							<a class="nav-link {{ strpos($routeName, 'home') !== false ? ' active' : '' }} " aria-current="page" href="{{route('home')}}">Home</a>
 						</li>
 						 <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -72,10 +76,10 @@ $menus=GLB::getAllCourse();
                             </ul>
                         </li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">About</a>
+							<a class="nav-link {{ strpos($routeName, 'frontend.aboutUs') !== false ? ' active' : '' }}" href="{{route('frontend.aboutUs')}}">About</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{route('frontend.contactUs')}}">Contact</a>
+							<a class="nav-link {{ strpos($routeName, 'frontend.contactUs') !== false ? ' active' : '' }}" href="{{route('frontend.contactUs')}}">Contact</a>
 						</li>
 						
 						@if(isset(Auth::user()->id))

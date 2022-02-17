@@ -150,6 +150,8 @@ class StudentController extends Controller
         $student->district_id = $data['district_name'];
         $student->city_id = $data['city_name'];
         $student->college_id = $data['college_name'];
+        $student->gender = $data['gender'];
+        $student->dob = date("d-m-Y",strtotime($data['dob']));
         $student->status = ($data['status'] !== null) ? $data['status'] : 0;
         
 
@@ -345,6 +347,8 @@ class StudentController extends Controller
         $student->district_id = $data['district_name'];
         $student->city_id = $data['city_name'];
         $student->college_id = $data['college_name'];
+        $student->gender = $data['gender'];
+        $student->dob = date("d-m-Y",strtotime($data['dob']));
         $student->status = ($data['status'] !== null) ? $data['status'] : 0;
         $student->save(); //persist the data
        

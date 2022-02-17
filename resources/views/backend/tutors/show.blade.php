@@ -88,7 +88,19 @@
                         {{isset($tutor->tutor_subject)?$tutor->tutor_subject:'N/A'}}
                       </div>
                     </div>
-
+<div class="row mb-2">
+                      <div class="col-md-3 text-muted">DOB:</div>
+                      <div class="col-md-9">
+                       {{$tutor->dob}}
+                      </div>
+                    </div>
+               
+<div class="row mb-2">
+                      <div class="col-md-3 text-muted">Gender:</div>
+                      <div class="col-md-9">
+                       {{$tutor->gender}}
+                      </div>
+                    </div>
                    <div class="row mb-2">
                       <div class="col-md-3 text-muted">State:</div>
                       <div class="col-md-9">

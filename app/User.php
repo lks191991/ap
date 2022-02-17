@@ -36,7 +36,7 @@ use HasRoleAndPermission;
      *
      * @var array
      */
-    protected $fillable = ['username', 'password', 'email', 'name', 'token'];
+    protected $fillable = ['username', 'password', 'email', 'name','mobile', 'token'];
 
     /**
      * The attributes that should be hidden for arrays.

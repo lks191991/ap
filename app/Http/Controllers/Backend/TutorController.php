@@ -141,7 +141,8 @@ class TutorController extends Controller
         $tutor->status = ($data['status'] !== null) ? $data['status'] : 0;
 		$tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
         $tutor->tutor_subject = $data['tutor_subject'];
-
+        $tutor->gender = $data['gender'];
+        $tutor->dob = date("d-m-Y",strtotime($data['dob']));
         $tutor->save(); //persist the data 
         
         $employee_id = "EMP-00".$tutor->id;
@@ -309,7 +310,8 @@ class TutorController extends Controller
         $tutor->city_id = $data['city_name'];
         $tutor->college_id = $data['college_name'];
         $tutor->tutor_subject = $data['tutor_subject'];
-
+        $tutor->gender = $data['gender'];
+        $tutor->dob = date("d-m-Y",strtotime($data['dob']));
         $tutor->save(); 
        
 

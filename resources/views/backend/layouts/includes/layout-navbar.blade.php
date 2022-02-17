@@ -27,7 +27,7 @@
         <hr class="d-lg-none w-100 my-2">
 
       <!--   <div class="navbar-nav align-items-lg-center">
-            <!-- Search -->
+           Search -->
 <!--            <label class="nav-item navbar-text navbar-search-box p-0 active">
                 <i class="ion ion-ios-search navbar-icon align-middle"></i>
                 <span class="navbar-search-input pl-2">
@@ -39,16 +39,7 @@
 
     <div class="navbar-nav align-items-lg-center w-100">
 		<div class="flex-grow-1 text-center">
-			@if(Auth::user()->hasRole('school'))
-				@php $profile = Auth::user()->profile; 
-					$school_details = \App\Models\School::find($profile->school_id);
-				@endphp
-				
-					@if(isset($school_details->logo) && !empty($school_details->logo) && file_exists(public_path("uploads/schools/$school_details->logo")))
-						<img class="school_logo mb-0" style="height:44px;" src='{{asset("uploads/schools/$school_details->logo")}}'>
-					@endif
-				
-			@endif
+			
 		</div>
 		<!--   <div class="demo-navbar-notifications nav-item dropdown mr-lg-3">
                 <a class="nav-link dropdown-toggle hide-arrow" href="#" data-toggle="dropdown">

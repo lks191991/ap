@@ -91,6 +91,19 @@
                        {{$student->branch}}
                       </div>
                     </div>
+						<div class="row mb-2">
+                      <div class="col-md-3 text-muted">DOB:</div>
+                      <div class="col-md-9">
+                       {{$student->dob}}
+                      </div>
+                    </div>
+               
+					<div class="row mb-2">
+                      <div class="col-md-3 text-muted">Gender:</div>
+                      <div class="col-md-9">
+                       {{$student->gender}}
+                      </div>
+                    </div>
                  <div class="row mb-2">
                       <div class="col-md-3 text-muted">State:</div>
                       <div class="col-md-9">
