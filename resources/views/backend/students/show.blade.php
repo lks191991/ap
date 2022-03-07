@@ -15,30 +15,7 @@
                     @else
                     <img class="school_logo mb-2 d-block" style="max-width:150px;min-width: 135px;" src="{{url('images/default_student_manager.png')}}"  />
                     @endif
-                    <div class="media-body ml-5"  style="display:none" >
-                        <h4 class="font-weight-bold mb-2">{{ucwords($student->getFullNameAttribute())}}</h4>
-                      
-                        <div class="text-muted mb-2">
-                            <ul class="profile-achievement list-unstyled">
-                                <li>
-                                    <span class="icon"><img src="{{asset('images/icon-eye.png')}}" alt=""></span>
-                                    <span class="text">{{$classesWatched}}	Classes watched</span>
-                                </li>
-                                <li>
-                                    <span class="icon"><img src="{{asset('images/icon-notes.png')}}" alt=""></span>
-                                    <span class="text">{{$noteDownloads}} Lecture notes downloaded</span>
-                                </li>
-                                <li>
-                                    <span class="icon"><img src="{{asset('images/icon-question.png')}}" alt=""></span>
-                                    <span class="text">{{$questionsCount}} Questions asked</span>
-                                </li>
-                                <li>
-                                    <span class="icon"><img src="{{asset('images/icon-tick.png')}}" alt=""></span>
-                                    <span class="text">{{$replyCount}} Answers contributed</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
             <div class="col-md-2 ml-10 mt-5"><a href="javascript:void(0)" onclick="window.history.go(-1);
@@ -67,12 +44,7 @@
                             {{$student->mobile}}
                         </div>
                     </div>
-					<div class="row mb-2">
-                        <div class="col-md-3 text-muted">Father Name:</div>
-                        <div class="col-md-9">
-                            {{$student->father_name}}
-                        </div>
-                    </div>
+				
                    	<div class="row mb-2">
                       <div class="col-md-3 text-muted">Student id:</div>
                       <div class="col-md-9">
@@ -91,16 +63,8 @@
                        {{$student->dob}}
                       </div>
                     </div>
-               
-<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Gender:</div>
-                      <div class="col-md-9">
-                       {{$student->gender}}
-                      </div>
-                    </div>
-               
-
-                </div></div>
+ 
+            </div>
             <!-- / Info -->
 
             <!-- Posts -->

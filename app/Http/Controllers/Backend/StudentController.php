@@ -10,13 +10,13 @@ use App\Models\SchoolCategory;
 use App\Models\Course;
 use App\Models\Classes;
 use App\Models\StudentClasses;
-
 use App\User;
 use Illuminate\Validation\Rule;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\sendEmailtoSchoolstudent;
+use App\Mail\sendEmailtoNewuserAdmin;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 use GLB;
@@ -70,7 +70,6 @@ class StudentController extends Controller
                     'first_name' => 'required|min:2',
                     'email' => 'email|max:255|unique:users',
                     'student_type' => 'required',
-                    'father_name' => 'required',
                     'mobile' => 'required|numeric',
                         ], [
                    // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
@@ -130,10 +129,7 @@ class StudentController extends Controller
         $student->last_name = $data['last_name'];
         $student->email = $data['email'];
         $student->mobile = $data['mobile'];
-        $student->student_id = $data['student_id'];
         $student->student_type = $data['student_type'];
-        $student->father_name = $data['father_name'];
-		$student->gender = $data['gender'];
         $student->dob = date("d-m-Y",strtotime($data['dob']));
         $student->status =  isset($data['status']) ? $data['status'] : 0;
         
@@ -148,13 +144,18 @@ class StudentController extends Controller
         $user_more_info = User::find($user->id);
         $user_more_info->name = $data['first_name'];
         $user_more_info->mobile_verified_at = date('Y-m-d H:i:s');
+        $user_more_info->email_verified_at = date('Y-m-d H:i:s');
         $user_more_info->save(); //persist the data
         DB::commit();
         } catch (\Exception $e) {
 			DB::rollback();
 			return redirect()->back()->withInput()->with('error', 'something went wrong please try again');
 		}
-        if (!empty($user->email))
+
+        if (!empty($user_more_info->email))
+        Mail::to($user_more_info->email, "New registration on " . env('APP_NAME', ''))->send(new sendEmailtoNewuserAdmin($user_more_info, $user_more_info->name));
+
+       // if (!empty($user->email))
            // Mail::to($user->email, "New student on " . env('APP_NAME', 'Bright-Horizon'))->send(new sendEmailtoSchoolstudent($studentdata));
 
 
@@ -246,7 +247,6 @@ class StudentController extends Controller
                                 })
                     ],
                     'student_type' => 'required',
-                    'father_name' => 'required',
                     'mobile' => [
                         'required',
                         'numeric',
@@ -314,8 +314,6 @@ class StudentController extends Controller
         $student->email = $data['email'];
         $student->mobile = $data['mobile'];
         $student->student_type = $data['student_type'];
-        $student->father_name = $data['father_name'];
-		$student->gender = $data['gender'];
         $student->dob = date("d-m-Y",strtotime($data['dob']));
         $student->status =  isset($data['status']) ? $data['status'] : 0;
         $student->save(); //persist the data

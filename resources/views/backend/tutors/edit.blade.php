@@ -45,29 +45,7 @@
                     </div>
                 </div>
 				
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Subject</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="tutor_subject" id="tutor_subject" placeholder="Tutor Subject" value="{{ $tutor->tutor_subject }}" class="form-control" required>
-                    </div>
-                </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Pricipal Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="pricipal_name" id="pricipal_name" placeholder="Pricipal Name" value="{{ $tutor->pricipal_name }}" class="form-control" required>
-                    </div>
-                </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Gender</label>
-                    <div class="col-sm-10">
-                       	<select name="gender" id="gender" class="custom-select" >
-											<option value="" >Select</option>
-												<option value="Male" @if('Male' == $tutor->gender ) selected @endif >Male</option>
-													<option value="Female" @if('Female' == $tutor->gender ) selected @endif >Female</option>
-													<option value="Other" @if('Other' == $tutor->gender ) selected @endif >Other</option>
-												</select>
-                    </div>
-                </div>
+			
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">DOB</label>
                     <div class="col-sm-10">

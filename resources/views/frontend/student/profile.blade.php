@@ -78,38 +78,16 @@
 									<span class="d-block link-danger errorMsg"><small>{{ $errors->first('student_type') }}</small></span>
 									@endif
 										</div>
+										
 										<div class="col-md-6">
-											<label class="form-label">Father Name</label>
-											<input type="text" class="form-control" name="father_name" id="father_name" value="{{ $student->userData->father_name }}"  placeholder="Father Name" data-validation-length="2-255" >
-										@if ($errors->has('father_name'))
-									<span class="d-block link-danger errorMsg"><small>{{ $errors->first('father_name') }}</small></span>
-									@endif
-											
-										</div>
-									
-									</div>
-								</div>
-								<div class="from-group mb-4">
-									<div class="row">
-									<div class="col-md-6">
-											<label class="form-label">Gender</label>
-											<select name="gender" id="gender" class="form-control" >
-											<option value="" >Select</option>
-													<option value="Male" @if('Male' == $student->userData->gender ) selected @endif >Male</option>
-													<option value="Female" @if('Female' == $student->userData->gender ) selected @endif >Female</option>
-													<option value="Other" @if('Other' == $student->userData->gender ) selected @endif >Other</option>
-												</select>
-												
-										</div>
-											<div class="col-md-6">
 											<label class="form-label">DOB</label>
 											
 											<input type="text" class="form-control" name="dob" id="dob" readonly value="{{ $student->userData->dob }}"  placeholder="DOB" data-validation-length="2-255" >
 											
 										</div>
-									
-										
 									</div>
+								</div>
+								
 									</div>
 										<div class="row">
 									
@@ -125,19 +103,19 @@
 											</div>
 										
 									</div>
-									</div>
 									
 									
-								
-								</div>
-								
-								<div class="row">
 								<div class="from-group mb-4 " >
 									<div class="d-flex justify-content-between flex-wrap" style="float:right;">
 										<button type="submit" class="btn btn-primary">Save</button>
 									</div>
 									</div>
 								</div>
+									
+								
+								</div>
+								
+								
 							</form>
 						</div>
 					</div>

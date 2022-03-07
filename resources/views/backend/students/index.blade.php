@@ -74,7 +74,7 @@
                     <td>{{$student->user_details->username}}</td>
                     <td>{{$student->mobile}}</td>
                     <td>{{$student->status ? 'Active':'Disabled'}}</td>
-                    <td>{{$student->user_details->mobile_verified_at ? 'Verified':'Not Verified'}}</td>
+                    <td>{{$student->user_details->email_verified_at ? 'Verified':'Not Verified'}}</td>
                     <td data-sort="{{$student->created_at->format('YmdHis')}}">{{$student->created_at->format('d-m-Y H:i:s')}}</td>
                     <td>
 					<a href ="{{route('backend.students.show', $student->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View tutor details"><i class="ion ion-md-eye"></i></a>

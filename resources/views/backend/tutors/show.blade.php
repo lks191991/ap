@@ -76,18 +76,7 @@
                         {{$tutor->mobile}}
                       </div>
                     </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Pricipal Name:</div>
-                      <div class="col-md-9">
-                       {{$tutor->pricipal_name}}
-                      </div>
-                    </div>
-					<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Subject:</div>
-                      <div class="col-md-9">
-                        {{isset($tutor->tutor_subject)?$tutor->tutor_subject:'N/A'}}
-                      </div>
-                    </div>
+				
 	<div class="row mb-2">
                       <div class="col-md-3 text-muted">DOB:</div>
                       <div class="col-md-9">
@@ -95,15 +84,7 @@
                       </div>
                     </div>
                
-<div class="row mb-2">
-                      <div class="col-md-3 text-muted">Gender:</div>
-                      <div class="col-md-9">
-                       {{$tutor->gender}}
-                      </div>
-                    </div>
-                  
-
-                  </div></div>
+</div>
                 <!-- / Info -->
 
                 <!-- Posts -->

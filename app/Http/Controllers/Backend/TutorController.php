@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 use Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Hash;
-use App\Mail\sendEmailtoSchooltutor;
+use App\Mail\sendEmailtoNewuserAdmin;
 use Illuminate\Support\Facades\Mail;
 use Auth;
 
@@ -59,8 +59,6 @@ class TutorController extends Controller
 
         $validator = Validator::make($data, [
                     'first_name' => 'required|min:2',
-                    'tutor_subject' => 'required',
-                    'pricipal_name' => 'required',
                     'email' => 'email|max:255|unique:users',
                     'mobile' => 'required|numeric',
                  
@@ -123,12 +121,9 @@ class TutorController extends Controller
         $tutor->email = $data['email'];
         $tutor->mobile = $data['mobile'];
        
-        $tutor->pricipal_name = $data['pricipal_name'];
-		$tutor->gender = $data['gender'];
         $tutor->dob = date("d-m-Y",strtotime($data['dob']));
         $tutor->status =  isset($data['status']) ? $data['status'] : 0;
 		$tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
-        $tutor->tutor_subject = $data['tutor_subject'];
 
         $tutor->save(); //persist the data 
         
@@ -140,14 +135,15 @@ class TutorController extends Controller
         $user_more_info = User::find($user->id);
         $user_more_info->name = $data['first_name'];
         $user_more_info->mobile_verified_at = date('Y-m-d H:i:s');
+        $user_more_info->email_verified_at = date('Y-m-d H:i:s');
         $user_more_info->save(); //persist the data
         DB::commit();
     } catch (\Exception $e) {
         DB::rollback();
         return redirect()->back()->with('error', 'something went wrong please try again');
     }
-        if (!empty($user->email))
-          Mail::to($user->email, "New tutor on " . env('APP_NAME', 'AP'))->send(new sendEmailtoSchooltutor($tutordata));
+    if (!empty($user_more_info->email))
+    Mail::to($user_more_info->email, "New registration on " . env('APP_NAME', ''))->send(new sendEmailtoNewuserAdmin($user_more_info, $user_more_info->name));
 
 
         return redirect()->route('backend.tutors.index')->with('success', 'Tutor Created Successfully');
@@ -221,8 +217,6 @@ class TutorController extends Controller
                                 })
                     ],
                  
-                    'tutor_subject' => 'required',
-                    'pricipal_name' => 'required',
                         ], [
                    // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
         ]);
@@ -282,10 +276,7 @@ class TutorController extends Controller
         $tutor->mobile = $data['mobile'];
         $tutor->status = isset($data['status']) ? $data['status'] : 0;
         $tutor->upload_access = isset($data['upload_access']) ? $data['upload_access'] : 0;
-        $tutor->pricipal_name = $data['pricipal_name'];
-		$tutor->gender = $data['gender'];
         $tutor->dob = date("d-m-Y",strtotime($data['dob']));
-        $tutor->tutor_subject = $data['tutor_subject'];
 
         $tutor->save(); 
        

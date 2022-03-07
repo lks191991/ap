@@ -51,23 +51,8 @@
                         <input type="text" name="mobile" id="mobile" placeholder="Mobile" value="{{ old('mobile') }}" class="form-control" required>
                     </div>
                 </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Father Name</label>
-                    <div class="col-sm-10">
-                        <input type="text" name="father_name" id="father_name" placeholder="Father Name" value="{{ old('father_name') }}" class="form-control" required>
-                    </div>
-                </div>
-				<div class="form-group row">
-                    <label class="col-form-label col-sm-2 text-sm-right">Gender</label>
-                    <div class="col-sm-10">
-                       	<select name="gender" id="gender" class="custom-select" >
-											<option value="" >Select</option>
-													<option value="Male" @if('Male' == old('gender') ) selected @endif >Male</option>
-													<option value="Female" @if('Female' == old('gender') ) selected @endif >Female</option>
-													<option value="Other" @if('Other' == old('gender') ) selected @endif >Other</option>
-												</select>
-                    </div>
-                </div>
+				
+				
 				<div class="form-group row">
                     <label class="col-form-label col-sm-2 text-sm-right">DOB</label>
                     <div class="col-sm-10">

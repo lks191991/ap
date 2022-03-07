@@ -58,12 +58,13 @@ class StudentController extends Controller
         } else if (Auth::user()->userRole->role->slug == 'student') {
 			
             $student = User::where("id",Auth::user()->id)->first();
-            return view('frontend.student.profile-first', compact('student'));
+           // return view('frontend.student.profile-first', compact('student'));
+            return $this->student();
 
         } else if (Auth::user()->userRole->role->slug == 'tutor') {
 
             $tutor = User::where("id",Auth::user()->id)->first();
-            return view('frontend.tutor.profile-first', compact('tutor'));
+            //return view('frontend.tutor.profile-first', compact('tutor'));
             return $this->tutor();
         }
     }
@@ -75,7 +76,7 @@ class StudentController extends Controller
     public function profile()
     {
         if (\Auth::user()->profile_completed==0) {
-            return redirect()->route('frontend.profile.first')->with('success','You have successfully logged in');
+          //  return redirect()->route('frontend.profile.first')->with('success','You have successfully logged in');
        }
        // session()->forget('newCustomer');
        // session()->forget('userId');
@@ -100,8 +101,6 @@ class StudentController extends Controller
         
         $validator = Validator::make($data, [
             'first_name' => 'required|min:2',
-            'tutor_subject' => 'required',
-            'pricipal_name' => 'required',
                 ]);
                
         if ($validator->fails()) {
@@ -144,9 +143,6 @@ class StudentController extends Controller
         $tutor->first_name = $data['first_name'];
         $tutor->last_name = $data['last_name'];
         $tutor->employee_id = $employee_id;
-        $tutor->pricipal_name = $data['pricipal_name'];
-        $tutor->tutor_subject = $data['tutor_subject'];
-        $tutor->gender = $data['gender'];
         $tutor->dob = date("d-m-Y",strtotime($data['dob']));
 		
         $tutor->save(); 
@@ -166,8 +162,6 @@ class StudentController extends Controller
         $data = $request->all();
         $validator = Validator::make($data, [
             'first_name' => 'required|min:2',
-            'student_type' => 'required',
-            'father_name' => 'required',
                         ], [
                    // 'password.regex' => "Password must be contains minimum 8 character with at least one lowercase, one uppercase, one digit, one special character",
         ]);
@@ -212,8 +206,6 @@ class StudentController extends Controller
         $student->last_name = $data['last_name'];
         $student->student_id = $student_id;
         $student->student_type = $data['student_type'];
-        $student->father_name = $data['father_name'];
-		$student->gender = $data['gender'];
         $student->dob = date("d-m-Y",strtotime($data['dob']));
        
        

@@ -68,6 +68,8 @@
 					<iframe class="bg-dark" src="{{$course->demo_video_url}}?byline=false"  id="videoPlayer" width="100%" height="350"  frameborder="0" allow="autoplay; fullscreen"  allowfullscreen></iframe>
 					
 					</div>
+
+					
 					<div class="product-detail-block mt-rem-10" >
 						<div class="product-details-action-btn-block">
 						<h2 class="section-heading">Course content</h2>

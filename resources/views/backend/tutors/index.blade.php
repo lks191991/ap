@@ -71,7 +71,7 @@
                     <td>{{$tutor->user_details->username}}</td>
 					<td>{{$tutor->mobile}}</td>
 					<td>{{$tutor->status ? 'Active':'Disabled'}}</td>
-					<td>{{$tutor->user_details->mobile_verified_at ? 'Verified':'Not Verified'}}</td>
+					<td>{{$tutor->user_details->email_verified_at ? 'Verified':'Not Verified'}}</td>
                     <td>
 					<a href ="{{route('backend.tutors.show', $tutor->id)}}" class="btn btn-default btn-xs icon-btn md-btn-flat article-tooltip" title="View tutor details"><i class="ion ion-md-eye"></i></a>
 						

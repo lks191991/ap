@@ -114,6 +114,7 @@
 
 	
 	dateFormat: 'dd-mm-yy',
+    yearRange: "-80:+0",
 	changeMonth: true,
     changeYear: true
 	});
@@ -121,6 +122,7 @@
     $( ".dateinput" ).datepicker({ 
 	dateFormat: 'dd-mm-yy',
 	changeMonth: true,
+    yearRange: "-80:+0",
     changeYear: true
 	});
   } );

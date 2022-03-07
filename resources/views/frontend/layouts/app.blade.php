@@ -136,6 +136,7 @@ $settings= SiteHelpers::contactDetails();
 	
 	dateFormat: 'dd-mm-yy',
 	changeMonth: true,
+    yearRange: "-80:+0",
     changeYear: true
 	});
   } );
